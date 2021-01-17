@@ -597,6 +597,17 @@ However, at present there are no curves over extension fields of degree
 # Groups
 
 
+We discuss only groups of order near 2^256.
+Much smaller groups provide inadequate generic DLP security even
+ without static DH oracles.
+Much larger groups such as Decaf448
+ {{!I-D.irtf-cfrg-ristretto255-decaf448}} and NIST P-384 {{!RFC5903}}
+ are out of reach no matter what minor advantage a static DH oracle
+ confers with the attacks here, and serve only as hedges against
+ potential future breakthroughs in cryptanalysis which are naturally
+ out of scope for a memo discussing the present state of the art.
+
+
 ## Ristretto255
 
 Ristretto255 {{!I-D.irtf-cfrg-ristretto255-decaf448}} is a group of
