@@ -219,7 +219,7 @@ informative:
 
 --- abstract
 
-A static Diffie-Hellman (DH) oracle is an oracle that multiplies a
+A **static Diffie-Hellman (DH) oracle** is an oracle that multiplies a
  given base point P by a secret scalar x, P |---> x\*P.
 Protocols based on oblivious pseudorandom function families (OPRF,
  {{!I-D.irtf-cfrg-voprf}}), such as OPAQUE {{!I-D.irtf-cfrg-opaque}}
@@ -241,12 +241,13 @@ This memo concludes that static DH oracles do not meaningfully threaten
 
 # Introduction
 
-In a cyclic group of prime order written additively, the discrete
- logarithm problem (DLP) is to find a secret scalar k given k\*G,
+In a cyclic group of prime order written additively, the **discrete
+ logarithm problem** (DLP) is to find a secret scalar k given k\*G,
  where G is a known base point.
 Ephemeral Diffie-Hellman key agreement such as in TLS {{!RFC8446}}
- relies on the related computational Diffie-Hellman (CDH) problem:
+ relies on the related **computational Diffie-Hellman problem** (CDH):
  given (x\*G, y\*G), find xy\*G.
+
 In groups such as Group 14 {{!RFC3526}} and the prime-order subgroup of
  Curve25519 {{!RFC7748}} or Ristretto255
  {{!I-D.irtf-cfrg-ristretto255-decaf448}}, solving DLP is essentially
@@ -264,16 +265,49 @@ Newer protocols based on oblivious pseudorandom function families
  (OPRF, {{!I-D.irtf-cfrg-voprf}}), such as OPAQUE
  {{!I-D.irtf-cfrg-opaque}} and PrivacyPass
  {{!I-D.ietf-privacypass-protocol}}, take advantage of the algebraic
- structure to do more:
-An OPRF is a protocol by which a client and a server to can jointly
+ structure of the group to do more:
+An OPRF is a protocol by which a client and a server can jointly
  evaluate a pseudorandom function family (PRF) with a key known only to
  the server on an input known only to the client, giving an output also
  known only to the client.
+To do this, the server deliberately exposes x\*P given an arbitrary
+ point P, where x is a secret key known only to the server.
 
-A static DH oracle computes x\*P given an arbitrary base P where x is a
- secret.
-The static DH problem is to compute x\*Q for random Q determined after
- the adversary's last oracle query.
+## Taxonomy of Problems
+
+A **static DH oracle** reveals x\*P given an arbitrary base P where x
+ is a secret.
+The **static DH problem** (SDH, {{BG04}}) is to compute x\*Q for random
+ Q determined after the adversary's last oracle query.
+
+The **discrete log problem with auxiliary inputs** (DLPwAI,
+ {{Cheon10}}) is to recover x given
+ (G, x\*G, x^2\*G, x^3\*G, ..., x^q\*G)
+ for some q.
+The DLPwAI is obviously at least as hard as SDH:
+Given a static DH oracle, an adversary can find the auxiliary inputs
+ for DLPwAI, and then if the adversary can solve DLPwAI they can
+ trivially solve a static DH problem by using the secret x to compute
+ x\*Q directly given the challenge Q.
+
+It is unknown whether SDH is at least as hard as DLPwAI.
+Most SDH attacks work via DLPwAI, with the exception of the
+ {{Granger10}} attack discussed below on elliptic curves over extension
+ fields which solves SDH directly but not DLPwAI.
+
+The **generalized discrete log problem with auxiliary inputs**
+ (GDLPwAI, {{Kim14}}) is to recover x given
+ (x^e_1 \* G, x^e_2 \* G, ..., x^e_q \* G)
+ for arbitrary integers e_1, e_2, ..., e_q.
+Static DH oracles only expose x\*P, not arbitrary powers of x, so
+ although GDLPwAI algorithms can make more economical use of a subset
+ of the powers of x, this economy is of theoretical rather than
+ practical interest.
+
+The **strong DH problem** {{Cheon06}} is to compute x^{q + 1} \* G
+ given (G, x\*G, x^2\*G, ..., x^q*\G).
+There is no known way to improve on static DH attacks to solve the
+ strong DH problem, so we do not discuss it further in this memo.
 
 
 # Conventions and Definitions
