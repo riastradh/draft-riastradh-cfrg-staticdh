@@ -3,7 +3,7 @@ coding: utf-8
 
 title: Attacks on Static Diffie-Hellman Oracles
 abbrev: staticdh
-docname: draft-riastradh-staticdh-latest
+docname: draft-riastradh-cfrg-staticdh-latest
 category: info
 
 ipr: trust200902
