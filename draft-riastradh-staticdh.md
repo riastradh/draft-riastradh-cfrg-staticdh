@@ -220,7 +220,7 @@ informative:
 --- abstract
 
 A **static Diffie-Hellman (DH) oracle** is an oracle that multiplies a
- given base point P by a secret scalar x, P |---> x\*P.
+ given base point P by a secret scalar x, yielding x\*P.
 Protocols based on oblivious pseudorandom function families (OPRF,
  {{!I-D.irtf-cfrg-voprf}}), such as OPAQUE {{!I-D.irtf-cfrg-opaque}}
  and PrivacyPass {{!I-D.ietf-privacypass-protocol}}, often expose
