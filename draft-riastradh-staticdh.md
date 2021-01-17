@@ -269,8 +269,7 @@ This memo summarizes the state of the art in attacks on discrete log
  and OPRF security enabled by static DH oracles, and the resistance of
  widely used groups to such attacks.
 This memo concludes that static DH oracles do not meaningfully threaten
- the security of any modern elliptic curve groups recommended by the
- IETF.
+ the security of any DH groups recommended by the IETF.
 
 
 --- middle
@@ -656,6 +655,19 @@ p + 1 = 2 * 13 * 83 * 45751 * 509879 *
 best p-1 attack cost after 18 051 648 queries:          ~2^115.9
 best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
 ~~~
+
+
+## Finite Fields
+
+DH over the multiplicative groups of finite fields such as {{!RFC3526}}
+ and {{!RFC7919}} is essentially unaffected by the attacks described
+ here because the group order is so large in order to defeat the
+ general number field sieve that the generic DLPwAI algorithms cited
+ here are out of reach anyway.
+For example, no matter what the factorization of p - 1 and p + 1 is for
+ Group 14 of {{!RFC3526}} (the author got bored waiting for gp to
+ answer), the group order p is around 2^2048 anyway, so sqrt{p/d} must
+ be at least around the totally insurmountable 2^1990.
 
 
 # Security Considerations
