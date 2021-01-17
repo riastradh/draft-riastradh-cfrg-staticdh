@@ -229,10 +229,10 @@ informative:
     author:
       -
         ins: C. Costello
-        ins: Craig Costello
+        name: Craig Costello
       -
         ins: P. Longa
-        ins: Patrick Longa
+        name: Patrick Longa
     date: 2015
     seriesinfo:
       IACR: "Cryptology ePrint Archive: Report 2015/565"
