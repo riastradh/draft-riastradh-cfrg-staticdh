@@ -592,15 +592,21 @@ If the group is the group of rational points on an elliptic curve E
  the static DH problem with O~(q^{1 - 1/(n + 1)}) curve additions, for
  fixed n as q grows; here O~(...) denotes O(... log^m q) for some m.
 
-The query cost for {{Granger10}} is out of reach for n = 1 or n = 2
- when q^n is large enough to resist generic DLP attacks like Pollard's
- rho, and the computational cost grows very rapidly (factorially) with
- n, so it is really of interest only for small n > 2.
+The queries for {{Granger10}} _need not_ be sequential, so the feasible
+ query cost may be considerably higher than for {{BG04}}- and
+ {{Cheon06}}-type attacks.
+When q^n is large enough by Hasse's theorem to resist generic DLP
+ attacks like Pollard's rho, the query cost for n = 1 is the same as
+ the computational cost of rho, sqrt{q}; and the query cost for n = 2
+ is still the most likely unreachable q^{2/3}, typically above 2^80.
+However, the computational cost of {{Granger10}} grows rapidly
+ (factorially) with n, so it is of interest only for small n > 2.
+
 For example, with F_{q^4}, the cost is O~(q^{4/5}) curve additions,
  which is considerably cheaper than the cheapest DLP attacks on such
  curves based on index calculus at O~(q^{3/2}).
-However, at present there are no curves over extension fields of degree
- 4 standardized by IETF (XXX verify).
+At present there are no curves over extension fields of degree 4
+ standardized by IETF (XXX verify).
 
 
 # Groups
@@ -660,6 +666,9 @@ best p-1 attack cost: at least                          ~2^100.5
 best p+1 attack cost after 6 626 767 421 380 queries:   ~2^107.2
 ~~~
 
+NIST P-256 is unaffected by the {{Granger10}} attack, since it is
+ defined over a prime field, not an extension field.
+
 
 ## secp256k1
 
@@ -677,6 +686,35 @@ p + 1 = 2 * 13 * 83 * 45751 * 509879 *
 baseline rho cost:                                      ~2^127.8
 best p-1 attack cost after 18 051 648 queries:          ~2^115.9
 best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
+~~~
+
+secp256k1 is unaffected by the {{Granger10}} attack, since it is
+ defined over a prime field, not an extension field.
+
+
+## FourQ
+
+FourQ is a twisted Edwards curve over an extension field F_{q^2} where
+ q = 2^127 - 1, with a prime-order subgroup and recommended point
+ validation to avoid twist attacks.
+We do not consider cofactors or the twist of the curve; it is up to the
+ implementer to avoid these by point validation, or up to the protocol
+ designer to choose an encoding that is naturally restricted to the
+ prime-order subgroup like Ristretto or Decaf.
+
+~~~
+p = 73846995687063900142583536357581573884798075859800097461294096333596429543
+p - 1 = 2 * 3^2 * 103043 * 5948609 * 7355633 * 9560163629 *
+  95178976488652476489556669482413803056485341
+p + 1 = 2^3 * 7 * 13 *
+  101438180888824038657394967524150513578019334972252881128151231227467623
+
+baseline rho cost:                                              ~2^122.5
+best p-1 attack cost after 17 731 942 934 814 846 queries:      ~2^95.7
+best p+1 attack cost after 728 queries:                         ~2^117.9
+
+Granger (parallelizable) query cost:                            ~2^84.6
+Granger computational cost:                                     >2^84.6
 ~~~
 
 
