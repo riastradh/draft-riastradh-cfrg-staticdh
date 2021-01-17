@@ -606,7 +606,7 @@ This class of attacks was first presented in {{Cheon06}} with
  memory-intensive baby-step/giant-step tables, and then extended to a
  random walk with essentially constant memory in {{Cheon10}}.
 
-## Generalizations of the p - 1 and p + 1 attacks
+## Generalizations of the p - 1 and p + 1 Attacks
 
 The attacks were generalized in {{Satoh09}} to any divisor d of
  Phi_n(p), where Phi_n is the nth cyclotomic polynomial.
