@@ -171,6 +171,7 @@ informative:
     seriesinfo:
       MathComp: 83(288)
       ISSN: 0025-5718
+      DOI: 10.1090/S0025-5718-2014-02813-5
 
   Kim14:
     title: Discrete Logarithm Problem with Auxiliary Inputs
