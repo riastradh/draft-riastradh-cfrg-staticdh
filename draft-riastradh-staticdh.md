@@ -647,7 +647,7 @@ Ristretto255 is unaffected by the {{Granger10}} attack, since it is
 
 ## NIST P-256
 
-NIST P-256 {{!RFC5093}} is a short Weierstrass curve of prime order
+NIST P-256 {{!RFC5903}} is a short Weierstrass curve of prime order
  over the field F_q where q = 2^256 - 2^224 + 2^192 + 2^96 - 1.
 For NIST P-256, p - 1 has many small factors, but p itself is large
  enough that even if the adversary can achieve 2^55 sequential queries
