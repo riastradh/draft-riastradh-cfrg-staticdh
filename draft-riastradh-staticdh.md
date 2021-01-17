@@ -259,7 +259,7 @@ A **static Diffie-Hellman (DH) oracle** is an oracle that multiplies a
  given base point P by a secret scalar x, yielding x\*P.
 Protocols based on oblivious pseudorandom function families (OPRF,
  {{!I-D.irtf-cfrg-voprf}}), such as OPAQUE {{!I-D.irtf-cfrg-opaque}}
- and PrivacyPass {{!I-D.ietf-privacypass-protocol}}, often expose
+ and Privacy Pass {{!I-D.ietf-privacypass-protocol}}, often expose
  static DH oracles to adversaries, and rely on the adversary's
  inability either to recover the secret scalar or to compute the scalar
  multiplication of random base points without submitting them to the
@@ -298,7 +298,7 @@ Traditional protocols involving Diffie-Hellman, including ephemeral key
 
 Newer protocols based on oblivious pseudorandom function families
  (OPRF, {{!I-D.irtf-cfrg-voprf}}), such as OPAQUE
- {{!I-D.irtf-cfrg-opaque}} and PrivacyPass
+ {{!I-D.irtf-cfrg-opaque}} and Privacy Pass
  {{!I-D.ietf-privacypass-protocol}}, take advantage of the algebraic
  structure of the group to do more:
 An OPRF is a protocol by which a client and a server can jointly
@@ -359,7 +359,7 @@ OPAQUE uses an OPRF to derive a secret from a password that the server
  is oblivious to, and relies on the secret key to prevent other than
  the server from computing the same secret to test password guesses.
 
-PrivacyPass uses an OPRF to create anonymized tokens, so a server can
+Privacy Pass uses an OPRF to create anonymized tokens, so a server can
  issue them to clients but can't distinguish or track clients by the
  issued tokens, and clients can prove ownership of tokens but can't
  forge new ones.
@@ -387,7 +387,7 @@ Thus, since the server must answer for arbitrary P, the server
 # Assumptions
 
 Static DH attacks have query costs -- the number of queries that must
- be answered by the legitimate server, such as a PrivacyPass token
+ be answered by the legitimate server, such as a Privacy Pass token
  issuer, in order for the attack to succeed.
 
 We make the following assumptions about legitimate servers to put
