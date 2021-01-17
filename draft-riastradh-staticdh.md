@@ -54,6 +54,18 @@ informative:
     seriesinfo:
       IACR: "Cryptology ePrint Archive: Report 2004/306"
 
+  Sutter05:
+    title: >
+      The Free Lunch Is Over: A Fundamental Turn Toward Concurrency in Software
+    target: http://www.gotw.ca/publications/concurrency-ddj.htm
+    author:
+      ins: H. Sutter
+      name: Herb Sutter
+    date: 2005
+    seriesinfo:
+      "Dr. Dobb's Journal": 30(3)
+      ISSN: 1044-789X
+
   Bernstein06:
     title: "Curve25519: new Diffie-Hellman speed records"
     target: https://link.springer.com/chapter/10.1007/11745853_14
@@ -109,6 +121,13 @@ informative:
     date: 2009
     seriesinfo:
       IACR: "Cryptology ePrint Archive: Report 2009/058"
+
+  IBM10:
+    title: >
+      Made in IBM Labs: IBM Scientists Demonstrate World's Fastest Graphene
+      Transistor
+    target: https://www-03.ibm.com/press/us/en/pressrelease/29343.wss
+    date: 2010
 
   Cheon10:
     title: Discrete Logarithm Problem with Auxiliary Inputs
@@ -195,6 +214,16 @@ informative:
       ISBN: 978-3-662-48796-9
       DOI: 10.1007/978-3-662-48797-6_8
 
+  James19:
+    title: >
+      Forget graphene CPUs, AMD says "we're stuck on silicon for at
+      least seven to ten years"
+    target: https://www.pcgamesn.com/amd/stuck-on-silicon-past-3nm-7-10-years
+    author:
+      ins: D. James
+      name: Dave James
+    date: 2019
+
   Davidson19:
     title: Supporting the latest version of the Privacy Pass Protocol
     target: https://blog.cloudflare.com/supporting-the-latest-version-of-the-privacy-pass-protocol/
@@ -216,6 +245,12 @@ informative:
         ins: T. Lange
         name: Tanja Lange
     date: 2021-01-16
+
+  HWBOT:
+    title: >
+      CPU Frequency: Hall of Fame -- World Records Achieved with CPU Frequency
+    target: https://hwbot.org/benchmark/cpu_frequency/halloffame
+    date: 2021-01-17
 
 
 --- abstract
@@ -361,17 +396,17 @@ We make the following assumptions about legitimate servers to put
 
 - CPUs run at less than 10 GHz.
 
-  World records for CPU frequencies have plateaued at just above 8 GHz
-   over the past decade, after many decades of increases.  (XXX citation)
+  World records for CPU frequencies have plateaued at between 8 and 9
+   GHz over the past decade {{HWBOT}}, after many years of increases.
   For the past two decades, the semiconductor industry has switched its
    focus to wider parallelism, not higher frequencies, after reaching
    what seem to be hard physical limits to overcome in further
-   frequency scaling.  (XXX citation?)
+   frequency scaling {{Sutter05}}.
 
   In 2010 IBM reported a graphene-based transistor oscillating at more
-   than 100 GHz, but that avenue of research appears to have been
-   abandoned with no foreseeable future of high-frequency
-   graphene-based CPUs.  (XXX citation)
+   than 100 GHz {{IBM10}}, but that avenue of research appears to have
+   no foreseeable future in graphene-based CPUs at such frequencies
+   {{James19}}.
 
 - Oracle queries cost at least 1000 CPU cycles.
 
