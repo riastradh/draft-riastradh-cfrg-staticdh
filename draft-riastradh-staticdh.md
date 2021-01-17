@@ -202,6 +202,22 @@ informative:
     seriesinfo:
       PhD: Seoul National University
 
+  CL15:
+    title: >
+      FourQ: four-dimensional decompositions on a Q-curve
+      over the Mersenne prime
+    target: https://eprint.iacr.org/2015/565
+    author:
+      -
+        ins: C. Costello
+        ins: Craig Costello
+      -
+        ins: P. Longa
+        ins: Patrick Longa
+    date: 2015
+    seriesinfo:
+      IACR: "Cryptology ePrint Archive: Report 2015/565"
+
   Kim16:
     title: Multiple Discrete Logarithm Problems with Auxiliary Inputs
     author:
@@ -699,9 +715,9 @@ secp256k1 is unaffected by the {{Granger10}} attack, since it is
 
 ## FourQ
 
-FourQ is a twisted Edwards curve over an extension field F_{q^2} where
- q = 2^127 - 1, with a prime-order subgroup and recommended point
- validation to avoid twist attacks.
+FourQ {{CL15}} is a twisted Edwards curve over an extension field
+ F_{q^2} where q = 2^127 - 1, with a prime-order subgroup and
+ recommended point validation to avoid twist attacks.
 We do not consider cofactors or the twist of the curve; it is up to the
  implementer to avoid these by point validation, or up to the protocol
  designer to choose an encoding that is naturally restricted to the
