@@ -289,6 +289,7 @@ when, and only when, they appear in all capitals, as shown here.
 OPAQUE uses an OPRF to derive a secret from a password that the server
  is oblivious to, and relies on the secret key to prevent other than
  the server from computing the same secret to test password guesses.
+
 PrivacyPass uses an OPRF to create anonymized tokens, so a server can
  issue them to clients but can't distinguish or track clients by the
  issued tokens, and clients can prove ownership of tokens but can't
@@ -302,24 +303,26 @@ H2(t, k*H1(t))
 
 Here t is the client's secret input, k is the server's secret scalar,
  and H1 and H2 are hash funtions.
-In order to compute this, the client computes Q := H1(t) and blinds it
- as either P := r\*H1(t) or P := H1(t) + R, where r is a scalar or R is
- a group element chosen uniformly at random and kept secret to the
- client (`multiplicative' or `additive blinding').
-The server, given arbitrary P, then reveals k\*P (from which the client
- can take advantage of the algebraic structure to undo the
- multiplicative or additive blinding to complete the protocol); thus
- the server implements a static DH oracle.
+
+To do this, the client computes Q := H1(t) and derives P := r\*H1(t) or
+ P := H1(t) + R, where r is a scalar or R is a group element chosen
+ uniformly at random and kept secret to the client ("multiplicative" or
+ "additive blinding").
+
+The server, given P, then reveals k\*P (from which the client
+ can undo the blinding to complete the protocol).
+Thus, since the server must answer for arbitrary P, the server
+ implements a static DH oracle.
 
 
 # Assumptions
 
 Static DH attacks have query costs -- the number of queries that must
- be sent to the legitimate server, such as a PrivacyPass token
- dispenser, in order for the attack to succeed.
+ be answered by the legitimate server, such as a PrivacyPass token
+ issuer, in order for the attack to succeed.
 
-We make the following assumptions to put realistic limits on the query
- costs of feasible attacks:
+We make the following assumptions about legitimate servers to put
+ realistic limits on the query costs of feasible attacks:
 
 - CPUs run at less than 10 GHz.
 
@@ -342,14 +345,7 @@ We make the following assumptions to put realistic limits on the query
    Cascade Lake microarchitecture), after many years of incremental
    improvements.
 
-These assumptions imply a lower bound of 100 nanoseconds per query,
- even if the adversary is colocated on the same CPU core as the
- legitimate party and avoids any architectural overhead from
- communication, context-switching, etc.
-Realistically, there is likely to be a much larger penalty for
- communication latency and/or context-switching if there is any kind of
- privilege boundary between the two that would prevent direct
- exfiltration or Spectre-class side channels.
+These assumptions imply a lower bound of 100 nanoseconds per query.
 
 At 100 nanoseconds per query, the following table shows the minimum
  real time to achieve a prescribed number of sequential queries:
@@ -374,16 +370,23 @@ For the purposes of this memo, we consider 2^55 to be a hard limit on
  the number of sequential queries, absent a revolutionary breakthrough
  in computing or cryptanalysis.
 
-These are extremely conservative limits -- most legitimate servers in
- the real world have nowhere near the capacity to approach this.
-If the server's CPU runs at 4 GHz, and the group costs 28 000 cycles
- for a scalar multiplication, then each query takes 7 microseconds, so
- 2^50 queries would take nearly a quarter of a millennium.
+These are extremely conservative assumptions -- we make no assumptions
+ about communication or context-switch cost, and most servers in the
+ real world have nowhere near the capacity to approach this.
+E.g., if the server runs at 4 GHz, and the group costs 28 000 cycles
+ for scalar multiplication, then each query takes 7 microseconds, so
+ 2^50 sequential queries would take nearly a quarter of a millennium.
 
-(Engineers building systems out of graphene CPUs operating at 100 GHz
+Note that it is the _legitimate server's_ capacity that limits the
+ feasible query cost.
+ASICs fabricated by the adversary can reduce the computational cost of
+ attacks, but can't affect the legitimate server's capacity to answer
+ the adversary's queries.
+
+Engineers building systems out of graphene CPUs operating at 100 GHz
  to compute dramatically improved elliptic curve scalar multiplication
  algorithms at fewer than 1000 cycles per scalarmult are advised to
- reconsider these assumptions.)
+ reconsider these assumptions.
 
 
 # Generic Static DH Attacks
@@ -467,7 +470,7 @@ b^d w^{-m v} = w^u
  nonresidue in F_p using nonconstant rational functions f and g over
  F_p.
 
-The adversary can't evalaute this equation directly without knowing b,
+The adversary can't evaluate this equation directly without knowing b,
  but it can be tested by proxy of scalar multiplication of G by fixed
  polynomials P_1, P_2, and P_3 of k such that
 
