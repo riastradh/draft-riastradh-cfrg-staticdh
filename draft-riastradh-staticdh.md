@@ -40,6 +40,13 @@ informative:
     seriesinfo:
       IEEE: Transactions on Information Theory 22(6)
 
+  SEC2:
+    title: "SEC 2: Recommended Elliptic Curve Domain Parameters"
+    target: https://www.secg.org/SEC2-Ver-1.0.pdf
+    author:
+      org: Certicom Research
+    date: 2000
+
   BG04:
     title: The Static Diffie-Hellman Problem
     target: https://eprint.iacr.org/2004/306
@@ -688,8 +695,8 @@ NIST P-256 is unaffected by the {{Granger10}} attack, since it is
 
 ## secp256k1
 
-secp256k1 is a short Weierstrass curve of prime order over the field
- F_q where q = 2^256 - 2^32 - 977, used in Bitcoin and other
+secp256k1 {{SEC2}} is a short Weierstrass curve of prime order over
+ the field F_q where q = 2^256 - 2^32 - 977, used in Bitcoin and other
  cryptocurrencies.
 
 secp256k1 is not recommended by the IETF.
