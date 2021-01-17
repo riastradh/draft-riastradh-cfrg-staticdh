@@ -417,10 +417,10 @@ ASICs fabricated by the adversary can reduce the computational cost of
  attacks, but can't affect the legitimate server's capacity to answer
  the adversary's queries.
 
-Engineers building systems out of graphene CPUs operating at 100 GHz
- to compute dramatically improved elliptic curve scalar multiplication
- algorithms at fewer than 1000 cycles per scalarmult are advised to
- reconsider these assumptions.
+Engineers building systems out of graphene CPUs operating at 100 GHz to
+ compute dramatically improved elliptic curve scalar multiplication
+ algorithms at fewer than 1000 cycles per scalarmult MUST reconsider
+ these assumptions.
 
 
 # Generic Static DH Attacks
