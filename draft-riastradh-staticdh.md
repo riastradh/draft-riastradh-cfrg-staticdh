@@ -676,6 +676,11 @@ secp256k1 is a short Weierstrass curve of prime order over the field
  F_q where q = 2^256 - 2^32 - 977, used in Bitcoin and other
  cryptocurrencies.
 
+secp256k1 is not recommended by the IETF.
+We mention it here only because of its widespread use in
+ cryptocurrencies, where the ready availability of high-quality
+ implementations makes it tempting for related OPRF applications.
+
 ~~~
 p = 2^256 - 432420386565659656852420866394968145599
 p - 1 = 2^6 * 3 * 149 * 631 * 107361793816595537 *
@@ -701,6 +706,11 @@ We do not consider cofactors or the twist of the curve; it is up to the
  implementer to avoid these by point validation, or up to the protocol
  designer to choose an encoding that is naturally restricted to the
  prime-order subgroup like Ristretto or Decaf.
+
+FourQ is not recommended by the IETF.
+We mention it here only because it has received considerable attention
+ in the community with implementations at higher performance than
+ Curve25519 taking advantage of arithmetic modulo a Mersenne prime.
 
 ~~~
 p = 73846995687063900142583536357581573884798075859800097461294096333596429543
