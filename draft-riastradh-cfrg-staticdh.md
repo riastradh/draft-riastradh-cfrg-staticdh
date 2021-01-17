@@ -306,18 +306,13 @@ informative:
 --- abstract
 
 A **static Diffie-Hellman (DH) oracle** is an oracle that multiplies a
- given base point P by a secret scalar x, yielding x\*P.
-Protocols based on oblivious pseudorandom function families (OPRF,
- {{?I-D.irtf-cfrg-voprf}}), such as OPAQUE {{?I-D.irtf-cfrg-opaque}}
- and Privacy Pass {{?I-D.ietf-privacypass-protocol}}, often expose
- static DH oracles to adversaries, and rely on the adversary's
- inability either to recover the secret scalar or to compute the scalar
- multiplication of random base points without submitting them to the
- oracle.
-
-This memo summarizes the state of the art in attacks on discrete log
- and OPRF security enabled by static DH oracles, and the resistance of
- widely used groups to such attacks.
+ given base point P in a group by a secret scalar x, yielding x\*P.
+Certain cryptographic protocols such as oblivious pseudorandom function
+ families (OPRFs) rely on an adversary's inability either to recover x
+ or to compute x\*Q at a random point Q chosen after queries to the
+ static DH oracle.
+This memo summarizes the state of the art in attacks enabled by static
+ DH oracles, and the resistance of widely used groups to such attacks.
 This memo concludes that static DH oracles do not meaningfully threaten
  the security of any DH groups recommended by the IETF.
 
