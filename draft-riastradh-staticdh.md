@@ -518,6 +518,14 @@ This class of attacks was presented in {{BG04}} and {{Cheon06}}, with
  essentially constant memory along the lines of Pollard's kangaroo in
  {{Cheon10}}.
 
+The idea was generalized in {{KC12}} and {{Kim14}} to work with the
+ collection of points k^i * G for every i in a subgroup of (Z/{p-1}Z)^*
+ at somewhat lower computational cost.
+However, it is no easier for an adversary to learn just these points
+ with a static DH oracle than to learn all the points up to a divisor d
+ of p - 1, so the generalization is ruled out by the same limits on
+ feasible query cost.
+
 
 ## p + 1 Attack in Quadratic Extension
 
@@ -555,6 +563,7 @@ The inputs (G, k\*G, k^2\*G, ..., k^{2d}\*G) can be used to evaluate
 This class of attacks was first presented in {{Cheon06}} with
  memory-intensive baby-step/giant-step tables, and then extended to a
  random walk with essentially constant memory in {{Cheon10}}.
+
 The idea was generalized further in {{Satoh09}} to any divisor d of
  Phi_n(p), where Phi_n is the nth cyclotomic polynomial, but in
  {{KCL14}} the generalization was concluded to have no advantage over
