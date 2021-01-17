@@ -553,14 +553,6 @@ This class of attacks was presented in {{BG04}} and {{Cheon06}}, with
  essentially constant memory along the lines of Pollard's kangaroo in
  {{Cheon10}}.
 
-The idea was generalized in {{KC12}} and {{Kim14}} to work with the
- collection of points k^i * G for every i in a subgroup of (Z/{p-1}Z)^*
- at somewhat lower computational cost.
-However, it is no easier for an adversary to learn just these points
- with a static DH oracle than to learn all the points up to a divisor d
- of p - 1, so the generalization is ruled out by the same limits on
- feasible query cost.
-
 
 ## p + 1 Attack in Quadratic Extension
 
@@ -599,18 +591,41 @@ This class of attacks was first presented in {{Cheon06}} with
  memory-intensive baby-step/giant-step tables, and then extended to a
  random walk with essentially constant memory in {{Cheon10}}.
 
-The idea was generalized further in {{Satoh09}} to any divisor d of
- Phi_n(p), where Phi_n is the nth cyclotomic polynomial, but in
- {{KCL14}} the generalization was concluded to have no advantage over
- standard discrete log algorithms without a static DH oracle.
+## Generalizations of the p - 1 and p + 1 attacks
+
+The attacks were generalized in {{Satoh09}} to any divisor d of
+ Phi_n(p), where Phi_n is the nth cyclotomic polynomial.
+However, in {{KCL14}} the generalization was concluded to have no cost
+ advantage over standard discrete log algorithms without a static DH
+ oracle.
+
+A variant of these attacks proposed in {{KC12}} uses a polynomial f
+ over F_p of arbitrary degree d (which need not divide p +/- 1) and
+ runs in time O~(sqrt{p/t} + d) where t is the number of absolutely
+ irreducible factors of f(x) - f(y), and O~(...) denotes O(... log^m p)
+ for some m.
+However, {{KC12}} was unable to find any polynomials f providing better
+ than O~(sqrt{p/d} + d) cost, and only achieved that cost in the case
+ that d does divide p +/- 1.
+
+The attacks were also generalized in {{Kim14}} to the GDLPwAI taking a
+ collection of points k^i * G for every i in a subgroup of (Z/{p-1}Z)^*
+ and finding k at somewhat lower computational cost.
+However, it is no easier for an adversary to learn just these points
+ with a static DH oracle than to learn all the points up to a divisor d
+ of p +/- 1, so the generalization is ruled out by the same limits on
+ feasible query cost.
 
 
 ## Multi-Target Attacks
 
-{{Kim16}} extended the p - 1 and and p + 1 attacks to the multi-target
- setting: given L independent query responses (G, k_i \* G, k_i^d \* G)
- for 1 <= i <= L, compute _all_ the k_i in O(sqrt(L p/d) + sqrt(L d))
- scalar multiplications.
+{{Kim16}} extended the p - 1 attack to the multi-target setting: given
+ L independent query responses (G, k_i \* G, k_i^d \* G) for 1 <= i <=
+ L, compute _all_ the k_i in O(sqrt(L p/d) + sqrt(L d)) scalar
+ multiplications, provided L << min(p/d, d)^{1/4}.
+In brief, attacking a batch of L targets is sqrt(L) times cheaper than
+ attacking each of the L targets independently.
+
 However, this multi-target attack doesn't reduce the number of
  sequential queries needed to start, nor does it reduce the expected
  time to the _first_ k_i.
