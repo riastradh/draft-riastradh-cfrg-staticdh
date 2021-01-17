@@ -308,8 +308,8 @@ informative:
 A **static Diffie-Hellman (DH) oracle** is an oracle that multiplies a
  given base point P by a secret scalar x, yielding x\*P.
 Protocols based on oblivious pseudorandom function families (OPRF,
- {{!I-D.irtf-cfrg-voprf}}), such as OPAQUE {{!I-D.irtf-cfrg-opaque}}
- and Privacy Pass {{!I-D.ietf-privacypass-protocol}}, often expose
+ {{?I-D.irtf-cfrg-voprf}}), such as OPAQUE {{?I-D.irtf-cfrg-opaque}}
+ and Privacy Pass {{?I-D.ietf-privacypass-protocol}}, often expose
  static DH oracles to adversaries, and rely on the adversary's
  inability either to recover the secret scalar or to compute the scalar
  multiplication of random base points without submitting them to the
@@ -329,13 +329,13 @@ This memo concludes that static DH oracles do not meaningfully threaten
 In a cyclic group of prime order written additively, the **discrete
  logarithm problem** (DLP) is to find a secret scalar k given k\*G,
  where G is a known base point.
-Ephemeral Diffie-Hellman key agreement such as in TLS {{!RFC8446}}
+Ephemeral Diffie-Hellman key agreement such as in TLS {{?RFC8446}}
  relies on the related **computational Diffie-Hellman problem** (CDH):
  given (x\*G, y\*G), find xy\*G.
 
-In groups such as Group 14 {{!RFC3526}} and the prime-order subgroup of
- Curve25519 {{!RFC7748}} or Ristretto255
- {{!I-D.irtf-cfrg-ristretto255-decaf448}}, solving DLP is essentially
+In groups such as Group 14 {{?RFC3526}} and the prime-order subgroup of
+ Curve25519 {{?RFC7748}} or Ristretto255
+ {{?I-D.irtf-cfrg-ristretto255-decaf448}}, solving DLP is essentially
  the cheapest known way to solve CDH and to break practical protocols
  based on the group.
 
@@ -347,9 +347,9 @@ Traditional protocols involving Diffie-Hellman, including ephemeral key
  xy\*G.
 
 Newer protocols based on oblivious pseudorandom function families
- (OPRF, {{!I-D.irtf-cfrg-voprf}}), such as OPAQUE
- {{!I-D.irtf-cfrg-opaque}} and Privacy Pass
- {{!I-D.ietf-privacypass-protocol}}, take advantage of the algebraic
+ (OPRF, {{?I-D.irtf-cfrg-voprf}}), such as OPAQUE
+ {{?I-D.irtf-cfrg-opaque}} and Privacy Pass
+ {{?I-D.ietf-privacypass-protocol}}, take advantage of the algebraic
  structure of the group to do more:
 An OPRF is a protocol by which a client and a server can jointly
  evaluate a pseudorandom function family (PRF) with a key known only to
@@ -689,8 +689,8 @@ We discuss only groups of order near 2^256.
 Much smaller groups provide inadequate generic DLP security even
  without static DH oracles.
 Much larger groups such as Decaf448
- {{!I-D.irtf-cfrg-ristretto255-decaf448}} and NIST P-384 {{FIPS186-4}}
- {{SEC2}} {{!RFC5903}} are out of reach no matter what minor advantage
+ {{?I-D.irtf-cfrg-ristretto255-decaf448}} and NIST P-384 {{FIPS186-4}}
+ {{SEC2}} {{?RFC5903}} are out of reach no matter what minor advantage
  a static DH oracle confers with the attacks here, and serve only as
  hedges against potential future breakthroughs in cryptanalysis which
  are naturally out of scope for a memo discussing the present state of
@@ -699,8 +699,8 @@ Much larger groups such as Decaf448
 
 ## Ristretto255
 
-Ristretto255 {{!I-D.irtf-cfrg-ristretto255-decaf448}} is a group of
- prime order based on Curve25519 {{Bernstein06}} {{!RFC7748}}, an
+Ristretto255 {{?I-D.irtf-cfrg-ristretto255-decaf448}} is a group of
+ prime order based on Curve25519 {{Bernstein06}} {{?RFC7748}}, an
  elliptic curve over the prime field F_{2^255 - 19}.
 
 ~~~
@@ -722,7 +722,7 @@ Ristretto255 is unaffected by the {{Granger10}} attack, since it is
 ## NIST P-256
 
 NIST P-256, also known as secp256r1 {{FIPS186-4}} {{SEC2}}
- {{!RFC5903}}, is a short Weierstrass curve of prime order over the
+ {{?RFC5903}}, is a short Weierstrass curve of prime order over the
  field F_q where q = 2^256 - 2^224 + 2^192 + 2^96 - 1.
 For NIST P-256, p - 1 has many small factors, but p itself is large
  enough that even if the adversary can achieve 2^55 sequential queries
@@ -805,15 +805,15 @@ Granger computational cost:                                     >2^84.6
 
 ## Finite Fields
 
-DH over the multiplicative groups of finite fields such as {{!RFC3526}}
- and {{!RFC7919}} is essentially unaffected by the attacks described
+DH over the multiplicative groups of finite fields such as {{?RFC3526}}
+ and {{?RFC7919}} is essentially unaffected by the attacks described
  here because the group order is so large in order to defeat the
  general number field sieve that the generic DLPwAI algorithms cited
  here are out of reach anyway.
 For example, no matter what the factorization of p - 1 and p + 1 is for
- Group 14 of {{!RFC3526}} (the author got bored waiting for gp to
+ Group 14 of {{?RFC3526}} (the author got bored waiting for gp to
  answer), the group order p is around 2^2048 anyway, so sqrt{p/d} must
- be at least around the totally insurmountable 2^1990.
+ be at least around the totally insurmountable 2^990.
 
 
 # Security Considerations
