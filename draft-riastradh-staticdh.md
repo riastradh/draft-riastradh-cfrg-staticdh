@@ -29,7 +29,7 @@ informative:
   DH76:
     title: New Directions in Cryptography
     target: https://www-ee.stanford.edu/~hellman/publications/24.pdf
-    authors:
+    author:
       -
         ins: W. Diffie
         name: Whitfield Diffie
@@ -43,7 +43,7 @@ informative:
   BG04:
     title: The Static Diffie-Hellman Problem
     target: https://eprint.iacr.org/2004/306
-    authors:
+    author:
       -
         ins: D.R.L. Brown
         name: Daniel R.L. Brown
@@ -83,7 +83,7 @@ informative:
   KKM07:
     title: Remarks on Cheon's Algorithms for Pairing-Related Problems
     target: https://link.springer.com/chapter/10.1007/978-3-540-73489-5_17
-    authors:
+    author:
       -
         ins: S. Koazaki
         name: Shunji Koazaki
@@ -141,7 +141,7 @@ informative:
     title: >
       A New Approach to Discrete Logarithm Problem with Auxiliary Inputs
     target: https://eprint.iacr.org/2012/609
-    authors:
+    author:
       -
         ins: T. Kim
         name: Taechan Kim
@@ -157,7 +157,7 @@ informative:
       Analysis on a generalized algorithm for the strong discrete
       logarithm problem with auxiliary inputs
     target: https://www.ams.org/journals/mcom/2014-83-288/S0025-5718-2014-02813-5/
-    authors:
+    author:
       -
         ins: M. Kim
         name: Minkyu Kim
@@ -207,7 +207,7 @@ informative:
   eBATS:
     title: "eBATS: ECRYPT Benchmarking of Asymmetric Systems"
     target: https://bench.cr.yp.to/ebats.html
-    authors:
+    author:
       -
         ins: D.J. Bernstein
         name: Daniel J. Bernstein
