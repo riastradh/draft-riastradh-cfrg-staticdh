@@ -65,7 +65,7 @@ informative:
       PKC: 2006
       Springer: LNCS 3958
       ISBN: 978-3-540-33851-2
-    DOI: 10.1007/11745853_14
+      DOI: 10.1007/11745853_14
 
   Cheon06:
     title: Security Analysis of the Strong Diffie-Hellman Problem
@@ -78,7 +78,7 @@ informative:
       EUROCRYPT: 2006
       Springer: LNCS 4004
       ISBN: 978-3-540-34546-6
-    DOI: 10.1007/11761679_1
+      DOI: 10.1007/11761679_1
 
   KKM07:
     title: Remarks on Cheon's Algorithms for Pairing-Related Problems
@@ -98,7 +98,7 @@ informative:
       PBC: 2007
       Springer: LNCS 4575
       ISBN: 978-3-540-73488-8
-    DOI: 10.1007/978-3-540-73489-5_17
+      DOI: 10.1007/978-3-540-73489-5_17
 
   Satoh09:
     title: On Generalization of Cheon's algorithm
@@ -120,7 +120,7 @@ informative:
     seriesinfo:
       JoC: 23(3)
       ISSN: 0933-2790
-    DOI: 10.1007/s00145-009-9047-0
+      DOI: 10.1007/s00145-009-9047-0
 
   Granger10:
     title: >
@@ -135,7 +135,7 @@ informative:
       ASIACRYPT: 2010
       Springer: LNCS 6477
       ISBN: 978-3-642-17372-1
-    DOI: 10.1007/978-3-642-17373-8_17
+      DOI: 10.1007/978-3-642-17373-8_17
 
   KC12:
     title: >
@@ -192,7 +192,7 @@ informative:
       ASIACRYPT: 2015
       Springer: LNCS 9452
       ISBN: 978-3-662-48796-9
-    DOI: 10.1007/978-3-662-48797-6_8
+      DOI: 10.1007/978-3-662-48797-6_8
 
   Davidson19:
     title: Supporting the latest version of the Privacy Pass Protocol
