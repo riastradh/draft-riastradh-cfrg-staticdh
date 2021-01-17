@@ -237,6 +237,21 @@ informative:
     seriesinfo:
       IACR: "Cryptology ePrint Archive: Report 2015/565"
 
+  GG15:
+    title: Recent progress on the elliptic curve discrete logarithm problem
+    target: https://link.springer.com/article/10.1007%2Fs10623-015-0146-7
+    author:
+      -
+        ins: S.D. Galbraith
+        name: Stephen D. Galbraith
+      -
+        ins: P. Gaudry
+        name: Pierrick Gaudry
+    date: 2015
+    seriesinfo:
+      "Designs, Codes, and Cryptography": 44(1)
+      DOI: 10.1007/s10623-015-0146-7
+
   Kim16:
     title: Multiple Discrete Logarithm Problems with Auxiliary Inputs
     author:
@@ -635,28 +650,36 @@ Thus, it is relevant only to amplify the impact of static DH attacks in
 
 # Attacks on Elliptic Curves over Extension Fields
 
-If the group is the group of rational points on an elliptic curve E
- over an extension field F_{q^n}, after O(q^{1 - 1/(n + 1)}) oracle
- queries (whether or not the number of queries divides p +/- 1), the
- adversary can use index calculus as described in {{Granger10}} solve
- the static DH problem with O~(q^{1 - 1/(n + 1)}) curve additions, for
- fixed n as q grows; here O~(...) denotes O(... log^m q) for some m.
+In the group of rational points on an elliptic curve E over an
+ extension field F_{q^n}, after O(q^{1 - 1/(n + 1)}) oracle queries
+ (whether or not the number of queries divides p +/- 1), the adversary
+ can use index calculus as in {{Granger10}} to solve the static DH
+ problem with O~(q^{1 - 1/(n + 1)}) computation, for fixed n as q
+ grows; here O~(...) denotes O(... log^m q) for some m.
+The queries _need not_ be sequential, so the feasible query cost may be
+ considerably higher than for {{BG04}}- and {{Cheon06}}-type attacks.
 
-The queries for {{Granger10}} _need not_ be sequential, so the feasible
- query cost may be considerably higher than for {{BG04}}- and
- {{Cheon06}}-type attacks.
-When q^n is large enough by Hasse's theorem to resist generic DLP
- attacks like Pollard's rho, the query cost for n = 1 is the same as
- the computational cost of rho, sqrt{q}; and the query cost for n = 2
- is still the most likely unreachable q^{2/3}, typically above 2^80.
+At n = 1, there is no advantage for n = 1 over rho at O(sqrt{q}) by
+ issuing O(sqrt{q}) static DH queries.
+The cost for n = 2 is O(q^{2/3}) queries and O~(q^{2/3}) computation;
+ when p = q^2 ~ 2^128, this reduces the cost to ~2^80 but requires
+ ~2^80 oracle queries which is likely unrealistic even if they are
+ parallelized.
+
+The cost for n = 4 is O(q^{4/5}) queries and O~(q^{4/5}) computation,
+ which is considerably cheaper than the cheapest DLP attacks (without a
+ static DH oracle) on such curves based on index calculus at
+ O~(q^{3/2}) {{GG15}}.
+For example, a curve over F_{q^4} for prime q ~ 2^80 to defeat DLP
+ without a static DH oracle might succumb after ~2^64 oracle queries
+ (potentially in parallel) and ~2^64 computation.
+
 However, the computational cost of {{Granger10}} grows rapidly
- (factorially) with n, so it is of interest only for small n > 2.
-
-For example, with F_{q^4}, the cost is O~(q^{4/5}) curve additions,
- which is considerably cheaper than the cheapest DLP attacks on such
- curves based on index calculus at O~(q^{3/2}).
-At present there are no curves over extension fields of degree 4
+ (factorially) with n, so it is of interest only for small n.
+Furthermore, at present there are no curves over extension fields
  standardized by IETF (XXX verify).
+Protocol designers MUST consider {{Granger10}} attacks before exposing
+ static DH oracles for any elliptic curves over extension fields.
 
 
 # Groups
