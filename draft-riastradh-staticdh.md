@@ -118,7 +118,7 @@ informative:
       name: Jung Hee Cheon
     date: 2010
     seriesinfo:
-      JoC: 23(3)
+      IACR: Journal of Cryptology 23(3)
       ISSN: 0933-2790
       DOI: 10.1007/s00145-009-9047-0
 
@@ -169,7 +169,7 @@ informative:
         name: In-Sok Lee
     date: 2014
     seriesinfo:
-      MathComp: 83(288)
+      AMS: Mathematics of Computation 83(288)
       ISSN: 0025-5718
       DOI: 10.1090/S0025-5718-2014-02813-5
 
