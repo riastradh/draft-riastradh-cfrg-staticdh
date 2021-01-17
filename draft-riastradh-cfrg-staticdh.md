@@ -487,7 +487,7 @@ queries         time
 
 For the purposes of this memo, we consider 2^55 to be a hard limit on
  the number of sequential queries, absent a revolutionary breakthrough
- in computing or cryptanalysis.
+ in computing.
 
 These are extremely conservative assumptions -- we make no assumptions
  about communication or context-switch cost, and most servers in the
