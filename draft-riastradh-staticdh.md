@@ -180,6 +180,16 @@ informative:
     seriesinfo:
       IACR: "Cryptology ePrint Archive: Report 2012/609"
 
+  FIPS186-4:
+    title: Digital Signature Standard
+    target: https://dx.doi.org/10.6028/NIST.FIPS.186-4
+    date: 2013
+    author:
+      org: National Institute of Standards and Technology
+    seriesinfo:
+      FIPS: PUB 186-4
+      DOI: 10.6028/NIST.FIPS.186-4
+
   KCL14:
     title: >
       Analysis on a generalized algorithm for the strong discrete
@@ -641,11 +651,12 @@ We discuss only groups of order near 2^256.
 Much smaller groups provide inadequate generic DLP security even
  without static DH oracles.
 Much larger groups such as Decaf448
- {{!I-D.irtf-cfrg-ristretto255-decaf448}} and NIST P-384 {{!RFC5903}}
- are out of reach no matter what minor advantage a static DH oracle
- confers with the attacks here, and serve only as hedges against
- potential future breakthroughs in cryptanalysis which are naturally
- out of scope for a memo discussing the present state of the art.
+ {{!I-D.irtf-cfrg-ristretto255-decaf448}} and NIST P-384 {{FIPS186-4}}
+ {{SEC2}} {{!RFC5903}} are out of reach no matter what minor advantage
+ a static DH oracle confers with the attacks here, and serve only as
+ hedges against potential future breakthroughs in cryptanalysis which
+ are naturally out of scope for a memo discussing the present state of
+ the art.
 
 
 ## Ristretto255
@@ -672,8 +683,9 @@ Ristretto255 is unaffected by the {{Granger10}} attack, since it is
 
 ## NIST P-256
 
-NIST P-256 {{!RFC5903}} is a short Weierstrass curve of prime order
- over the field F_q where q = 2^256 - 2^224 + 2^192 + 2^96 - 1.
+NIST P-256, also known as secp256r1 {{FIPS186-4}} {{SEC2}}
+ {{!RFC5903}}, is a short Weierstrass curve of prime order over the
+ field F_q where q = 2^256 - 2^224 + 2^192 + 2^96 - 1.
 For NIST P-256, p - 1 has many small factors, but p itself is large
  enough that even if the adversary can achieve 2^55 sequential queries
  over the course of a century, it would still cost over 2^100 group
