@@ -134,6 +134,8 @@ informative:
       Made in IBM Labs: IBM Scientists Demonstrate World's Fastest Graphene
       Transistor
     target: https://www-03.ibm.com/press/us/en/pressrelease/29343.wss
+    author:
+      org: IBM
     date: 2010
 
   Cheon10:
