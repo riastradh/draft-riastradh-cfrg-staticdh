@@ -461,7 +461,7 @@ This collision implies
 k^d = z^{u_1 + d_1 v_1}.
 ~~~
 
-Next, find scalars 0 <= u_2, v_2 < d_2 := ceiling(sqrt{p}) giving a
+Next, find scalars 0 <= u_2, v_2 < d_2 := ceiling(sqrt{d}) giving a
  collision
 
 ~~~
