@@ -374,6 +374,12 @@ For the purposes of this memo, we consider 2^55 to be a hard limit on
  the number of sequential queries, absent a revolutionary breakthrough
  in computing or cryptanalysis.
 
+These are extremely conservative limits -- most legitimate servers in
+ the real world have nowhere near the capacity to approach this.
+If the server's CPU runs at 4 GHz, and the group costs 28 000 cycles
+ for a scalar multiplication, then each query takes 7 microseconds, so
+ 2^50 queries would take nearly a quarter of a millennium.
+
 (Engineers building systems out of graphene CPUs operating at 100 GHz
  to compute dramatically improved elliptic curve scalar multiplication
  algorithms at fewer than 1000 cycles per scalarmult are advised to
