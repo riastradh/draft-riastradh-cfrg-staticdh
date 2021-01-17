@@ -226,7 +226,7 @@ Protocols based on oblivious pseudorandom function families (OPRF,
  and PrivacyPass {{!I-D.ietf-privacypass-protocol}}, often expose
  static DH oracles to adversaries, and rely on the adversary's
  inability either to recover the secret scalar or to compute the scalar
- multiplication of random base pointss without submitting them to the
+ multiplication of random base points without submitting them to the
  oracle.
 
 This memo summarizes the state of the art in attacks on discrete log
@@ -305,9 +305,9 @@ Here t is the client's secret input, k is the server's secret scalar,
 In order to compute this, the client computes Q := H1(t) and blinds it
  as either P := r\*H1(t) or P := H1(t) + R, where r is a scalar or R is
  a group element chosen uniformly at random and kept secret to the
- client (`multiplicative or additive blinding').
-The server then reveals k\*P for arbitrary choices of P (from which the
- client can take advantage of the algebraic structure to undo the
+ client (`multiplicative' or `additive blinding').
+The server, given arbitrary P, then reveals k\*P (from which the client
+ can take advantage of the algebraic structure to undo the
  multiplicative or additive blinding to complete the protocol); thus
  the server implements a static DH oracle.
 
@@ -386,8 +386,8 @@ Generic attacks treat the group operation as a black box, and thus work
  in any group, including elliptic curves over finite fields and
  multiplicative groups of finite fields.
 
-All known generic attacks take advantage of the group structure in the
- powers of the scalar k reduce the cost of a generic search for k.
+All known generic attacks take advantage of the ring structure in the
+ powers of the scalar k to reduce the cost of a generic search for k.
 The adversary queries the oracle at a point G to find k\*G, then
  queries the oracle at k\*G to find k\*(k\*G) = k^2\*G, then at k^2\*G
  to find k\*(k^2\*G) = k^3\*G, ad nauseam, until k^q\*G after q
@@ -411,7 +411,7 @@ First, find scalars 0 <= u_1, v_1 < d_1 := ceiling(sqrt{(p - 1)/d})
 (k^d z^{-u_1}) * G = (z^{d_1 v_1}) * G,
 ~~~
 
- by repeatedly raising the left to z^{-1} and the right to z^{d_1}.
+ by repeatedly multiplying the left by z^{-1} and the right by z^{d_1}.
 This collision implies
 
 ~~~
@@ -436,7 +436,7 @@ as desired.
 
 This class of attacks was presented in {{BG04}} and {{Cheon06}}, with
  improved cost analysis in {{KKM07}}, and extended from
- memory-intensive baby-step/giant-step to a random walk with
+ memory-intensive baby-step/giant-step tables to a random walk with
  essentially constant memory along the lines of Pollard's kangaroo in
  {{Cheon10}}.
 
@@ -492,8 +492,8 @@ The idea was generalized further in {{Satoh09}} to any divisor d of
 However, this multi-target attack doesn't reduce the number of
  sequential queries needed to start, nor does it reduce the expected
  time to the _first_ k_i.
-Thus, it is relevant only to amplify the impact of a group where a
- single-target attack is already within reach.
+Thus, it is relevant only to amplify the impact of static DH attacks in
+ a group where a single-target attack is already within reach.
 
 
 # Attacks on Elliptic Curves over Extension Fields
@@ -503,7 +503,7 @@ If the group is the group of rational points on an elliptic curve E
  queries (whether or not the number of queries divides p +/- 1), the
  adversary can use index calculus as described in {{Granger10}} solve
  the static DH problem with O~(q^{1 - 1/(n + 1)}) curve additions, for
- fixed n as q grows; here O~(...) denotes O(... log^m q) for some n.
+ fixed n as q grows; here O~(...) denotes O(... log^m q) for some m.
 
 The query cost for {{Granger10}} is out of reach for n = 1 or n = 2
  when q^n is large enough to resist generic DLP attacks like Pollard's
@@ -536,7 +536,7 @@ best p-1 attack cost after 132 queries:         ~2^122.5
 best p+1 attack cost after 14 420 queries:      ~2^119.5
 ~~~
 
-Ristretto is unaffected by the {{Granger10}} attack, since it is
+Ristretto255 is unaffected by the {{Granger10}} attack, since it is
  defined over a prime field, not an extension field.
 
 
