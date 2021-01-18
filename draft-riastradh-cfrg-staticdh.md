@@ -395,8 +395,8 @@ Traditional protocols involving Diffie-Hellman, including ephemeral key
  agreement in TLS and static key agreement in the original proposal of
  Diffie and Hellman {{DH76}}, use the shared secret xy\*G to derive a
  key for encryption, and necessarily avoid exposing xy\*G itself to an
- adversary -- the adversary only learns the ciphertext encrypted using
- xy\*G.
+ adversary -- the adversary only learns x\*G, y\*G, and the ciphertext
+ encrypted using xy\*G, but not xy\*G itself.
 
 Newer protocols based on oblivious pseudorandom function families
  (OPRF, {{?I-D.irtf-cfrg-voprf}}), such as OPAQUE
@@ -702,9 +702,9 @@ However, it is no easier for an adversary to learn just these points
 
 {{Kim16}} extended the p - 1 attack to the multi-target setting: given
  L independent query responses (G, k_i \* G, k_i^d \* G) for 1 <= i <=
- L, compute _all_ the k_i in O(sqrt(L p/d) + sqrt(L d)) scalar
+ L, compute _all_ the k_i in O(sqrt{L p/d} + sqrt{L d}) scalar
  multiplications, provided L << min(p/d, d)^{1/4}.
-In brief, attacking a batch of L targets is sqrt(L) times cheaper than
+In brief, attacking a batch of L targets is sqrt{L} times cheaper than
  attacking each of the L targets independently.
 
 However, this multi-target attack doesn't reduce the number of
@@ -716,7 +716,7 @@ Thus, it is relevant only to amplify the impact of static DH attacks in
 
 # Attacks on Elliptic Curves over Extension Fields
 
-In the group of rational points on an elliptic curve E over an
+In the group of rational points on an elliptic curve over an
  extension field F_{q^n}, after O(q^{1 - 1/(n + 1)}) oracle queries
  (whether or not the number of queries divides p +/- 1), the adversary
  can use index calculus as in {{Granger10}} to solve the static DH
@@ -725,7 +725,7 @@ In the group of rational points on an elliptic curve E over an
 The queries _need not_ be sequential, so the feasible query cost may be
  considerably higher than for {{BG04}}- and {{Cheon06}}-type attacks.
 
-At n = 1, there is no advantage for n = 1 over rho at O(sqrt{q}) by
+At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
  issuing O(sqrt{q}) static DH queries.
 The cost for n = 2 is O(q^{2/3}) queries and O~(q^{2/3}) computation;
  when p = q^2 ~ 2^128, this reduces the cost to ~2^80 but requires
