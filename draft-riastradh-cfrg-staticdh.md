@@ -371,7 +371,8 @@ Certain cryptographic protocols such as oblivious pseudorandom function
 This memo summarizes the state of the art in attacks enabled by static
  DH oracles, and the resistance of widely used groups to such attacks.
 This memo concludes that static DH oracles do not meaningfully threaten
- the security of any DH groups recommended by the IETF.
+ the security of any elliptic curve groups recommended by the IETF for
+ DH.
 
 
 --- middle
@@ -880,6 +881,33 @@ For example, no matter what the factorization of p - 1 and p + 1 is for
  Group 14 of {{?RFC3526}} (the author got bored waiting for gp to
  answer), the group order p is around 2^2048 anyway, so sqrt{p/d} must
  be at least around the totally insurmountable 2^990.
+
+XXX OOPS -- this section is not accurate.
+References to review and chase citations to:
+
+- Joux, Lercier, Naccache, and Thome, "Oracle-Assisted Static
+  Diffie-Hellman Is Easier Than Discrete Logarithms", IMA International
+  Conference on Cryptography and Coding Theory -- IMAC 2009.
+  https://sci-hub.se/https://link.springer.com/chapter/10.1007/978-3-642-10868-6_21
+
+- Koblitz & Menezes, "Another look at non-standard discrete log and
+  Diffie-Hellman problems".
+  https://eprint.iacr.org/2007/442
+
+For F_q where q is prime, the summary seems to be:
+
+- L^{cbrt{4/9}} oracle queries
+- L^{cbrt{32/9}} computation
+
+ where L = exp((1 + o(1)) (log q)^{1/3} (log log q)^{2/3}).
+
+For, e.g., Group 14, with q ~ 2^2048, this requires a little over
+ 2^46.3 (parallelizable) queries and 2^92.7 computation.
+
+In contrast, NFS for DLP without SDH costs L^{cbrt(64/9)} computation,
+ which for Group 14 with q ~ 2^2048 is a little over 2^116 computation.
+So that's about a factor of 20 million cost reduction, after submitting
+ nearly 100 trillion queries.
 
 
 # Security Considerations
