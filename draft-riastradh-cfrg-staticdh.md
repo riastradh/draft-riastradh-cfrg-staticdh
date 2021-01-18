@@ -40,6 +40,51 @@ informative:
     seriesinfo:
       IEEE: Transactions on Information Theory 22(6)
 
+  Pollard78:
+    title: Monte Carlo methods for index computation (mod p)
+    target: https://www.jstor.org/stable/2006496
+    author:
+      ins: J.M. Pollard
+      name: John M. Pollard
+    date: 1978
+    seriesinfo:
+      AMS: Mathematics of Computation
+      ISSN: 0025-5718
+      DOI: 10.2307/2006496
+
+  WZ98:
+    title: Faster Attacks on Elliptic Curve Cryptosystems
+    target: https://link.springer.com/chapter/10.1007/3-540-48892-8_15
+    author:
+      -
+        ins: M.J. Wiener
+        name: Michael J. Wiener
+      -
+        ins: R.J. Zuccherato
+        name: Robert J. Zuccherato
+    date: 1998
+    seriesinfo:
+      SAC: 1998
+      Springer: LNCS 1556
+      ISBN: 978-3-540-65894-8
+      DOI: 10.1007/3-540-48892-8_15
+
+  OW99:
+    title: Parallel collision search with cryptanalytic applications
+    target: https://link.springer.com/article/10.1007/PL00003816
+    author:
+      -
+        ins: P.C. van Oorschot
+        name: Paul C. van Oorschot
+      -
+        ins: M.J. Wiener
+        name: Michael J. Wiener
+    date: 1999
+    seriesinfo:
+      IACR: Journal of Cryptology 12
+      ISSN: 0933-2790
+      DOI: 10.1007/PL00003816
+
   SEC2:
     title: "SEC 2: Recommended Elliptic Curve Domain Parameters"
     target: https://www.secg.org/SEC2-Ver-1.0.pdf
@@ -263,6 +308,18 @@ informative:
       Springer: LNCS 9452
       ISBN: 978-3-662-48796-9
       DOI: 10.1007/978-3-662-48797-6_8
+
+  SafeCurves:
+    title: "SafeCurves: choosing safe curves for elliptic-curve cryptography"
+    target:  https://safecurves.cr.yp.to
+    author:
+      -
+        ins: D.J. Bernstein
+        name: Daniel J. Bernstein
+      -
+        ins: T. Lange
+        name: Tanja Lange
+    date: 2017
 
   James19:
     title: >
@@ -516,6 +573,20 @@ The adversary queries the oracle at a point G to find k\*G, then
  to find k\*(k^2\*G) = k^3\*G, ad nauseam, until k^q\*G after q
  sequential queries.
 Let p be the prime order of the group.
+
+The baseline generic DLP attack on a prime-order group, with only
+ knowledge of G and x\*G, static DH oracle, is Pollard's rho
+ {{Pollard78}}, which costs O(sqrt{p}) group operations and O(1)
+ memory, and can be effectively parallelized with low communication
+ cost using the van Oorschot-Wiener collision search machine {{OW99}}.
+For elliptic curves the negation map {{WZ98}} gives a small constant
+ factor improvement over generic rho for a cost of about
+ sqrt{p \* pi/4}
+ curve additions.
+For other specialized DLP attacks on transfers, twists, side channels,
+ etc., we direct the reader to resources such as {{SafeCurves}} for
+ references and focus here on generic attacks enabled by a static DH
+ oracle.
 
 
 ## p - 1 Attack
