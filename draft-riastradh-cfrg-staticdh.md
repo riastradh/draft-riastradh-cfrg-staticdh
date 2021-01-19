@@ -363,10 +363,11 @@ informative:
 --- abstract
 
 A **static Diffie-Hellman (DH) oracle** is an oracle that multiplies a
- given base point P in a group by a secret scalar x, yielding x\*P.
+ given element P in a group written additively by a secret scalar x,
+ yielding x\*P.
 Certain cryptographic protocols such as oblivious pseudorandom function
  families (OPRFs) rely on an adversary's inability either to recover x
- or to compute x\*Q at a random point Q chosen after queries to the
+ or to compute x\*Q for a random element Q chosen after queries to the
  static DH oracle.
 This memo summarizes the state of the art in attacks enabled by static
  DH oracles, and the resistance of widely used groups to such attacks.
@@ -379,15 +380,17 @@ This memo concludes that static DH oracles do not meaningfully threaten
 
 # Introduction
 
-In a cyclic group of prime order written additively, the **discrete
- logarithm problem** (DLP) is to find a secret scalar k given k\*G,
- where G is a known base point.
+In a finite group written additively, the **discrete logarithm
+ problem** (DLP) is to find a secret scalar k given (G, k\*G) where G
+ is a known element of the group, typically a standard generator.
 Ephemeral Diffie-Hellman key agreement such as in TLS {{?RFC8446}}
  relies on the related **computational Diffie-Hellman problem** (CDH):
  given (x\*G, y\*G), find xy\*G.
+(Note: For consistency, we write all groups additively in this memo, as
+ is typical for elliptic curves.)
 
-In groups such as Group 14 {{?RFC3526}} and the prime-order subgroup of
- Curve25519 {{?RFC7748}} or Ristretto255
+In groups such as Group 14 {{?RFC3526}} and the large prime-order
+ subgroup of Curve25519 {{?RFC7748}} or Ristretto255
  {{?I-D.irtf-cfrg-ristretto255-decaf448}}, solving DLP is essentially
  the cheapest known way to solve CDH and to break practical protocols
  based on the group.
@@ -409,7 +412,8 @@ An OPRF is a protocol by which a client and a server can jointly
  the server on an input known only to the client, giving an output also
  known only to the client.
 To do this, the server deliberately exposes x\*P given an arbitrary
- point P, where x is a secret key known only to the server.
+ element P, where x is a secret key known only to the server.
+
 
 ## Taxonomy of Problems
 
@@ -431,7 +435,7 @@ Given a static DH oracle, an adversary can find the auxiliary inputs
 It is unknown whether SDH is at least as hard as DLPwAI.
 Most SDH attacks work via DLPwAI, with the exception of the
  {{Granger10}} attack discussed below on elliptic curves over extension
- fields which solves SDH directly but not DLPwAI.
+ fields, which solves SDH directly but not DLPwAI.
 
 The **generalized discrete log problem with auxiliary inputs**
  (GDLPwAI, {{Kim14}}) is to recover x given
@@ -458,23 +462,25 @@ when, and only when, they appear in all capitals, as shown here.
 
 # Static DH Oracle Examples
 
-OPAQUE uses an OPRF to derive a secret from a password that the server
- is oblivious to, and relies on the secret key to prevent other than
- the server from computing the same secret to test password guesses.
+OPAQUE {{?I-D.irtf-cfrg-opaque}} uses an OPRF to derive a secret from a
+ password that the server is oblivious to, and relies on the secret key
+ to prevent other than the server from computing the same secret to
+ test password guesses.
 
-Privacy Pass uses an OPRF to create anonymized tokens, so a server can
- issue them to clients but can't distinguish or track clients by the
- issued tokens, and clients can prove ownership of tokens but can't
- forge new ones.
+Privacy Pass {{?I-D.ietf-privacypass-protocol}} uses an OPRF to create
+ anonymized tokens.
+A server can issue tokens to clients, but can't distinguish or track
+ clients by them.
+Clients can prove ownership of tokens, but can't forge new ones.
 
-Both protocols essentially compute the PRF
+Both protocols essentially compute the PRF:
 
 ~~~
-H2(t, k*H1(t))
+H2(t, k*H1(t)).
 ~~~
 
-Here t is the client's secret input, k is the server's secret scalar,
- and H1 and H2 are hash funtions.
+Here t is the client's secret PRF input, k is the server's secret PRF
+ key, and H1 and H2 are hash funtions.
 
 To do this, the client computes Q := H1(t) and derives P := r\*H1(t) or
  P := H1(t) + R, where r is a scalar or R is a group element chosen
@@ -569,7 +575,7 @@ Generic attacks treat the group operation as a black box, and thus work
 
 All known generic attacks take advantage of the ring structure in the
  powers of the scalar k to reduce the cost of a generic search for k.
-The adversary queries the oracle at a point G to find k\*G, then
+The adversary queries the oracle at an element G to find k\*G, then
  queries the oracle at k\*G to find k\*(k\*G) = k^2\*G, then at k^2\*G
  to find k\*(k^2\*G) = k^3\*G, ad nauseam, until k^q\*G after q
  sequential queries.
@@ -607,21 +613,21 @@ First, find scalars 0 <= u_1, v_1 < d_1 := ceiling(sqrt{(p - 1)/d})
 ~~~
 
  by repeatedly multiplying the left by z^{-1} and the right by z^{d_1}.
-This collision implies
+This collision implies:
 
 ~~~
 k^d = z^{u_1 + d_1 v_1}.
 ~~~
 
 Next, find scalars 0 <= u_2, v_2 < d_2 := ceiling(sqrt{d}) giving a
- collision
+ collision:
 
 ~~~
 (k z_0^{-u_2 (p - 1)/d}) * G
   = (z_0^{u_1 + d_1 v_1 + d_2 v_2 (p - 1)/d}) * G.
 ~~~
 
-This collision implies
+This collision implies:
 
 ~~~
 k = z_0^{u_1 + d_1 v_1 + (u_2 + d_2 v_2) (p - 1)/d},
@@ -691,11 +697,11 @@ However, {{KC12}} was unable to find any polynomials f providing better
  that d does divide p +/- 1.
 
 The attacks were also generalized in {{Kim14}} to the GDLPwAI taking a
- collection of points k^i * G for every i in a subgroup of (Z/{p-1}Z)^*
- and finding k at somewhat lower computational cost.
-However, it is no easier for an adversary to learn just these points
- with a static DH oracle than to learn all the points up to a divisor d
- of p +/- 1, so the generalization is ruled out by the same limits on
+ collection of elements k^i * G for every i in a subgroup of
+ (Z/{p-1}Z)^* and finding k at somewhat lower computational cost.
+However, it is no easier for an adversary to learn just these elements
+ with a static DH oracle than to learn all the elements up to a divisor
+ d of p +/- 1, so the generalization is ruled out by the same limits on
  feasible query cost.
 
 
@@ -723,8 +729,9 @@ In the group of rational points on an elliptic curve over an
  can use index calculus as in {{Granger10}} to solve the static DH
  problem with O~(q^{1 - 1/(n + 1)}) computation, for fixed n as q
  grows; here O~(...) denotes O(... log^m q) for some m.
-The queries _need not_ be sequential, so the feasible query cost may be
- considerably higher than for {{BG04}}- and {{Cheon06}}-type attacks.
+These queries _need not_ be sequential, so the feasible query cost may
+ be considerably higher than for {{BG04}}- and {{Cheon06}}-type
+ attacks.
 
 At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
  issuing O(sqrt{q}) static DH queries.
@@ -744,9 +751,10 @@ For example, a curve over F_{q^4} for prime q ~ 2^80 to defeat DLP
 However, the computational cost of {{Granger10}} grows rapidly
  (factorially) with n, so it is of interest only for small n.
 Furthermore, at present there are no curves over extension fields
- standardized by IETF (XXX verify).
+ standardized by IETF (XXX verify, Alex: I think this is true).
 Protocol designers MUST consider {{Granger10}} attacks before exposing
- static DH oracles for any elliptic curves over extension fields.
+ static DH oracles for any elliptic curves over extension fields, such
+ as FourQ {{CL15}}.
 
 
 # Groups
@@ -759,9 +767,9 @@ Much larger groups such as Decaf448
  {{?I-D.irtf-cfrg-ristretto255-decaf448}} and NIST P-384 {{FIPS186-4}}
  {{SEC2}} {{?RFC5903}} are out of reach no matter what minor advantage
  a static DH oracle confers with the attacks here, and serve only as
- hedges against potential future breakthroughs in cryptanalysis which
- are naturally out of scope for a memo discussing the present state of
- the art.
+ hedges against potential future breakthroughs in cryptanalysis.
+Such breakthroughs are naturally out of scope for a memo discussing the
+ present state of the art.
 
 
 ## Ristretto255
@@ -842,12 +850,13 @@ secp256k1 is unaffected by the {{Granger10}} attack, since it is
 ## FourQ
 
 FourQ {{CL15}} is a twisted Edwards curve over an extension field
- F_{q^2} where q = 2^127 - 1, with a prime-order subgroup and
- recommended point validation to avoid twist attacks.
-We do not consider cofactors or the twist of the curve; it is up to the
- implementer to avoid these by point validation, or up to the protocol
- designer to choose an encoding that is naturally restricted to the
- prime-order subgroup like Ristretto or Decaf.
+ F_{q^2} where q = 2^127 - 1, with a prime-order subgroup.
+The designers of FourQ recommend point validation to prevent issues
+ with cofactors and twists.
+We do not consider the details of these issues here.
+The implementor MUST do point validation, or the protocol designer MUST
+ choose an encoding that is naturally restricted to the prime-order
+ subgroup like Ristretto or Decaf.
 
 FourQ is not recommended by the IETF.
 We mention it here only because it has received considerable attention
@@ -927,3 +936,5 @@ This document has no IANA actions.
 {:numbered="false"}
 
 TODO acknowledge.
+
+- Alex Davidson provided editorial suggestions.
