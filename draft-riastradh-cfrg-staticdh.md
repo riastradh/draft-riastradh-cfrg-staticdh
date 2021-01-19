@@ -674,8 +674,8 @@ Composite-order groups with h > 1 pose various complications:
 
   To defeat Pohlig-Hellman, traditional finite-field DLP applications
    that only expose (G, k\*G) where G is a standard generator, such as
-   Schnorr signatures and ECDSA, use Schnorr groups {{Schnorr89}}
-   {{?RFC2412}}:
+   Schnorr signatures and DSA, use Schnorr groups {{Schnorr89}}
+   {{FIPS186-4}} {{?RFC2412}}:
   The standard generator G is chosen to generate the order-p subgroup
    of (Z/qZ)^* where q = hp + 1 and p is a prime large enough that
    Pohlig-Hellman is out of reach, typically near 2^256.
@@ -698,9 +698,9 @@ Composite-order groups with h > 1 pose various complications:
    element P if p\*P is nonzero, meaning Q does not lie in the order-p
    subgroup.
 
-- Signature schemes such as Ed25519 {{BDLSY11}} {{?RFC8032}} may treat
-   multiple different byte strings representing signatures as
-   equivalent.
+- Signature schemes involving composite-order groups such as Ed25519
+   {{BDLSY11}} {{?RFC8032}} may treat multiple different byte strings
+   representing signatures as equivalent.
 
   This doesn't affect signature security -- existential unforgeability
    under chosen-message attack, or EUF-CMA.
@@ -711,13 +711,18 @@ Composite-order groups with h > 1 pose various complications:
    nonstandard security properties of signatures {{LS17}}.
 
 In the sequel, we assume that static DH oracles are confined to a
- prime-order subgroup.
-Protocols SHOULD use a prime-order group or encoding such as Decaf
- {{Hamburg15}} or Ristretto {{?I-D.irtf-cfrg-ristretto255-decaf448}}
- that is naturally restricted to a prime-order subgroup.
-Protocols MAY require that implementations verify p\*P = 0 before
- answering static DH queries if this cannot be enforced naturally by
- the encoding.
+ prime-order subgroup:
+
+- Protocols SHOULD use prime-order groups, or encodings such as Decaf
+   {{Hamburg15}} or Ristretto {{?I-D.irtf-cfrg-ristretto255-decaf448}}
+   that are naturally restricted to a prime-order subgroup.
+
+- Protocols MAY require that secret scalars be congruent to 0 modulo h.
+
+- Protocols MAY require that implementations verify p\*P = 0 before
+   answering static DH queries if this can't be enforced naturally by
+   the encoding.
+
 This memo does not consider the security impact of static DH oracles in
  a composite-order group.
 
