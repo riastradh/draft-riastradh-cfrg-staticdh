@@ -52,6 +52,38 @@ informative:
       ISSN: 0025-5718
       DOI: 10.2307/2006496
 
+  Schnorr89:
+    title: Efficient Identification and Signatures for Smart Cards
+    target: https://link.springer.com/chapter/10.1007/0-387-34805-0_22
+    author:
+      ins: C.P. Schnorr
+      name: Claus P. Schnorr
+    date: 1989
+    seriesinfo:
+      CRYPTO: 1989
+      Springer: LNCS 435
+      ISBN: 978-0-387-97317-3
+      DOI: 10.1007/0-387-34805-0_22
+
+  LL97:
+    title: >
+      A key recovery attack on discrete log-based schemes
+      using a prime order subgroup
+    target: https://link.springer.com/chapter/10.1007/BFb0052240
+    author:
+      -
+        ins: C.H. Lim
+        name: Chae Hoon Lim
+      -
+        ins: P.J. Lee
+        name: Pil Joong Lee
+    date: 1997
+    seriesinfo:
+      CRYPTO: 1997
+      Springer: LNCS 1294
+      ISBN: 978-3-540-63384-6
+      DOI: 10.1007/BFb0052240
+
   WZ98:
     title: Faster Attacks on Elliptic Curve Cryptosystems
     target: https://link.springer.com/chapter/10.1007/3-540-48892-8_15
@@ -210,6 +242,32 @@ informative:
       ISBN: 978-3-642-17372-1
       DOI: 10.1007/978-3-642-17373-8_17
 
+  BDLSY11:
+    title: High-speed high-security signatures
+    target: https://cr.yp.to/papers.html#ed25519
+    author:
+      -
+        ins: D.J. Bernstein
+        name: Daniel J. Bernstein
+      -
+        ins: N. Duif
+        name: Nils Duif
+      -
+        ins: T. Lange
+        name: Tanja Lange
+      -
+        ins: P. Schwabe
+        name: Peter Schwabe
+      -
+        ins: B.-Y. Yang
+        name: Bo-Yin yang
+    date: 2011
+    seriesinfo:
+      CHES: 2011
+      Springer: LNCS 6917
+      ISBN: 978-3-642-23950-2
+      DOI: 10.1007/978-3-642-23951-9_9
+
   KC12:
     title: >
       A New Approach to Discrete Logarithm Problem with Auxiliary Inputs
@@ -297,6 +355,19 @@ informative:
       "Designs, Codes, and Cryptography": 44(1)
       DOI: 10.1007/s10623-015-0146-7
 
+  Hamburg15:
+    title: "Decaf: Eliminating Cofactors Through Point Compression"
+    target: https://link.springer.com/chapter/10.1007/978-3-662-47989-6_34
+    author:
+      ins: M. Hamburg
+      name: Mike Hamburg
+    date: 2015
+    seriesinfo:
+      CRYPTO: 2015
+      Springer: LNCS 9215
+      ISBN: 978-3-662-47988-9
+      DOI: 10.1007/978-3-662-47989-6_34
+
   Kim16:
     title: Multiple Discrete Logarithm Problems with Auxiliary Inputs
     target: https://link.springer.com/chapter/10.1007%2F978-3-662-48797-6_8
@@ -309,6 +380,20 @@ informative:
       Springer: LNCS 9452
       ISBN: 978-3-662-48796-9
       DOI: 10.1007/978-3-662-48797-6_8
+
+  LS17:
+    title: Disclosure of a Major Bug in CryptoNote Based Currencies
+    target: https://www.getmonero.org/2017/05/17/disclosure-of-a-major-bug-in-cryptonote-based-currencies.html
+    author:
+      -
+        ins: luigi1111
+        name: luigi1111
+      -
+        ins: R. Spagni
+        name: Riccardo "fluffypony" Spagni
+    date: 2017-05-17
+    seriesinfo:
+      Monero: blog
 
   SafeCurves:
     title: "SafeCurves: choosing safe curves for elliptic-curve cryptography"
@@ -341,6 +426,14 @@ informative:
     date: 2019-10-28
     seriesinfo:
       Cloudflare: blog post
+
+  deValence20:
+    title: It’s 255:19AM.  Do you know what your validation criteria are?
+    target: https://hdevalence.ca/blog/2020-10-04-its-25519am
+    author:
+      ins: H. de Valence
+      name: Henry de Valence
+    date: 2020-10-04
 
   eBATS:
     title: "eBATS: ECRYPT Benchmarking of Asymmetric Systems"
@@ -566,6 +659,67 @@ Engineers building systems out of graphene CPUs operating at 100 GHz to
  compute dramatically improved elliptic curve scalar multiplication
  algorithms at fewer than 1000 cycles per scalarmult MUST reconsider
  these assumptions.
+
+
+# Cofactors
+
+Generic DLP security requires a subgroup of large prime order.
+If the whole group's order is h\*p where p is the largest prime factor,
+ h is called the cofactor.
+For prime-order groups, h = 1.
+Composite-order groups with h > 1 pose various complications:
+
+- The Pohlig-Hellman algorithm costs O(log(h\*p) sqrt{p}), so it is not
+   enough for h\*p to be large; p itself must also be large.
+
+  To defeat Pohlig-Hellman, traditional finite-field DLP applications
+   that only expose (G, k\*G) where G is a standard generator, such as
+   Schnorr signatures and ECDSA, use Schnorr groups {{Schnorr89}}
+   {{?RFC2412}}:
+  The standard generator G is chosen to generate the order-p subgroup
+   of (Z/qZ)^* where q = hp + 1 and p is a prime large enough that
+   Pohlig-Hellman is out of reach, typically near 2^256.
+
+- Traditional Diffie-Hellman key agreement with static keys {{DH76}}
+   {{Bernstein06}} is also subject to the active Lim-Lee small-subgroup
+   attack {{LL97}}:
+  The adversary submits elements P_1, P_2, ..., P_n of small orders
+   o_1, o_2, ..., o_n to learn ciphertexts or hashes H(k\*P_1),
+   H(k\*P_2), ..., H(k\*P_n), with H treated as a black box.
+  The adversary can then recover k mod o_1, k mod o_2, ..., k mod o_n
+   by brute force search.
+
+  To defeat the small-subgroup attack, traditional finite-field DH
+   applications use safe primes q = 2p + 1, with cofactor 2, so that
+   the attack reveals at most only one bit of information {{?RFC2785}}.
+  The secret scalar may also be chosen to be congruent to zero modulo the
+   cofactor h, as in X25519 {{Bernstein06}} {{?RFC7748}}.
+  The static DH oracle may alternatively refuse to answer a query at an
+   element P if p\*P is nonzero, meaning Q does not lie in the order-p
+   subgroup.
+
+- Signature schemes such as Ed25519 {{BDLSY11}} {{?RFC8032}} may treat
+   multiple different byte strings representing signatures as
+   equivalent.
+
+  This doesn't affect signature security -- existential unforgeability
+   under chosen-message attack, or EUF-CMA.
+  But there are byte strings that are interpreted as valid by some
+   verifiers and invalid by others leading to trouble in distributed
+   consensus applications {{deValence20}}.
+  It has also led to vulnerabilities in protocols that relied on
+   nonstandard security properties of signatures {{LS17}}.
+
+In the sequel, we assume that static DH oracles are confined to a
+ prime-order subgroup.
+Protocols SHOULD use a prime-order group or encoding such as Decaf
+ {{Hamburg15}} or Ristretto {{?I-D.irtf-cfrg-ristretto255-decaf448}}
+ that is naturally restricted to a prime-order subgroup.
+Protocols MAY require that implementations verify p\*P = 0 before
+ answering static DH queries if this cannot be enforced naturally by
+ the encoding.
+This memo does not consider the security impact of static DH oracles in
+ a composite-order group.
 
 
 # Generic Static DH Attacks
