@@ -196,6 +196,22 @@ informative:
       ISBN: 978-3-540-73488-8
       DOI: 10.1007/978-3-540-73489-5_17
 
+  KM07:
+    title: >
+      Another Look at Non-standard Discrete Log and Diffie-Hellman Problems
+    target: https://eprint.iacr.org/2007/442
+    author:
+      -
+        ins: N. Koblitz
+        name: Neal Koblitz
+      -
+        ins: A. Menezes
+        name: Alfred Menezes
+    date: 2007
+    seriesinfo:
+      IACR: "Cryptology ePrint Archive: Report 2007/442"
+
+
   Satoh09:
     title: On Generalization of Cheon's algorithm
     target: https://eprint.iacr.org/2009/058
@@ -545,6 +561,9 @@ The **strong DH problem** {{Cheon06}} is to compute x^{q + 1} \* G
 There is no known way to improve on static DH attacks to solve the
  strong DH problem, so we do not discuss it further in this memo.
 
+A more detailed taxonomy of related problems is given in {{KM07}}
+ together with some relations between them.
+
 
 # Conventions and Definitions
 
@@ -593,8 +612,16 @@ Static DH attacks have query costs -- the number of queries that must
  be answered by the legitimate server, such as a Privacy Pass token
  issuer, in order for the attack to succeed.
 
+The best attacks on elliptic curves over prime fields are generic
+ static DH attacks, which require _sequential_ queries: each query
+ submitted by the adversary (except the first one) depends on the
+ oracle's answer to the previous query.
+(Attacks on elliptic curves over extension fields, or on the
+ multiplicative groups of finite fields, can take advantage of parallel
+ queries.)
+
 We make the following assumptions about legitimate servers to put
- realistic limits on the query costs of feasible attacks:
+ realistic limits on the sequential query costs of feasible attacks:
 
 - CPUs run at less than 10 GHz.
 
@@ -690,10 +717,12 @@ Composite-order groups with h > 1 pose various complications:
    by brute force search.
 
   To defeat the small-subgroup attack, traditional finite-field DH
-   applications use safe primes q = 2p + 1, with cofactor 2, so that
-   the attack reveals at most only one bit of information {{?RFC2785}}.
-  The secret scalar may also be chosen to be congruent to zero modulo the
-   cofactor h, as in X25519 {{Bernstein06}} {{?RFC7748}}.
+   applications use safe primes q = 2p + 1, with the smallest possible
+   cofactor h = 2, so that the attack reveals at most only one bit of
+   information {{?RFC2785}}.
+  The secret scalar may also be chosen to be congruent to zero modulo
+   h, as in X25519 {{Bernstein06}} {{?RFC7748}}, so the attack reveals
+   nothing except in incorrect implementations.
   The static DH oracle may alternatively refuse to answer a query at an
    element P if p\*P is nonzero, meaning Q does not lie in the order-p
    subgroup.
@@ -709,6 +738,18 @@ Composite-order groups with h > 1 pose various complications:
    consensus applications {{deValence20}}.
   It has also led to vulnerabilities in protocols that relied on
    nonstandard security properties of signatures {{LS17}}.
+
+- Cofactors can hurt indistinguishability for OPRF applications like
+   Privacy Pass {{?I-D.ietf-privacypass-protocol}}:
+  When the user submits a blinded token request Q = r\*P, the server
+   answers with k\*r\*P; the user derives a token to redeem later
+   involving k\*P.
+
+  Given the elements k\*r\*P in a request and k\*P in a redemption, the
+   server can determine their orders modulo h by Pohlig-Hellman.
+  These quantities can then serve to distinguish users by their tokens
+   and divide users into anonymity sets with potential matches between
+   blinded token requests and tokens.
 
 In the sequel, we assume that static DH oracles are confined to a
  prime-order subgroup:
