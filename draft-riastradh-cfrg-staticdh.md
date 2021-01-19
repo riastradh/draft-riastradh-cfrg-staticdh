@@ -299,6 +299,7 @@ informative:
 
   Kim16:
     title: Multiple Discrete Logarithm Problems with Auxiliary Inputs
+    target: https://link.springer.com/chapter/10.1007%2F978-3-662-48797-6_8
     author:
       ins: T. Kim
       name: Taechan Kim
