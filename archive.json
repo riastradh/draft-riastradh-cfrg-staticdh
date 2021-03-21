@@ -1,0 +1,81 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2021-03-21T00:43:38.528384+00:00",
+  "repo": "riastradh/draft-riastradh-cfrg-staticdh",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [],
+  "pulls": [
+    {
+      "number": 1,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTU3MzEzNzU1",
+      "title": "Alex's review",
+      "url": "https://github.com/riastradh/draft-riastradh-cfrg-staticdh/pull/1",
+      "state": "OPEN",
+      "author": "alxdavids",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "I think this document is great and will definitely be informative to the CFRG. I just had some minor editorial points, hopefully they are useful. I would also be happy to take a second pass at any point, if needed.\r\n\r\nChanges:\r\n* Start with group-specific notation before using EC point notation.\r\n* Minor editorial changes",
+      "createdAt": "2021-01-19T10:05:20Z",
+      "updatedAt": "2021-01-19T15:02:16Z",
+      "baseRepository": "riastradh/draft-riastradh-cfrg-staticdh",
+      "baseRefName": "main",
+      "baseRefOid": "356c57c6aba3d79a01c0246879198a707226f380",
+      "headRepository": "alxdavids/draft-riastradh-cfrg-staticdh",
+      "headRefName": "alxdavids-review",
+      "headRefOid": "c880d860b9cd194ffe75badf2f618dd62bf3ed52",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}

@@ -1,0 +1,1796 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>Attacks on Static Diffie-Hellman Oracles</title>
+<meta content="Taylor R. Campbell" name="author">
+<meta content="
+       A  static Diffie-Hellman (DH) oracle  is an oracle that multiplies a
+ given base point P in a group by a secret scalar x, yielding x*P.
+Certain cryptographic protocols such as oblivious pseudorandom function
+ families (OPRFs) rely on an adversary's inability either to recover x
+ or to compute x*Q at a random point Q chosen after queries to the
+ static DH oracle.
+This memo summarizes the state of the art in attacks enabled by static
+ DH oracles, and the resistance of widely used groups to such attacks.
+This memo concludes that static DH oracles do not meaningfully threaten
+ the security of any elliptic curve groups recommended by the IETF for
+ DH. 
+    " name="description">
+<meta content="xml2rfc 3.5.0" name="generator">
+<meta content="Internet-Draft" name="keyword">
+<meta content="draft-riastradh-cfrg-staticdh-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.5.0
+    Python 3.8.5
+    appdirs 1.4.4
+    ConfigArgParse 1.2.3
+    google-i18n-address 2.4.0
+    html5lib 1.1
+    intervaltree 3.0.2
+    Jinja2 2.11.2
+    kitchen 1.2.6
+    lxml 4.5.0
+    pycountry 19.8.18
+    pyflakes 2.1.1
+    PyYAML 5.3.1
+    requests 2.22.0
+    setuptools 45.2.0
+    six 1.14.0
+-->
+<link href="draft-riastradh-cfrg-staticdh.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@import url('https://martinthomson.github.io/i-d-template/fonts.css');
+
+html {
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --small-font-size: 14.5px;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+#title {
+  padding: 1em 0 0.2em;
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 27px;
+}
+h4, h5, h6 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p, #abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 18px;
+  line-height: 24px;
+}
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 0.5em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+dd.break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href].selfRef {
+  color: var(--text-color);
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px 'Oxygen Mono', monospace;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+  padding: 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  pre {
+    display: inline-block;
+    overflow-x: auto;
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  pre + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+tr:nth-child(2n) > td {
+  background-color: var(--background-color);
+}
+tr:nth-child(2n+1) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody > tr:nth-child(2n) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody > tr:nth-child(2n+1) > td {
+  background-color: var(--background-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 0 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  opacity: 0.2;
+  user-select: none;
+}
+a.pilcrow[href] { color: #ddd; }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media screen {
+  :hover > a.pilcrow {
+    opacity: 1;
+  }
+  a.pilcrow[href]:hover {
+    color: #bbb;
+    background-color: transparent;
+  }
+}
+@media print {
+  a.pilcrow {
+    display: none;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 8em;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  margin: 0;
+  clear: left;
+  float: left;
+  text-align: right;
+}
+#identifiers dd {
+  margin: 0 0 0 calc(1em + var(--identifier-width));
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 500px) {
+  .index ul {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  .index ul ul {
+    column-count: 1;
+    column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul p, #toc ul li {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left, table .text-left {
+  text-align: left;
+}
+table .text-center, table .text-center {
+  text-align: center;
+}
+table .text-right, table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  dd {
+    page-break-before: avoid;
+  }
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+</style>
+
+</head>
+<body>
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">staticdh</td>
+<td class="right">January 2021</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Campbell</td>
+<td class="center">Expires 22 July 2021</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">Crypto Forum Research Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-riastradh-cfrg-staticdh-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2021-01-18" class="published">18 January 2021</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Informational</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2021-07-22">22 July 2021</time></dd>
+<dt class="label-authors">Author:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">T.R. Campbell</div>
+<div class="org">Random Float LLC</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">Attacks on Static Diffie-Hellman Oracles</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">A <strong>static Diffie-Hellman (DH) oracle</strong> is an oracle that multiplies a
+ given base point P in a group by a secret scalar x, yielding x*P.
+Certain cryptographic protocols such as oblivious pseudorandom function
+ families (OPRFs) rely on an adversary's inability either to recover x
+ or to compute x*Q at a random point Q chosen after queries to the
+ static DH oracle.
+This memo summarizes the state of the art in attacks enabled by static
+ DH oracles, and the resistance of widely used groups to such attacks.
+This memo concludes that static DH oracles do not meaningfully threaten
+ the security of any elliptic curve groups recommended by the IETF for
+ DH.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note rfcEditorRemove" id="section-note.1">
+      <h2 id="name-discussion-venues">
+<a href="#name-discussion-venues" class="section-name selfRef">Discussion Venues</a>
+      </h2>
+<p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">Discussion of this document takes place on the
+  CFRG Working Group mailing list (cfrg@ietf.org),
+  which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/cfrg/">https://mailarchive.ietf.org/arch/browse/cfrg/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+<p id="section-note.1-3">Source for this draft and an issue tracker can be found at
+  <span><a href="https://github.com/riastradh/draft-riastradh-cfrg-staticdh">https://github.com/riastradh/draft-riastradh-cfrg-staticdh</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 22 July 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2021 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Simplified BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Simplified BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-taxonomy-of-problems" class="xref">Taxonomy of Problems</a><a href="#section-toc.1-1.1.2.1.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-conventions-and-definitions" class="xref">Conventions and Definitions</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-static-dh-oracle-examples" class="xref">Static DH Oracle Examples</a><a href="#section-toc.1-1.3.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-assumptions" class="xref">Assumptions</a><a href="#section-toc.1-1.4.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-generic-static-dh-attacks" class="xref">Generic Static DH Attacks</a><a href="#section-toc.1-1.5.1" class="pilcrow">¶</a></p>
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-p-1-attack" class="xref">p - 1 Attack</a><a href="#section-toc.1-1.5.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-p-1-attack-in-quadratic-ext" class="xref">p + 1 Attack in Quadratic Extension</a><a href="#section-toc.1-1.5.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.3">
+                <p id="section-toc.1-1.5.2.3.1"><a href="#section-5.3" class="xref">5.3</a>.  <a href="#name-generalizations-of-the-p-1-" class="xref">Generalizations of the p - 1 and p + 1 Attacks</a><a href="#section-toc.1-1.5.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="ulEmpty compact toc" id="section-toc.1-1.5.2.4">
+                <p id="section-toc.1-1.5.2.4.1"><a href="#section-5.4" class="xref">5.4</a>.  <a href="#name-multi-target-attacks" class="xref">Multi-Target Attacks</a><a href="#section-toc.1-1.5.2.4.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-attacks-on-elliptic-curves-" class="xref">Attacks on Elliptic Curves over Extension Fields</a><a href="#section-toc.1-1.6.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-groups" class="xref">Groups</a><a href="#section-toc.1-1.7.1" class="pilcrow">¶</a></p>
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-ristretto255" class="xref">Ristretto255</a><a href="#section-toc.1-1.7.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="ulEmpty compact toc" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-nist-p-256" class="xref">NIST P-256</a><a href="#section-toc.1-1.7.2.2.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="ulEmpty compact toc" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="xref">7.3</a>.  <a href="#name-secp256k1" class="xref">secp256k1</a><a href="#section-toc.1-1.7.2.3.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="ulEmpty compact toc" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="xref">7.4</a>.  <a href="#name-fourq" class="xref">FourQ</a><a href="#section-toc.1-1.7.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="ulEmpty compact toc" id="section-toc.1-1.7.2.5">
+                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="xref">7.5</a>.  <a href="#name-finite-fields" class="xref">Finite Fields</a><a href="#section-toc.1-1.7.2.5.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a><a href="#section-toc.1-1.8.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="xref">9</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a><a href="#section-toc.1-1.9.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="xref">10</a>. <a href="#name-references" class="xref">References</a><a href="#section-toc.1-1.10.1" class="pilcrow">¶</a></p>
+<ul class="ulEmpty compact toc">
+<li class="ulEmpty compact toc" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="xref">10.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a><a href="#section-toc.1-1.10.2.1.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="ulEmpty compact toc" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="xref">10.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a><a href="#section-toc.1-1.10.2.2.1" class="pilcrow">¶</a></p>
+</li>
+            </ul>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#section-appendix.a" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a><a href="#section-toc.1-1.11.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="ulEmpty compact toc" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#section-appendix.b" class="xref"></a><a href="#name-authors-address" class="xref">Author's Address</a><a href="#section-toc.1-1.12.1" class="pilcrow">¶</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">In a cyclic group of prime order written additively, the <strong>discrete
+ logarithm problem</strong> (DLP) is to find a secret scalar k given k*G,
+ where G is a known base point.
+Ephemeral Diffie-Hellman key agreement such as in TLS <span>[<a href="#RFC8446" class="xref">RFC8446</a>]</span>
+ relies on the related <strong>computational Diffie-Hellman problem</strong> (CDH):
+ given (x*G, y*G), find xy*G.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">In groups such as Group 14 <span>[<a href="#RFC3526" class="xref">RFC3526</a>]</span> and the prime-order subgroup of
+ Curve25519 <span>[<a href="#RFC7748" class="xref">RFC7748</a>]</span> or Ristretto255
+ <span>[<a href="#I-D.irtf-cfrg-ristretto255-decaf448" class="xref">I-D.irtf-cfrg-ristretto255-decaf448</a>]</span>, solving DLP is essentially
+ the cheapest known way to solve CDH and to break practical protocols
+ based on the group.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Traditional protocols involving Diffie-Hellman, including ephemeral key
+ agreement in TLS and static key agreement in the original proposal of
+ Diffie and Hellman <span>[<a href="#DH76" class="xref">DH76</a>]</span>, use the shared secret xy*G to derive a
+ key for encryption, and necessarily avoid exposing xy*G itself to an
+ adversary -- the adversary only learns x*G, y*G, and the ciphertext
+ encrypted using xy*G, but not xy*G itself.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">Newer protocols based on oblivious pseudorandom function families
+ (OPRF, <span>[<a href="#I-D.irtf-cfrg-voprf" class="xref">I-D.irtf-cfrg-voprf</a>]</span>), such as OPAQUE
+ <span>[<a href="#I-D.irtf-cfrg-opaque" class="xref">I-D.irtf-cfrg-opaque</a>]</span> and Privacy Pass
+ <span>[<a href="#I-D.ietf-privacypass-protocol" class="xref">I-D.ietf-privacypass-protocol</a>]</span>, take advantage of the algebraic
+ structure of the group to do more:
+An OPRF is a protocol by which a client and a server can jointly
+ evaluate a pseudorandom function family (PRF) with a key known only to
+ the server on an input known only to the client, giving an output also
+ known only to the client.
+To do this, the server deliberately exposes x*P given an arbitrary
+ point P, where x is a secret key known only to the server.<a href="#section-1-4" class="pilcrow">¶</a></p>
+<div id="taxonomy-of-problems">
+<section id="section-1.1">
+        <h3 id="name-taxonomy-of-problems">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-taxonomy-of-problems" class="section-name selfRef">Taxonomy of Problems</a>
+        </h3>
+<p id="section-1.1-1">A <strong>static DH oracle</strong> reveals x*P given an arbitrary base P where x
+ is a secret.
+The <strong>static DH problem</strong> (SDH, <span>[<a href="#BG04" class="xref">BG04</a>]</span>) is to compute x*Q for random
+ Q determined after the adversary's last oracle query.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">The <strong>discrete log problem with auxiliary inputs</strong> (DLPwAI,
+ <span>[<a href="#Cheon10" class="xref">Cheon10</a>]</span>) is to recover x given
+ (G, x*G, x^2*G, x^3*G, ..., x^q*G)
+ for some q.
+The DLPwAI is obviously at least as hard as SDH:
+Given a static DH oracle, an adversary can find the auxiliary inputs
+ for DLPwAI, and then if the adversary can solve DLPwAI they can
+ trivially solve a static DH problem by using the secret x to compute
+ x*Q directly given the challenge Q.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">It is unknown whether SDH is at least as hard as DLPwAI.
+Most SDH attacks work via DLPwAI, with the exception of the
+ <span>[<a href="#Granger10" class="xref">Granger10</a>]</span> attack discussed below on elliptic curves over extension
+ fields which solves SDH directly but not DLPwAI.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-4">The <strong>generalized discrete log problem with auxiliary inputs</strong>
+ (GDLPwAI, <span>[<a href="#Kim14" class="xref">Kim14</a>]</span>) is to recover x given
+ (x^e_1 * G, x^e_2 * G, ..., x^e_q * G)
+ for arbitrary integers e_1, e_2, ..., e_q.
+Static DH oracles only expose x*P, not arbitrary powers of x, so
+ although GDLPwAI algorithms can make more economical use of a subset
+ of the powers of x, this economy is of theoretical rather than
+ practical interest.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.1-5">The <strong>strong DH problem</strong> <span>[<a href="#Cheon06" class="xref">Cheon06</a>]</span> is to compute x^{q + 1} * G
+ given (G, x*G, x^2*G, ..., x^q*G).
+There is no known way to improve on static DH attacks to solve the
+ strong DH problem, so we do not discuss it further in this memo.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="conventions-and-definitions">
+<section id="section-2">
+      <h2 id="name-conventions-and-definitions">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
+      </h2>
+<p id="section-2-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this
+document are to be interpreted as described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span>
+when, and only when, they appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="static-dh-oracle-examples">
+<section id="section-3">
+      <h2 id="name-static-dh-oracle-examples">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-static-dh-oracle-examples" class="section-name selfRef">Static DH Oracle Examples</a>
+      </h2>
+<p id="section-3-1">OPAQUE uses an OPRF to derive a secret from a password that the server
+ is oblivious to, and relies on the secret key to prevent other than
+ the server from computing the same secret to test password guesses.<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">Privacy Pass uses an OPRF to create anonymized tokens, so a server can
+ issue them to clients but can't distinguish or track clients by the
+ issued tokens, and clients can prove ownership of tokens but can't
+ forge new ones.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-3">Both protocols essentially compute the PRF<a href="#section-3-3" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-3-4">
+<pre>
+H2(t, k*H1(t))
+</pre><a href="#section-3-4" class="pilcrow">¶</a>
+</div>
+<p id="section-3-5">Here t is the client's secret input, k is the server's secret scalar,
+ and H1 and H2 are hash funtions.<a href="#section-3-5" class="pilcrow">¶</a></p>
+<p id="section-3-6">To do this, the client computes Q := H1(t) and derives P := r*H1(t) or
+ P := H1(t) + R, where r is a scalar or R is a group element chosen
+ uniformly at random and kept secret to the client ("multiplicative" or
+ "additive blinding").<a href="#section-3-6" class="pilcrow">¶</a></p>
+<p id="section-3-7">The server, given P, then reveals k*P (from which the client
+ can undo the blinding to complete the protocol).
+Thus, since the server must answer for arbitrary P, the server
+ implements a static DH oracle.<a href="#section-3-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="assumptions">
+<section id="section-4">
+      <h2 id="name-assumptions">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-assumptions" class="section-name selfRef">Assumptions</a>
+      </h2>
+<p id="section-4-1">Static DH attacks have query costs -- the number of queries that must
+ be answered by the legitimate server, such as a Privacy Pass token
+ issuer, in order for the attack to succeed.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">We make the following assumptions about legitimate servers to put
+ realistic limits on the query costs of feasible attacks:<a href="#section-4-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-3.1">
+          <p id="section-4-3.1.1">CPUs run at less than 10 GHz.<a href="#section-4-3.1.1" class="pilcrow">¶</a></p>
+<p id="section-4-3.1.2">
+World records for CPU frequencies have plateaued at between 8 and 9
+ GHz over the past decade <span>[<a href="#HWBOT" class="xref">HWBOT</a>]</span>, after many years of increases.
+For the past two decades, the semiconductor industry has switched its
+ focus to wider parallelism, not higher frequencies, after reaching
+ what seem to be hard physical limits to overcome in further
+ frequency scaling <span>[<a href="#Sutter05" class="xref">Sutter05</a>]</span>.<a href="#section-4-3.1.2" class="pilcrow">¶</a></p>
+<p id="section-4-3.1.3">
+In 2010 IBM reported a graphene-based transistor oscillating at more
+ than 100 GHz <span>[<a href="#IBM10" class="xref">IBM10</a>]</span>, but that avenue of research appears to have
+ no foreseeable future in graphene-based CPUs at such frequencies
+ <span>[<a href="#James19" class="xref">James19</a>]</span>.<a href="#section-4-3.1.3" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-4-3.2">
+          <p id="section-4-3.2.1">Oracle queries cost at least 1000 CPU cycles.<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
+<p id="section-4-3.2.2">
+World records for Diffie-Hellman operations reported by <span>[<a href="#eBATS" class="xref">eBATS</a>]</span>
+ have not improved below 28 000 CPU cycles (gls254 on the Intel
+ Cascade Lake microarchitecture), after many years of incremental
+ improvements.<a href="#section-4-3.2.2" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-4-4">These assumptions imply a lower bound of 100 nanoseconds per query.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">At 100 nanoseconds per query, the following table shows the minimum
+ real time to achieve a prescribed number of sequential queries:<a href="#section-4-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-4-6">
+<pre>
+queries         time
+
+2^10            102 microseconds
+2^20            104 milliseconds
+2^30            107 seconds
+2^40            30.5 hours = 1.27 days
+2^50            3.57 years
+
+2^51            7.14 years
+2^52            14.2 years
+2^53            28.5 years
+2^54            57.1 years
+2^55            114 years
+</pre><a href="#section-4-6" class="pilcrow">¶</a>
+</div>
+<p id="section-4-7">For the purposes of this memo, we consider 2^55 to be a hard limit on
+ the number of sequential queries, absent a revolutionary breakthrough
+ in computing.<a href="#section-4-7" class="pilcrow">¶</a></p>
+<p id="section-4-8">These are extremely conservative assumptions -- we make no assumptions
+ about communication or context-switch cost, and most servers in the
+ real world have nowhere near the capacity to approach this.
+E.g., if the server runs at 4 GHz, and the group costs 28 000 cycles
+ for scalar multiplication, then each query takes 7 microseconds, so
+ 2^50 sequential queries would take nearly a quarter of a millennium.<a href="#section-4-8" class="pilcrow">¶</a></p>
+<p id="section-4-9">Note that it is the <em>legitimate server's</em> capacity that limits the
+ feasible query cost.
+ASICs fabricated by the adversary can reduce the computational cost of
+ attacks, but can't affect the legitimate server's capacity to answer
+ the adversary's queries.<a href="#section-4-9" class="pilcrow">¶</a></p>
+<p id="section-4-10">Engineers building systems out of graphene CPUs operating at 100 GHz to
+ compute dramatically improved elliptic curve scalar multiplication
+ algorithms at fewer than 1000 cycles per scalarmult MUST reconsider
+ these assumptions.<a href="#section-4-10" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="generic-static-dh-attacks">
+<section id="section-5">
+      <h2 id="name-generic-static-dh-attacks">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-generic-static-dh-attacks" class="section-name selfRef">Generic Static DH Attacks</a>
+      </h2>
+<p id="section-5-1">Generic attacks treat the group operation as a black box, and thus work
+ in any group, including elliptic curves over finite fields and
+ multiplicative groups of finite fields.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">All known generic attacks take advantage of the ring structure in the
+ powers of the scalar k to reduce the cost of a generic search for k.
+The adversary queries the oracle at a point G to find k*G, then
+ queries the oracle at k*G to find k*(k*G) = k^2*G, then at k^2*G
+ to find k*(k^2*G) = k^3*G, ad nauseam, until k^q*G after q
+ sequential queries.
+Let p be the prime order of the group.<a href="#section-5-2" class="pilcrow">¶</a></p>
+<p id="section-5-3">The baseline generic DLP attack on a prime-order group, with only
+ knowledge of G and x*G, static DH oracle, is Pollard's rho
+ <span>[<a href="#Pollard78" class="xref">Pollard78</a>]</span>, which costs O(sqrt{p}) group operations and O(1)
+ memory, and can be effectively parallelized with low communication
+ cost using the van Oorschot-Wiener collision search machine <span>[<a href="#OW99" class="xref">OW99</a>]</span>.
+For elliptic curves the negation map <span>[<a href="#WZ98" class="xref">WZ98</a>]</span> gives a small constant
+ factor improvement over generic rho for a cost of about
+ sqrt{p * pi/4}
+ curve additions.
+For other specialized DLP attacks on transfers, twists, side channels,
+ etc., we direct the reader to resources such as <span>[<a href="#SafeCurves" class="xref">SafeCurves</a>]</span> for
+ references and focus here on generic attacks enabled by a static DH
+ oracle.<a href="#section-5-3" class="pilcrow">¶</a></p>
+<div id="p-1-attack">
+<section id="section-5.1">
+        <h3 id="name-p-1-attack">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-p-1-attack" class="section-name selfRef">p - 1 Attack</a>
+        </h3>
+<p id="section-5.1-1">When q &gt;= d for a divisor d of p - 1, the adversary can recover k given
+ (G, k*G, k^d*G) with O(sqrt{p/d} + sqrt{d}) group operations and
+ essentially constant memory as follows:<a href="#section-5.1-1" class="pilcrow">¶</a></p>
+<p id="section-5.1-2">Let z_0 be a generator of (Z/pZ)^*, and z := z_0^d a (p - 1)/d-th root
+ of unity.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
+<p id="section-5.1-3">First, find scalars 0 &lt;= u_1, v_1 &lt; d_1 := ceiling(sqrt{(p - 1)/d})
+ giving a collision<a href="#section-5.1-3" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-5.1-4">
+<pre>
+(k^d z^{-u_1}) * G = (z^{d_1 v_1}) * G,
+</pre><a href="#section-5.1-4" class="pilcrow">¶</a>
+</div>
+<p id="section-5.1-5">by repeatedly multiplying the left by z^{-1} and the right by z^{d_1}.
+This collision implies<a href="#section-5.1-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-5.1-6">
+<pre>
+k^d = z^{u_1 + d_1 v_1}.
+</pre><a href="#section-5.1-6" class="pilcrow">¶</a>
+</div>
+<p id="section-5.1-7">Next, find scalars 0 &lt;= u_2, v_2 &lt; d_2 := ceiling(sqrt{d}) giving a
+ collision<a href="#section-5.1-7" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-5.1-8">
+<pre>
+(k z_0^{-u_2 (p - 1)/d}) * G
+  = (z_0^{u_1 + d_1 v_1 + d_2 v_2 (p - 1)/d}) * G.
+</pre><a href="#section-5.1-8" class="pilcrow">¶</a>
+</div>
+<p id="section-5.1-9">This collision implies<a href="#section-5.1-9" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-5.1-10">
+<pre>
+k = z_0^{u_1 + d_1 v_1 + (u_2 + d_2 v_2) (p - 1)/d},
+</pre><a href="#section-5.1-10" class="pilcrow">¶</a>
+</div>
+<p id="section-5.1-11">as desired.<a href="#section-5.1-11" class="pilcrow">¶</a></p>
+<p id="section-5.1-12">This class of attacks was presented in <span>[<a href="#BG04" class="xref">BG04</a>]</span> and <span>[<a href="#Cheon06" class="xref">Cheon06</a>]</span>, with
+ improved cost analysis in <span>[<a href="#KKM07" class="xref">KKM07</a>]</span>, and extended from
+ memory-intensive baby-step/giant-step tables to a random walk with
+ essentially constant memory along the lines of Pollard's kangaroo in
+ <span>[<a href="#Cheon10" class="xref">Cheon10</a>]</span>.<a href="#section-5.1-12" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="p-1-attack-in-quadratic-extension">
+<section id="section-5.2">
+        <h3 id="name-p-1-attack-in-quadratic-ext">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-p-1-attack-in-quadratic-ext" class="section-name selfRef">p + 1 Attack in Quadratic Extension</a>
+        </h3>
+<p id="section-5.2-1">When q &gt;= 2d for a divisor d of p + 1, the adversary can recover k
+ given (G, k*G, k^2*G, ..., k^{2d}*G) with O(sqrt{p/d} + d) group
+ operations and essentially constant memory using a similar technique
+ in F_{p^2}.<a href="#section-5.2-1" class="pilcrow">¶</a></p>
+<p id="section-5.2-2">The basic idea is to start with a generator z of the subgroup of order
+ p + 1 of F_{p^2}, let w = z^d, and search for a collision in the
+ equation<a href="#section-5.2-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-5.2-3">
+<pre>
+b^d w^{-m v} = w^u
+</pre><a href="#section-5.2-3" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2-4">indirectly, where b = f(k) + g(k) theta is an element of order p + 1
+ of F_{p^2} represented by a square root theta of a quadratic
+ nonresidue in F_p using nonconstant rational functions f and g over
+ F_p.<a href="#section-5.2-4" class="pilcrow">¶</a></p>
+<p id="section-5.2-5">The adversary can't evaluate this equation directly without knowing b,
+ but it can be tested by proxy of scalar multiplication of G by fixed
+ polynomials P_1, P_2, and P_3 of k such that<a href="#section-5.2-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-5.2-6">
+<pre>
+b^d = (f(k) + g(k) theta)^d = [P_1(k) + P_2(k) theta]/P_3(k).
+</pre><a href="#section-5.2-6" class="pilcrow">¶</a>
+</div>
+<p id="section-5.2-7">The inputs (G, k*G, k^2*G, ..., k^{2d}*G) can be used to evaluate
+ the necessary linear combinations of P_1(k)*G, P_2(k)*G, and
+ P_3(k)*G to test for collisions of the desired form b^d w^{-m v} =
+ w^u.<a href="#section-5.2-7" class="pilcrow">¶</a></p>
+<p id="section-5.2-8">This class of attacks was first presented in <span>[<a href="#Cheon06" class="xref">Cheon06</a>]</span> with
+ memory-intensive baby-step/giant-step tables, and then extended to a
+ random walk with essentially constant memory in <span>[<a href="#Cheon10" class="xref">Cheon10</a>]</span>.<a href="#section-5.2-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="generalizations-of-the-p-1-and-p-1-attacks">
+<section id="section-5.3">
+        <h3 id="name-generalizations-of-the-p-1-">
+<a href="#section-5.3" class="section-number selfRef">5.3. </a><a href="#name-generalizations-of-the-p-1-" class="section-name selfRef">Generalizations of the p - 1 and p + 1 Attacks</a>
+        </h3>
+<p id="section-5.3-1">The attacks were generalized in <span>[<a href="#Satoh09" class="xref">Satoh09</a>]</span> to any divisor d of
+ Phi_n(p), where Phi_n is the nth cyclotomic polynomial.
+However, in <span>[<a href="#KCL14" class="xref">KCL14</a>]</span> the generalization was concluded to have no cost
+ advantage over standard discrete log algorithms without a static DH
+ oracle.<a href="#section-5.3-1" class="pilcrow">¶</a></p>
+<p id="section-5.3-2">A variant of these attacks proposed in <span>[<a href="#KC12" class="xref">KC12</a>]</span> uses a polynomial f
+ over F_p of arbitrary degree d (which need not divide p +/- 1) and
+ runs in time O~(sqrt{p/t} + d) where t is the number of absolutely
+ irreducible factors of f(x) - f(y), and O~(...) denotes O(... log^m p)
+ for some m.
+However, <span>[<a href="#KC12" class="xref">KC12</a>]</span> was unable to find any polynomials f providing better
+ than O~(sqrt{p/d} + d) cost, and only achieved that cost in the case
+ that d does divide p +/- 1.<a href="#section-5.3-2" class="pilcrow">¶</a></p>
+<p id="section-5.3-3">The attacks were also generalized in <span>[<a href="#Kim14" class="xref">Kim14</a>]</span> to the GDLPwAI taking a
+ collection of points k^i * G for every i in a subgroup of (Z/{p-1}Z)^*
+ and finding k at somewhat lower computational cost.
+However, it is no easier for an adversary to learn just these points
+ with a static DH oracle than to learn all the points up to a divisor d
+ of p +/- 1, so the generalization is ruled out by the same limits on
+ feasible query cost.<a href="#section-5.3-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="multi-target-attacks">
+<section id="section-5.4">
+        <h3 id="name-multi-target-attacks">
+<a href="#section-5.4" class="section-number selfRef">5.4. </a><a href="#name-multi-target-attacks" class="section-name selfRef">Multi-Target Attacks</a>
+        </h3>
+<p id="section-5.4-1"><span>[<a href="#Kim16" class="xref">Kim16</a>]</span> extended the p - 1 attack to the multi-target setting: given
+ L independent query responses (G, k_i * G, k_i^d * G) for 1 &lt;= i &lt;=
+ L, compute <em>all</em> the k_i in O(sqrt{L p/d} + sqrt{L d}) scalar
+ multiplications, provided L &lt;&lt; min(p/d, d)^{1/4}.
+In brief, attacking a batch of L targets is sqrt{L} times cheaper than
+ attacking each of the L targets independently.<a href="#section-5.4-1" class="pilcrow">¶</a></p>
+<p id="section-5.4-2">However, this multi-target attack doesn't reduce the number of
+ sequential queries needed to start, nor does it reduce the expected
+ time to the <em>first</em> k_i.
+Thus, it is relevant only to amplify the impact of static DH attacks in
+ a group where a single-target attack is already within reach.<a href="#section-5.4-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="attacks-on-elliptic-curves-over-extension-fields">
+<section id="section-6">
+      <h2 id="name-attacks-on-elliptic-curves-">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-attacks-on-elliptic-curves-" class="section-name selfRef">Attacks on Elliptic Curves over Extension Fields</a>
+      </h2>
+<p id="section-6-1">In the group of rational points on an elliptic curve over an
+ extension field F_{q^n}, after O(q^{1 - 1/(n + 1)}) oracle queries
+ (whether or not the number of queries divides p +/- 1), the adversary
+ can use index calculus as in <span>[<a href="#Granger10" class="xref">Granger10</a>]</span> to solve the static DH
+ problem with O~(q^{1 - 1/(n + 1)}) computation, for fixed n as q
+ grows; here O~(...) denotes O(... log^m q) for some m.
+The queries <em>need not</em> be sequential, so the feasible query cost may be
+ considerably higher than for <span>[<a href="#BG04" class="xref">BG04</a>]</span>- and <span>[<a href="#Cheon06" class="xref">Cheon06</a>]</span>-type attacks.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
+ issuing O(sqrt{q}) static DH queries.
+The cost for n = 2 is O(q^{2/3}) queries and O~(q^{2/3}) computation;
+ when p = q^2 ~ 2^128, this reduces the cost to ~2^80 but requires
+ ~2^80 oracle queries which is likely unrealistic even if they are
+ parallelized.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">The cost for n = 4 is O(q^{4/5}) queries and O~(q^{4/5}) computation,
+ which is considerably cheaper than the cheapest DLP attacks (without a
+ static DH oracle) on such curves based on index calculus at
+ O~(q^{3/2}) <span>[<a href="#GG15" class="xref">GG15</a>]</span>.
+For example, a curve over F_{q^4} for prime q ~ 2^80 to defeat DLP
+ without a static DH oracle might succumb after ~2^64 oracle queries
+ (potentially in parallel) and ~2^64 computation.<a href="#section-6-3" class="pilcrow">¶</a></p>
+<p id="section-6-4">However, the computational cost of <span>[<a href="#Granger10" class="xref">Granger10</a>]</span> grows rapidly
+ (factorially) with n, so it is of interest only for small n.
+Furthermore, at present there are no curves over extension fields
+ standardized by IETF (XXX verify).
+Protocol designers MUST consider <span>[<a href="#Granger10" class="xref">Granger10</a>]</span> attacks before exposing
+ static DH oracles for any elliptic curves over extension fields.<a href="#section-6-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="groups">
+<section id="section-7">
+      <h2 id="name-groups">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-groups" class="section-name selfRef">Groups</a>
+      </h2>
+<p id="section-7-1">We discuss only groups of order near 2^256.
+Much smaller groups provide inadequate generic DLP security even
+ without static DH oracles.
+Much larger groups such as Decaf448
+ <span>[<a href="#I-D.irtf-cfrg-ristretto255-decaf448" class="xref">I-D.irtf-cfrg-ristretto255-decaf448</a>]</span> and NIST P-384 <span>[<a href="#FIPS186-4" class="xref">FIPS186-4</a>]</span>
+        <span>[<a href="#SEC2" class="xref">SEC2</a>]</span> <span>[<a href="#RFC5903" class="xref">RFC5903</a>]</span> are out of reach no matter what minor advantage
+ a static DH oracle confers with the attacks here, and serve only as
+ hedges against potential future breakthroughs in cryptanalysis which
+ are naturally out of scope for a memo discussing the present state of
+ the art.<a href="#section-7-1" class="pilcrow">¶</a></p>
+<div id="ristretto255">
+<section id="section-7.1">
+        <h3 id="name-ristretto255">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-ristretto255" class="section-name selfRef">Ristretto255</a>
+        </h3>
+<p id="section-7.1-1">Ristretto255 <span>[<a href="#I-D.irtf-cfrg-ristretto255-decaf448" class="xref">I-D.irtf-cfrg-ristretto255-decaf448</a>]</span> is a group of
+ prime order based on Curve25519 <span>[<a href="#Bernstein06" class="xref">Bernstein06</a>]</span> <span>[<a href="#RFC7748" class="xref">RFC7748</a>]</span>, an
+ elliptic curve over the prime field F_{2^255 - 19}.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-7.1-2">
+<pre>
+p = 2^252 + 27742317777372353535851937790883648493
+p - 1 = 2^2 * 3 * 11 * 198211423230930754013084525763697 *
+  276602624281642239937218680557139826668747
+p + 1 = 2 * 5 * 7 * 103 * 684245902131068969 *
+  1466936914520620440380580414586728830413895967152734051
+
+baseline rho cost:                              ~2^125.8
+best p-1 attack cost after 132 queries:         ~2^122.5
+best p+1 attack cost after 14 420 queries:      ~2^119.5
+</pre><a href="#section-7.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-7.1-3">Ristretto255 is unaffected by the <span>[<a href="#Granger10" class="xref">Granger10</a>]</span> attack, since it is
+ defined over a prime field, not an extension field.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="nist-p-256">
+<section id="section-7.2">
+        <h3 id="name-nist-p-256">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-nist-p-256" class="section-name selfRef">NIST P-256</a>
+        </h3>
+<p id="section-7.2-1">NIST P-256, also known as secp256r1 <span>[<a href="#FIPS186-4" class="xref">FIPS186-4</a>]</span> <span>[<a href="#SEC2" class="xref">SEC2</a>]</span>
+          <span>[<a href="#RFC5903" class="xref">RFC5903</a>]</span>, is a short Weierstrass curve of prime order over the
+ field F_q where q = 2^256 - 2^224 + 2^192 + 2^96 - 1.
+For NIST P-256, p - 1 has many small factors, but p itself is large
+ enough that even if the adversary can achieve 2^55 sequential queries
+ over the course of a century, it would still cost over 2^100 group
+ operations to mount a static DH attack.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-7.2-2">
+<pre>
+p = 2^256 - 2^224 + 2^192 - 89188191075325690597107910205041859247
+p - 1 = 2^4 * 3 * 71 * 131 * 373 * 3407 * 17449 * 38189 * 187019741 *
+  622491383 * 1002328039319 * 2624747550333869278416773953
+p + 1 = 2 * 5 * 1879 * 176337611 *
+  34946779280882916835155272231706129710560967816144871596921775673
+
+baseline rho cost:                                      ~2^127.8
+best p-1 attack cost: at least                          ~2^100.5
+best p+1 attack cost after 6 626 767 421 380 queries:   ~2^107.2
+</pre><a href="#section-7.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-7.2-3">NIST P-256 is unaffected by the <span>[<a href="#Granger10" class="xref">Granger10</a>]</span> attack, since it is
+ defined over a prime field, not an extension field.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="secp256k1">
+<section id="section-7.3">
+        <h3 id="name-secp256k1">
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-secp256k1" class="section-name selfRef">secp256k1</a>
+        </h3>
+<p id="section-7.3-1">secp256k1 <span>[<a href="#SEC2" class="xref">SEC2</a>]</span> is a short Weierstrass curve of prime order over
+ the field F_q where q = 2^256 - 2^32 - 977, used in Bitcoin and other
+ cryptocurrencies.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-2">secp256k1 is not recommended by the IETF.
+We mention it here only because of its widespread use in
+ cryptocurrencies, where the ready availability of high-quality
+ implementations makes it tempting for related OPRF applications.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-7.3-3">
+<pre>
+p = 2^256 - 432420386565659656852420866394968145599
+p - 1 = 2^6 * 3 * 149 * 631 * 107361793816595537 *
+  174723607534414371449 * 341948486974166000522343609283189
+p + 1 = 2 * 13 * 83 * 45751 * 509879 *
+  2300168931843757888934889794142140465088020300168077349902139959
+
+baseline rho cost:                                      ~2^127.8
+best p-1 attack cost after 18 051 648 queries:          ~2^115.9
+best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
+</pre><a href="#section-7.3-3" class="pilcrow">¶</a>
+</div>
+<p id="section-7.3-4">secp256k1 is unaffected by the <span>[<a href="#Granger10" class="xref">Granger10</a>]</span> attack, since it is
+ defined over a prime field, not an extension field.<a href="#section-7.3-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="fourq">
+<section id="section-7.4">
+        <h3 id="name-fourq">
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-fourq" class="section-name selfRef">FourQ</a>
+        </h3>
+<p id="section-7.4-1">FourQ <span>[<a href="#CL15" class="xref">CL15</a>]</span> is a twisted Edwards curve over an extension field
+ F_{q^2} where q = 2^127 - 1, with a prime-order subgroup and
+ recommended point validation to avoid twist attacks.
+We do not consider cofactors or the twist of the curve; it is up to the
+ implementer to avoid these by point validation, or up to the protocol
+ designer to choose an encoding that is naturally restricted to the
+ prime-order subgroup like Ristretto or Decaf.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<p id="section-7.4-2">FourQ is not recommended by the IETF.
+We mention it here only because it has received considerable attention
+ in the community with implementations at higher performance than
+ Curve25519 taking advantage of arithmetic modulo a Mersenne prime.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-7.4-3">
+<pre>
+p = 73846995687063900142583536357581573884798075859800097461294096333596429543
+p - 1 = 2 * 3^2 * 103043 * 5948609 * 7355633 * 9560163629 *
+  95178976488652476489556669482413803056485341
+p + 1 = 2^3 * 7 * 13 *
+  101438180888824038657394967524150513578019334972252881128151231227467623
+
+baseline rho cost:                                              ~2^122.5
+best p-1 attack cost after 17 731 942 934 814 846 queries:      ~2^95.7
+best p+1 attack cost after 728 queries:                         ~2^117.9
+
+Granger (parallelizable) query cost:                            ~2^84.6
+Granger computational cost:                                     &gt;2^84.6
+</pre><a href="#section-7.4-3" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="finite-fields">
+<section id="section-7.5">
+        <h3 id="name-finite-fields">
+<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-finite-fields" class="section-name selfRef">Finite Fields</a>
+        </h3>
+<p id="section-7.5-1">DH over the multiplicative groups of finite fields such as <span>[<a href="#RFC3526" class="xref">RFC3526</a>]</span>
+ and <span>[<a href="#RFC7919" class="xref">RFC7919</a>]</span> is essentially unaffected by the attacks described
+ here because the group order is so large in order to defeat the
+ general number field sieve that the generic DLPwAI algorithms cited
+ here are out of reach anyway.
+For example, no matter what the factorization of p - 1 and p + 1 is for
+ Group 14 of <span>[<a href="#RFC3526" class="xref">RFC3526</a>]</span> (the author got bored waiting for gp to
+ answer), the group order p is around 2^2048 anyway, so sqrt{p/d} must
+ be at least around the totally insurmountable 2^990.<a href="#section-7.5-1" class="pilcrow">¶</a></p>
+<p id="section-7.5-2">XXX OOPS -- this section is not accurate.
+References to review and chase citations to:<a href="#section-7.5-2" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.5-3.1">Joux, Lercier, Naccache, and Thome, "Oracle-Assisted Static
+Diffie-Hellman Is Easier Than Discrete Logarithms", IMA International
+Conference on Cryptography and Coding Theory -- IMAC 2009.
+https://sci-hub.se/https://link.springer.com/chapter/10.1007/978-3-642-10868-6_21<a href="#section-7.5-3.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-7.5-3.2">Koblitz &amp; Menezes, "Another look at non-standard discrete log and
+Diffie-Hellman problems".
+https://eprint.iacr.org/2007/442<a href="#section-7.5-3.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-7.5-4">For F_q where q is prime, the summary seems to be:<a href="#section-7.5-4" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7.5-5.1">L^{cbrt{4/9}} oracle queries<a href="#section-7.5-5.1" class="pilcrow">¶</a>
+</li>
+          <li class="normal" id="section-7.5-5.2">L^{cbrt{32/9}} computation<a href="#section-7.5-5.2" class="pilcrow">¶</a>
+</li>
+        </ul>
+<p id="section-7.5-6">where L = exp((1 + o(1)) (log q)^{1/3} (log log q)^{2/3}).<a href="#section-7.5-6" class="pilcrow">¶</a></p>
+<p id="section-7.5-7">For, e.g., Group 14, with q ~ 2^2048, this requires a little over
+ 2^46.3 (parallelizable) queries and 2^92.7 computation.<a href="#section-7.5-7" class="pilcrow">¶</a></p>
+<p id="section-7.5-8">In contrast, NFS for DLP without SDH costs L^{cbrt(64/9)} computation,
+ which for Group 14 with q ~ 2^2048 is a little over 2^116 computation.
+So that's about a factor of 20 million cost reduction, after submitting
+ nearly 100 trillion queries.<a href="#section-7.5-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-8">
+      <h2 id="name-security-considerations">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-8-1">This document is a security consideration.<a href="#section-8-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-9">
+      <h2 id="name-iana-considerations">
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+      </h2>
+<p id="section-9-1">This document has no IANA actions.<a href="#section-9-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<section id="section-10">
+      <h2 id="name-references">
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<section id="section-10.1">
+        <h3 id="name-normative-references">
+<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+      <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<section id="section-10.2">
+        <h3 id="name-informative-references">
+<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="Bernstein06">[Bernstein06]</dt>
+        <dd>
+<span class="refAuthor">Bernstein, D.J.</span>, <span class="refTitle">"Curve25519: new Diffie-Hellman speed records"</span>, <span class="seriesInfo">PKC 2006</span>, <span class="seriesInfo">Springer LNCS 3958</span>, <span class="seriesInfo">ISBN 978-3-540-33851-2</span>, <span class="seriesInfo">DOI 10.1007/11745853_14</span>, <time datetime="2006" class="refDate">2006</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/11745853_14">https://link.springer.com/chapter/10.1007/11745853_14</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="BG04">[BG04]</dt>
+        <dd>
+<span class="refAuthor">Brown, D.R.L.</span><span class="refAuthor"> and R.P. Gallant</span>, <span class="refTitle">"The Static Diffie-Hellman Problem"</span>, <span class="seriesInfo">IACR Cryptology ePrint Archive: Report 2004/306</span>, <time datetime="2004" class="refDate">2004</time>, <span>&lt;<a href="https://eprint.iacr.org/2004/306">https://eprint.iacr.org/2004/306</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Cheon06">[Cheon06]</dt>
+        <dd>
+<span class="refAuthor">Cheon, J.H.</span>, <span class="refTitle">"Security Analysis of the Strong Diffie-Hellman Problem"</span>, <span class="seriesInfo">EUROCRYPT 2006</span>, <span class="seriesInfo">Springer LNCS 4004</span>, <span class="seriesInfo">ISBN 978-3-540-34546-6</span>, <span class="seriesInfo">DOI 10.1007/11761679_1</span>, <time datetime="2006" class="refDate">2006</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/11761679_1">https://link.springer.com/chapter/10.1007/11761679_1</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Cheon10">[Cheon10]</dt>
+        <dd>
+<span class="refAuthor">Cheon, J.H.</span>, <span class="refTitle">"Discrete Logarithm Problem with Auxiliary Inputs"</span>, <span class="seriesInfo">IACR Journal of Cryptology 23(3)</span>, <span class="seriesInfo">ISSN 0933-2790</span>, <span class="seriesInfo">DOI 10.1007/s00145-009-9047-0</span>, <time datetime="2010" class="refDate">2010</time>, <span>&lt;<a href="https://link.springer.com/article/10.1007/s00145-009-9047-0">https://link.springer.com/article/10.1007/s00145-009-9047-0</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="CL15">[CL15]</dt>
+        <dd>
+<span class="refAuthor">Costello, C.</span><span class="refAuthor"> and P. Longa</span>, <span class="refTitle">"FourQ: four-dimensional decompositions on a Q-curve over the Mersenne prime"</span>, <span class="seriesInfo">IACR Cryptology ePrint Archive: Report 2015/565</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://eprint.iacr.org/2015/565">https://eprint.iacr.org/2015/565</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Davidson19">[Davidson19]</dt>
+        <dd>
+<span class="refAuthor">Davidson, A.</span>, <span class="refTitle">"Supporting the latest version of the Privacy Pass Protocol"</span>, <span class="seriesInfo">Cloudflare blog post</span>, <time datetime="2019-10-28" class="refDate">28 October 2019</time>, <span>&lt;<a href="https://blog.cloudflare.com/supporting-the-latest-version-of-the-privacy-pass-protocol/">https://blog.cloudflare.com/supporting-the-latest-version-of-the-privacy-pass-protocol/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DH76">[DH76]</dt>
+        <dd>
+<span class="refAuthor">Diffie, W.</span><span class="refAuthor"> and M.E. Hellman</span>, <span class="refTitle">"New Directions in Cryptography"</span>, <span class="seriesInfo">IEEE Transactions on Information Theory 22(6)</span>, <time datetime="1976" class="refDate">1976</time>, <span>&lt;<a href="https://www-ee.stanford.edu/~hellman/publications/24.pdf">https://www-ee.stanford.edu/~hellman/publications/24.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="eBATS">[eBATS]</dt>
+        <dd>
+<span class="refAuthor">Bernstein, D.J.</span><span class="refAuthor"> and T. Lange</span>, <span class="refTitle">"eBATS: ECRYPT Benchmarking of Asymmetric Systems"</span>, <time datetime="2021-01-16" class="refDate">16 January 2021</time>, <span>&lt;<a href="https://bench.cr.yp.to/ebats.html">https://bench.cr.yp.to/ebats.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="FIPS186-4">[FIPS186-4]</dt>
+        <dd>
+<span class="refAuthor">National Institute of Standards and Technology</span>, <span class="refTitle">"Digital Signature Standard"</span>, <span class="seriesInfo">FIPS PUB 186-4</span>, <span class="seriesInfo">DOI 10.6028/NIST.FIPS.186-4</span>, <time datetime="2013" class="refDate">2013</time>, <span>&lt;<a href="https://dx.doi.org/10.6028/NIST.FIPS.186-4">https://dx.doi.org/10.6028/NIST.FIPS.186-4</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="GG15">[GG15]</dt>
+        <dd>
+<span class="refAuthor">Galbraith, S.D.</span><span class="refAuthor"> and P. Gaudry</span>, <span class="refTitle">"Recent progress on the elliptic curve discrete logarithm problem"</span>, <span class="seriesInfo">Designs, Codes, and Cryptography 44(1)</span>, <span class="seriesInfo">DOI 10.1007/s10623-015-0146-7</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://link.springer.com/article/10.1007%2Fs10623-015-0146-7">https://link.springer.com/article/10.1007%2Fs10623-015-0146-7</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Granger10">[Granger10]</dt>
+        <dd>
+<span class="refAuthor">Granger, R.</span>, <span class="refTitle">"On the Static Diffie-Hellman Problem on Elliptic Curves over Extension Fields"</span>, <span class="seriesInfo">ASIACRYPT 2010</span>, <span class="seriesInfo">Springer LNCS 6477</span>, <span class="seriesInfo">ISBN 978-3-642-17372-1</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-17373-8_17</span>, <time datetime="2010" class="refDate">2010</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-642-17373-8_17">https://link.springer.com/chapter/10.1007/978-3-642-17373-8_17</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="HWBOT">[HWBOT]</dt>
+        <dd>
+<span class="refTitle">"CPU Frequency: Hall of Fame -- World Records Achieved with CPU Frequency"</span>, <time datetime="2021-01-17" class="refDate">17 January 2021</time>, <span>&lt;<a href="https://hwbot.org/benchmark/cpu_frequency/halloffame">https://hwbot.org/benchmark/cpu_frequency/halloffame</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-privacypass-protocol">[I-D.ietf-privacypass-protocol]</dt>
+        <dd>
+<span class="refAuthor">Celi, S.</span><span class="refAuthor">, Davidson, A.</span><span class="refAuthor">, and A. Faz-Hernandez</span>, <span class="refTitle">"Privacy Pass Protocol Specification"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-privacypass-protocol-00</span>, <time datetime="2021-01-05" class="refDate">5 January 2021</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-ietf-privacypass-protocol-00.txt">http://www.ietf.org/internet-drafts/draft-ietf-privacypass-protocol-00.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.irtf-cfrg-opaque">[I-D.irtf-cfrg-opaque]</dt>
+        <dd>
+<span class="refAuthor">Krawczyk, H.</span><span class="refAuthor">, Lewi, K.</span><span class="refAuthor">, and C. Wood</span>, <span class="refTitle">"The OPAQUE Asymmetric PAKE Protocol"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-opaque-01</span>, <time datetime="2020-11-02" class="refDate">2 November 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-irtf-cfrg-opaque-01.txt">http://www.ietf.org/internet-drafts/draft-irtf-cfrg-opaque-01.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.irtf-cfrg-ristretto255-decaf448">[I-D.irtf-cfrg-ristretto255-decaf448]</dt>
+        <dd>
+<span class="refAuthor">Valence, H.</span><span class="refAuthor">, Grigg, J.</span><span class="refAuthor">, Tankersley, G.</span><span class="refAuthor">, Valsorda, F.</span><span class="refAuthor">, Lovecruft, I.</span><span class="refAuthor">, and M. Hamburg</span>, <span class="refTitle">"The ristretto255 and decaf448 Groups"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-ristretto255-decaf448-00</span>, <time datetime="2020-10-05" class="refDate">5 October 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-irtf-cfrg-ristretto255-decaf448-00.txt">http://www.ietf.org/internet-drafts/draft-irtf-cfrg-ristretto255-decaf448-00.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.irtf-cfrg-voprf">[I-D.irtf-cfrg-voprf]</dt>
+        <dd>
+<span class="refAuthor">Davidson, A.</span><span class="refAuthor">, Faz-Hernandez, A.</span><span class="refAuthor">, Sullivan, N.</span><span class="refAuthor">, and C. Wood</span>, <span class="refTitle">"Oblivious Pseudorandom Functions (OPRFs) using Prime-Order Groups"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-voprf-05</span>, <time datetime="2020-11-02" class="refDate">2 November 2020</time>, <span>&lt;<a href="http://www.ietf.org/internet-drafts/draft-irtf-cfrg-voprf-05.txt">http://www.ietf.org/internet-drafts/draft-irtf-cfrg-voprf-05.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IBM10">[IBM10]</dt>
+        <dd>
+<span class="refAuthor">IBM</span>, <span class="refTitle">"Made in IBM Labs: IBM Scientists Demonstrate World's Fastest Graphene Transistor"</span>, <time datetime="2010" class="refDate">2010</time>, <span>&lt;<a href="https://www-03.ibm.com/press/us/en/pressrelease/29343.wss">https://www-03.ibm.com/press/us/en/pressrelease/29343.wss</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="James19">[James19]</dt>
+        <dd>
+<span class="refAuthor">James, D.</span>, <span class="refTitle">"Forget graphene CPUs, AMD says "we're stuck on silicon for at least seven to ten years""</span>, <time datetime="2019" class="refDate">2019</time>, <span>&lt;<a href="https://www.pcgamesn.com/amd/stuck-on-silicon-past-3nm-7-10-years">https://www.pcgamesn.com/amd/stuck-on-silicon-past-3nm-7-10-years</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="KC12">[KC12]</dt>
+        <dd>
+<span class="refAuthor">Kim, T.</span><span class="refAuthor"> and J.H. Cheon</span>, <span class="refTitle">"A New Approach to Discrete Logarithm Problem with Auxiliary Inputs"</span>, <span class="seriesInfo">IACR Cryptology ePrint Archive: Report 2012/609</span>, <time datetime="2012" class="refDate">2012</time>, <span>&lt;<a href="https://eprint.iacr.org/2012/609">https://eprint.iacr.org/2012/609</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="KCL14">[KCL14]</dt>
+        <dd>
+<span class="refAuthor">Kim, M.</span><span class="refAuthor">, Cheon, J.H.</span><span class="refAuthor">, and I.-S. Lee</span>, <span class="refTitle">"Analysis on a generalized algorithm for the strong discrete logarithm problem with auxiliary inputs"</span>, <span class="seriesInfo">AMS Mathematics of Computation 83(288)</span>, <span class="seriesInfo">ISSN 0025-5718</span>, <span class="seriesInfo">DOI 10.1090/S0025-5718-2014-02813-5</span>, <time datetime="2014" class="refDate">2014</time>, <span>&lt;<a href="https://www.ams.org/journals/mcom/2014-83-288/S0025-5718-2014-02813-5/">https://www.ams.org/journals/mcom/2014-83-288/S0025-5718-2014-02813-5/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Kim14">[Kim14]</dt>
+        <dd>
+<span class="refAuthor">Kim, T.</span>, <span class="refTitle">"Discrete Logarithm Problem with Auxiliary Inputs"</span>, <span class="seriesInfo">PhD Seoul National University</span>, <time datetime="2014" class="refDate">2014</time>, <span>&lt;<a href="https://s-space.snu.ac.kr/bitstream/10371/121277/1/000000017025.pdf">https://s-space.snu.ac.kr/bitstream/10371/121277/1/000000017025.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Kim16">[Kim16]</dt>
+        <dd>
+<span class="refAuthor">Kim, T.</span>, <span class="refTitle">"Multiple Discrete Logarithm Problems with Auxiliary Inputs"</span>, <span class="seriesInfo">ASIACRYPT 2015</span>, <span class="seriesInfo">Springer LNCS 9452</span>, <span class="seriesInfo">ISBN 978-3-662-48796-9</span>, <span class="seriesInfo">DOI 10.1007/978-3-662-48797-6_8</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://doi.org/10.1007/978-3-662-48797-6_8">https://doi.org/10.1007/978-3-662-48797-6_8</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="KKM07">[KKM07]</dt>
+        <dd>
+<span class="refAuthor">Koazaki, S.</span><span class="refAuthor">, Kutsuma, T.</span><span class="refAuthor">, and K. Matsuo</span>, <span class="refTitle">"Remarks on Cheon's Algorithms for Pairing-Related Problems"</span>, <span class="seriesInfo">PBC 2007</span>, <span class="seriesInfo">Springer LNCS 4575</span>, <span class="seriesInfo">ISBN 978-3-540-73488-8</span>, <span class="seriesInfo">DOI 10.1007/978-3-540-73489-5_17</span>, <time datetime="2007" class="refDate">2007</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-540-73489-5_17">https://link.springer.com/chapter/10.1007/978-3-540-73489-5_17</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="OW99">[OW99]</dt>
+        <dd>
+<span class="refAuthor">van Oorschot, P.C.</span><span class="refAuthor"> and M.J. Wiener</span>, <span class="refTitle">"Parallel collision search with cryptanalytic applications"</span>, <span class="seriesInfo">IACR Journal of Cryptology 12</span>, <span class="seriesInfo">ISSN 0933-2790</span>, <span class="seriesInfo">DOI 10.1007/PL00003816</span>, <time datetime="1999" class="refDate">1999</time>, <span>&lt;<a href="https://link.springer.com/article/10.1007/PL00003816">https://link.springer.com/article/10.1007/PL00003816</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Pollard78">[Pollard78]</dt>
+        <dd>
+<span class="refAuthor">Pollard, J.M.</span>, <span class="refTitle">"Monte Carlo methods for index computation (mod p)"</span>, <span class="seriesInfo">AMS Mathematics of Computation</span>, <span class="seriesInfo">ISSN 0025-5718</span>, <span class="seriesInfo">DOI 10.2307/2006496</span>, <time datetime="1978" class="refDate">1978</time>, <span>&lt;<a href="https://www.jstor.org/stable/2006496">https://www.jstor.org/stable/2006496</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC3526">[RFC3526]</dt>
+        <dd>
+<span class="refAuthor">Kivinen, T.</span><span class="refAuthor"> and M. Kojo</span>, <span class="refTitle">"More Modular Exponential (MODP) Diffie-Hellman groups for Internet Key Exchange (IKE)"</span>, <span class="seriesInfo">RFC 3526</span>, <span class="seriesInfo">DOI 10.17487/RFC3526</span>, <time datetime="2003-05" class="refDate">May 2003</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc3526">https://www.rfc-editor.org/info/rfc3526</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5903">[RFC5903]</dt>
+        <dd>
+<span class="refAuthor">Fu, D.</span><span class="refAuthor"> and J. Solinas</span>, <span class="refTitle">"Elliptic Curve Groups modulo a Prime (ECP Groups) for IKE and IKEv2"</span>, <span class="seriesInfo">RFC 5903</span>, <span class="seriesInfo">DOI 10.17487/RFC5903</span>, <time datetime="2010-06" class="refDate">June 2010</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5903">https://www.rfc-editor.org/info/rfc5903</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7748">[RFC7748]</dt>
+        <dd>
+<span class="refAuthor">Langley, A.</span><span class="refAuthor">, Hamburg, M.</span><span class="refAuthor">, and S. Turner</span>, <span class="refTitle">"Elliptic Curves for Security"</span>, <span class="seriesInfo">RFC 7748</span>, <span class="seriesInfo">DOI 10.17487/RFC7748</span>, <time datetime="2016-01" class="refDate">January 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7748">https://www.rfc-editor.org/info/rfc7748</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC7919">[RFC7919]</dt>
+        <dd>
+<span class="refAuthor">Gillmor, D.</span>, <span class="refTitle">"Negotiated Finite Field Diffie-Hellman Ephemeral Parameters for Transport Layer Security (TLS)"</span>, <span class="seriesInfo">RFC 7919</span>, <span class="seriesInfo">DOI 10.17487/RFC7919</span>, <time datetime="2016-08" class="refDate">August 2016</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7919">https://www.rfc-editor.org/info/rfc7919</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8446">[RFC8446]</dt>
+        <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="SafeCurves">[SafeCurves]</dt>
+        <dd>
+<span class="refAuthor">Bernstein, D.J.</span><span class="refAuthor"> and T. Lange</span>, <span class="refTitle">"SafeCurves: choosing safe curves for elliptic-curve cryptography"</span>, <time datetime="2017" class="refDate">2017</time>, <span>&lt;<a href="https://safecurves.cr.yp.to">https://safecurves.cr.yp.to</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Satoh09">[Satoh09]</dt>
+        <dd>
+<span class="refAuthor">Satoh, T.</span>, <span class="refTitle">"On Generalization of Cheon's algorithm"</span>, <span class="seriesInfo">IACR Cryptology ePrint Archive: Report 2009/058</span>, <time datetime="2009" class="refDate">2009</time>, <span>&lt;<a href="https://eprint.iacr.org/2009/058">https://eprint.iacr.org/2009/058</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="SEC2">[SEC2]</dt>
+        <dd>
+<span class="refAuthor">Certicom Research</span>, <span class="refTitle">"SEC 2: Recommended Elliptic Curve Domain Parameters"</span>, <time datetime="2000" class="refDate">2000</time>, <span>&lt;<a href="https://www.secg.org/SEC2-Ver-1.0.pdf">https://www.secg.org/SEC2-Ver-1.0.pdf</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="Sutter05">[Sutter05]</dt>
+        <dd>
+<span class="refAuthor">Sutter, H.</span>, <span class="refTitle">"The Free Lunch Is Over: A Fundamental Turn Toward Concurrency in Software"</span>, <span class="seriesInfo">Dr. Dobb's Journal 30(3)</span>, <span class="seriesInfo">ISSN 1044-789X</span>, <time datetime="2005" class="refDate">2005</time>, <span>&lt;<a href="http://www.gotw.ca/publications/concurrency-ddj.htm">http://www.gotw.ca/publications/concurrency-ddj.htm</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="WZ98">[WZ98]</dt>
+      <dd>
+<span class="refAuthor">Wiener, M.J.</span><span class="refAuthor"> and R.J. Zuccherato</span>, <span class="refTitle">"Faster Attacks on Elliptic Curve Cryptosystems"</span>, <span class="seriesInfo">SAC 1998</span>, <span class="seriesInfo">Springer LNCS 1556</span>, <span class="seriesInfo">ISBN 978-3-540-65894-8</span>, <span class="seriesInfo">DOI 10.1007/3-540-48892-8_15</span>, <time datetime="1998" class="refDate">1998</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/3-540-48892-8_15">https://link.springer.com/chapter/10.1007/3-540-48892-8_15</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</section>
+<div id="acknowledgments">
+<section id="section-appendix.a">
+      <h2 id="name-acknowledgments">
+<a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
+      </h2>
+<p id="section-appendix.a-1">TODO acknowledge.<a href="#section-appendix.a-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="authors-addresses">
+<section id="section-appendix.b">
+      <h2 id="name-authors-address">
+<a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Taylor R. Campbell</span></div>
+<div dir="auto" class="left"><span class="org">Random Float LLC</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:campbell+cfrg@mumble.net" class="email">campbell+cfrg@mumble.net</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
