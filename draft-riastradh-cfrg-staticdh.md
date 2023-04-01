@@ -489,7 +489,7 @@ informative:
       -
         ins: T. Lange
         name: Tanja Lange
-    date: 2021-01-16
+    date: 2023-04-01
 
   HWBOT:
     title: >
@@ -673,8 +673,8 @@ We make the following assumptions about legitimate servers to put
 - Oracle queries cost at least 1000 CPU cycles.
 
   World records for Diffie-Hellman operations reported by {{eBATS}}
-   have not improved below 28 000 CPU cycles (gls254 on the Intel
-   Cascade Lake microarchitecture), after many years of incremental
+   have not improved below 28 000 CPU cycles (gls254 on the AMD
+   Zen2 microarchitecture), after many years of incremental
    improvements.
 
 These assumptions imply a lower bound of 100 nanoseconds per query.
