@@ -378,6 +378,32 @@ informative:
     seriesinfo:
       PhD: Seoul National University
 
+  ZZCGZ14:
+    title: >
+      Black-Box Separations for One-More (Static) CDH and Its Generalization
+    target: https://link.springer.com/chapter/10.1007/978-3-662-45608-8_20
+    author:
+      -
+        ins: J. Zhang
+        name: Jiang Zhang
+      -
+        ins: Z. Zhang
+        name: Zhenfeng Zhang
+      -
+        ins: Y. Chen
+        name: Yu Chen
+      -
+        ins: Y. Guo
+        name: Yanfei Guo
+      -
+        ins: Z. Zhang
+        name: Zongyang Zhang
+    date: 2014
+    seriesinfo:
+      ASIACRYPT: 2014
+      ISSN: 0302-9743
+      DOI: 10.1007/978-3-662-45608-8_20
+
   CL15:
     title: >
       FourQ: four-dimensional decompositions on a Q-curve
@@ -624,7 +650,8 @@ There is no known way to improve on static DH attacks to solve the
  strong DH problem, so we do not discuss it further in this memo.
 
 A more detailed taxonomy of related problems is given in {{KM07}}
- together with some relations between them.
+ together with some relations between them; some black-box separations
+ are given in {{ZZCGZ14}}.
 
 
 # Conventions and Definitions
