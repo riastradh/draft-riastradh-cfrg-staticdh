@@ -312,6 +312,16 @@ informative:
       ISSN: 0933-2790
       DOI: 10.1007/s00145-011-9116-z
 
+  JV12:
+    title: >
+      Cover and Decomposition Index Calculus on Elliptic Curves Made Practical
+    target: https://link.springer.com/chapter/10.1007/978-3-642-29011-4_3
+    date: 2012
+    seriesinfo:
+      EUROCRYPT: 2012
+      ISSN: 0302-9743
+      DOI: 10.1007/978-3-642-29011-4_3
+
   KC12:
     title: >
       A New Approach to Discrete Logarithm Problem with Auxiliary Inputs
@@ -385,19 +395,23 @@ informative:
       IACR: "Cryptology ePrint Archive: Report 2015/565"
 
   GG15:
-    title: Recent progress on the elliptic curve discrete logarithm problem
-    target: https://link.springer.com/article/10.1007%2Fs10623-015-0146-7
+    title: >
+      Summation Polynomial Algorithms for Elliptic Curves in
+      Characteristic Two
+    target: https://link.springer.com/chapter/10.1007/978-3-319-13039-2_24
     author:
       -
         ins: S.D. Galbraith
-        name: Stephen D. Galbraith
+        name: Steven D. Galbraith
       -
-        ins: P. Gaudry
-        name: Pierrick Gaudry
+        ins: S.W. Gebregiyorgis
+        name: Shishay W. Gebregiyorgis
     date: 2015
     seriesinfo:
-      "Designs, Codes, and Cryptography": 44(1)
-      DOI: 10.1007/s10623-015-0146-7
+      INDOCRYPT: 2014
+      Springer: LNCS 8885
+      ISBN: 978-3-319-13039-2
+      DOI: 10.1007/978-3-319-13039-2_24
 
   Hamburg15:
     title: "Decaf: Eliminating Cofactors Through Point Compression"
@@ -411,6 +425,21 @@ informative:
       Springer: LNCS 9215
       ISBN: 978-3-662-47988-9
       DOI: 10.1007/978-3-662-47989-6_34
+
+  GG16:
+    title: Recent progress on the elliptic curve discrete logarithm problem
+    target: https://link.springer.com/article/10.1007%2Fs10623-015-0146-7
+    author:
+      -
+        ins: S.D. Galbraith
+        name: Steven D. Galbraith
+      -
+        ins: P. Gaudry
+        name: Pierrick Gaudry
+    date: 2015
+    seriesinfo:
+      "Designs, Codes, and Cryptography": 44(1)
+      DOI: 10.1007/s10623-015-0146-7
 
   Kim16:
     title: Multiple Discrete Logarithm Problems with Auxiliary Inputs
@@ -649,7 +678,7 @@ The best attacks on elliptic curves over prime fields are generic
  static DH attacks, which require _sequential_ queries: each query
  submitted by the adversary (except the first one) depends on the
  oracle's answer to the previous query.
-(Attacks on elliptic curves over extension fields, or on the
+(Some attacks on elliptic curves over extension fields, or on the
  multiplicative groups of finite fields, can take advantage of parallel
  queries.)
 
@@ -979,7 +1008,7 @@ The cost for n = 2 is O(q^{2/3}) queries and O~(q^{2/3}) computation;
 The cost for n = 4 is O(q^{4/5}) queries and O~(q^{4/5}) computation,
  which is considerably cheaper than the cheapest DLP attacks (without a
  static DH oracle) on such curves based on index calculus at
- O~(q^{3/2}) {{GG15}}.
+ O~(q^{3/2}) {{GG16}}.
 For example, a curve over F_{q^4} for q ~ 2^80 to defeat DLP without a
  static DH oracle might succumb after ~2^64 oracle queries (potentially
  in parallel) and ~2^64 computation.
@@ -989,10 +1018,22 @@ This attack was used to solve SDH in practice in 2010 {{Vitse10}} on
  the Third Oakley Group {{?RFC2409}} defined over F_{2^155} with q =
  2^31 and n = 5.
 
+Curves over extension fields may have structure that admits attacks
+ cheaper than Pollard's rho, such as {{JV12}}.
+Others such as {{GG15}} found no advantage to index calculus over
+ Pollard's rho on curves in binary extension fields F_{2^n} of prime
+ degree n.
+But these did not appear to consider additional advantage from a static
+ DH oracle.
+We do not review them further; study of the literature on DLP attacks
+ without a static DH oracle are out of scope for this memo.
+
 Protocol designers MUST consider {{Granger10}} and {{JV11}} attacks
- before exposing  static DH oracles for any elliptic curves over
+ before exposing static DH oracles for any elliptic curves over
  extension fields, such as the Oakley EC2N groups {{?RFC2409}} or FourQ
  {{CL15}}.
+Protocol designers MUST review the literature on DLP before deploying
+ any elliptic curves over extension fields.
 
 
 # Groups
