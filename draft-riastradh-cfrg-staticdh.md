@@ -258,6 +258,16 @@ informative:
       ISBN: 978-3-642-17372-1
       DOI: 10.1007/978-3-642-17373-8_17
 
+  Vitse10:
+    title: >
+      New timings for oracle-assisted SDHP on the IPSEC Oracle
+      'Well Known Group' 3 curve
+    target: https://listserv.nodak.edu/cgi-bin/wa.exe?A2=NMBRTHRY;eab301e0.1007&S=
+    author:
+      ins: V. Vitse
+      name: Vanessa Vitse
+    date: 2010-07-08
+
   BDLSY11:
     title: High-speed high-security signatures
     target: https://cr.yp.to/papers.html#ed25519
@@ -283,6 +293,24 @@ informative:
       Springer: LNCS 6917
       ISBN: 978-3-642-23950-2
       DOI: 10.1007/978-3-642-23951-9_9
+
+  JV11:
+    title: >
+      Elliptic Curve Discrete Logarithm Problems over Small Degree
+      Extension Fields
+    target: https://link.springer.com/article/10.1007/s00145-011-9116-z
+    author:
+      -
+        ins: A. Joux
+        name: Antoine Joux
+      -
+        ins: V. Vitse
+        name: Vanessa Vitse
+    date: 2011
+    seriesinfo:
+      IACR: Journal of Cryptology 26(1)
+      ISSN: 0933-2790
+      DOI: 10.1007/s00145-011-9116-z
 
   KC12:
     title: >
@@ -467,6 +495,11 @@ informative:
     title: >
       CPU Frequency: Hall of Fame -- World Records Achieved with CPU Frequency
     target: https://hwbot.org/benchmark/cpu_frequency/halloffame
+    date: 2023-04-01
+
+  BlockchainHashrate:
+    title: Total Hash rate (TH/s)
+    target: https://www.blockchain.com/explorer/charts/hash-rate
     date: 2023-04-01
 
 
@@ -945,23 +978,25 @@ The cost for n = 4 is O(q^{4/5}) queries and O~(q^{4/5}) computation,
  which is considerably cheaper than the cheapest DLP attacks (without a
  static DH oracle) on such curves based on index calculus at
  O~(q^{3/2}) {{GG15}}.
-For example, a curve over F_{q^4} for prime q ~ 2^80 to defeat DLP
- without a static DH oracle might succumb after ~2^64 oracle queries
- (potentially in parallel) and ~2^64 computation.
+For example, a curve over F_{q^4} for q ~ 2^80 to defeat DLP without a
+ static DH oracle might succumb after ~2^64 oracle queries (potentially
+ in parallel) and ~2^64 computation.
 
-However, the computational cost of {{Granger10}} grows rapidly
- (factorially) with n, so it is of interest only for small n.
-Furthermore, at present there are no curves over extension fields
- standardized by IETF (XXX verify, Alex: I think this is true).
-Protocol designers MUST consider {{Granger10}} attacks before exposing
- static DH oracles for any elliptic curves over extension fields, such
- as FourQ {{CL15}}.
+{{JV11}} showed a similar attack with reduced cost for n = 5,
+This attack was used to solve SDH in practice in 2010 {{Vitse10}} on
+ the Third Oakley Group {{?RFC2409}} defined over F_{2^155} with q =
+ 2^31 and n = 5.
+
+Protocol designers MUST consider {{Granger10}} and {{JV11}} attacks
+ before exposing  static DH oracles for any elliptic curves over
+ extension fields, such as the Oakley EC2N groups {{?RFC2409}} or FourQ
+ {{CL15}}.
 
 
 # Groups
 
 
-We discuss only groups of order near 2^256.
+We discuss mainly groups of order near 2^256.
 Much smaller groups provide inadequate generic DLP security even
  without static DH oracles.
 Much larger groups such as Decaf448
@@ -991,8 +1026,8 @@ best p-1 attack cost after 132 queries:         ~2^122.5
 best p+1 attack cost after 14 420 queries:      ~2^119.5
 ~~~
 
-Ristretto255 is unaffected by the {{Granger10}} attack, since it is
- defined over a prime field, not an extension field.
+Ristretto255 is unaffected by the {{Granger10}} and {{JV11}} attacks,
+ since it is defined over a prime field, not an extension field.
 
 
 ## NIST P-256
@@ -1017,8 +1052,8 @@ best p-1 attack cost: at least                          ~2^100.5
 best p+1 attack cost after 6 626 767 421 380 queries:   ~2^107.2
 ~~~
 
-NIST P-256 is unaffected by the {{Granger10}} attack, since it is
- defined over a prime field, not an extension field.
+NIST P-256 is unaffected by the {{Granger10}} and {{JV11}} attacks,
+ since it is defined over a prime field, not an extension field.
 
 
 ## secp256k1
@@ -1044,8 +1079,75 @@ best p-1 attack cost after 18 051 648 queries:          ~2^115.9
 best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
 ~~~
 
-secp256k1 is unaffected by the {{Granger10}} attack, since it is
- defined over a prime field, not an extension field.
+secp256k1 is unaffected by the {{Granger10}} and {{JV11}} attacks,
+ since it is defined over a prime field, not an extension field.
+
+
+## Third Oakley Group
+
+The Third Oakley Group {{?RFC2409}}, or Group 3 in the IANA IPsec IKE
+ Group Description registry, is a Weierstrass curve over F_{2^155},
+ with cofactor 12.
+This group provides below 80-bit security against DLP, and so is unfit
+ for most use today.
+
+The group is completely broken in practical terms by the {{JV11}}
+ attack on curves over F_{2^155} as a degree-5 extension field over
+ F_{2^31}; see {{Vitse10}} for details.
+The estimate of the computational cost here is the number of CPU cycles
+ presented by {{Vitse10}}, which is considerably less than most other
+ cost metrics counting number of curve additions.
+
+~~~
+p = 3805993847215893016155463826195386266397436443
+p - 1 = 2 * 3 * 10181 * 1239554496673218367 * 50264430795225140347741
+p + 1 = 2^2 * 23 * 436957 * 728069 * 5322133 * 18629415209 * 1311547632725557
+
+baseline rho cost:                                      ~2^75.5
+best p-1 attack after 61 086 queries:                   ~2^67.75
+best p+1 attack after 32 561 013 525 916 052 queries:   ~2^54.9
+
+JV (parallelizable) query cost:                         ~2^30
+JV computational cost (2010-era Xeon CPU cycles):       ~2^61.6
+~~~
+
+
+## Fourth Oakley Group
+
+The Fourth Oakley Group {{?RFC2409}}, or Group 4 in the IANA IPsec IKE
+ Group Description registry, is a Weierstrass curve over F_{2^185},
+ with cofactor 4.
+This group provides around 90-bit security against DLP, and so is unfit
+ for most use today.
+For example, at a rate of about 250 EHz, the Bitcoin network computes
+ more than 2^90 hashes per year {{BlockchainHashrate}}.
+
+The group is likely breakable in practical terms by the {{JV11}} attack
+ on curves over F_{2^185} as a degree-5 extension field over F_{2^37}.
+The estimate of the computational cost here is the number of CPU cycles
+ presented by {{Vitse10}} for the Third Oakley Group, which is
+ considerably less than most other cost metrics counting number of
+ curve additions.
+
+~~~
+p = 12259964326927110866866776214413170562013096250261263279
+p - 1 = 2 * 3 * 11 * 109 * 8123 * 12277 * 594667 * 514017746554597507 *
+  55905960308440715813
+p + 1 = 2^4 * 5 * 3197899 * 181891629986660813 *
+  263464291405167669025624646993
+
+baseline rho cost:                                              ~2^91.3
+best p-1 attack cost after 6 464 114 577 505 913 queries:       ~2^65.2
+best p+1 attack cost after 255 831 920 queries:                 ~2^77.5
+
+JV (parallelizable) query cost:                                 ~2^37
+JV computational cost (2010-era Xeon CPU cycles):               ~2^67.6
+~~~
+
+XXX The JV computational cost is too low -- it assumes 22.95 ms per
+decomposition trial on 2.93 GHz processor, but that was for a curve
+over F_{2^155} and not a curve over F_{2^185} which is presumably
+slightly more expensive.
 
 
 ## FourQ
@@ -1078,6 +1180,9 @@ best p+1 attack cost after 728 queries:                         ~2^117.9
 Granger (parallelizable) query cost:                            ~2^84.6
 Granger computational cost:                                     >2^84.6
 ~~~
+
+FourQ is unaffected by the {{JV11}} attack, since its extension degree
+ is not divisible by 5.
 
 
 ## Finite Fields
