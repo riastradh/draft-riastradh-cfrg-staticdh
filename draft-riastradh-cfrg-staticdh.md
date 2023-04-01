@@ -467,7 +467,7 @@ informative:
     title: >
       CPU Frequency: Hall of Fame -- World Records Achieved with CPU Frequency
     target: https://hwbot.org/benchmark/cpu_frequency/halloffame
-    date: 2021-01-17
+    date: 2023-04-01
 
 
 --- abstract
@@ -625,8 +625,8 @@ We make the following assumptions about legitimate servers to put
 
 - CPUs run at less than 10 GHz.
 
-  World records for CPU frequencies have plateaued at between 8 and 9
-   GHz over the past decade {{HWBOT}}, after many years of increases.
+  World records for CPU frequencies have plateaued at about 9 GHz over
+   the past decade {{HWBOT}}, after many years of increases.
   For the past two decades, the semiconductor industry has switched its
    focus to wider parallelism, not higher frequencies, after reaching
    what seem to be hard physical limits to overcome in further
