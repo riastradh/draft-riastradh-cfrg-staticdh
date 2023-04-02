@@ -869,7 +869,7 @@ The adversary queries the oracle at an element G to find k\*G, then
 Let p be the prime order of the group.
 
 The baseline generic DLP attack on a prime-order group, with only
- knowledge of G and x\*G, static DH oracle, is Pollard's rho
+ knowledge of G and x\*G, and no static DH oracle, is Pollard's rho
  {{Pollard78}}, which costs O(sqrt{p}) group operations and O(1)
  memory, and can be effectively parallelized with low communication
  cost using the van Oorschot-Wiener collision search machine {{OW99}}.
