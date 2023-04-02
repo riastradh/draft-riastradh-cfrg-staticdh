@@ -1123,33 +1123,6 @@ NIST P-256 is unaffected by the {{Granger10}} and {{JV11}} attacks,
  since it is defined over a prime field, not an extension field.
 
 
-## secp256k1
-
-secp256k1 {{SEC2}} is a short Weierstrass curve of prime order over
- the field F_q where q = 2^256 - 2^32 - 977, used in Bitcoin and other
- cryptocurrencies.
-
-secp256k1 is not recommended by the IETF.
-We mention it here only because of its widespread use in
- cryptocurrencies, where the ready availability of high-quality
- implementations makes it tempting for related OPRF applications.
-
-~~~
-p = 2^256 - 432420386565659656852420866394968145599
-p - 1 = 2^6 * 3 * 149 * 631 * 107361793816595537 *
-  174723607534414371449 * 341948486974166000522343609283189
-p + 1 = 2 * 13 * 83 * 45751 * 509879 *
-  2300168931843757888934889794142140465088020300168077349902139959
-
-baseline rho cost:                                      ~2^127.8
-best p-1 attack cost after 18 051 648 queries:          ~2^115.9
-best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
-~~~
-
-secp256k1 is unaffected by the {{Granger10}} and {{JV11}} attacks,
- since it is defined over a prime field, not an extension field.
-
-
 ## Third Oakley Group
 
 The Third Oakley Group {{?RFC2409}}, or Group 3 in the IANA IPsec IKE
@@ -1215,6 +1188,33 @@ XXX The JV computational cost is too low -- it assumes 22.95 ms per
 decomposition trial on 2.93 GHz processor, but that was for a curve
 over F_{2^155} and not a curve over F_{2^185} which is presumably
 slightly more expensive.
+
+
+## secp256k1
+
+secp256k1 {{SEC2}} is a short Weierstrass curve of prime order over
+ the field F_q where q = 2^256 - 2^32 - 977, used in Bitcoin and other
+ cryptocurrencies.
+
+secp256k1 is not recommended by the IETF.
+We mention it here only because of its widespread use in
+ cryptocurrencies, where the ready availability of high-quality
+ implementations makes it tempting for related OPRF applications.
+
+~~~
+p = 2^256 - 432420386565659656852420866394968145599
+p - 1 = 2^6 * 3 * 149 * 631 * 107361793816595537 *
+  174723607534414371449 * 341948486974166000522343609283189
+p + 1 = 2 * 13 * 83 * 45751 * 509879 *
+  2300168931843757888934889794142140465088020300168077349902139959
+
+baseline rho cost:                                      ~2^127.8
+best p-1 attack cost after 18 051 648 queries:          ~2^115.9
+best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
+~~~
+
+secp256k1 is unaffected by the {{Granger10}} and {{JV11}} attacks,
+ since it is defined over a prime field, not an extension field.
 
 
 ## FourQ
