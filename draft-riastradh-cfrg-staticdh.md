@@ -569,9 +569,6 @@ Certain cryptographic protocols such as oblivious pseudorandom function
  static DH oracle.
 This memo summarizes the state of the art in attacks enabled by static
  DH oracles, and the resistance of widely used groups to such attacks.
-This memo concludes that static DH oracles do not meaningfully threaten
- the security of any elliptic curve groups recommended by the IETF for
- DH.
 
 
 --- middle
