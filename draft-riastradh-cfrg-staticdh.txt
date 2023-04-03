@@ -693,7 +693,7 @@ Index calculus computational cost (i7-4650U cycles):    ~2^39.0
 
    baseline NFS cost:                              ~2^116.9
 
-   JLNT oracle queries:                            ~2^46.4
+   JLNT (parallelizable) oracle query cost:        ~2^46.4
    JLNT precomputation:                            ~2^92.8
    JLNT per-target cost:                           ~2^87.6
 
