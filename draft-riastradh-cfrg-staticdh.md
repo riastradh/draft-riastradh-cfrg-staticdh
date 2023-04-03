@@ -1192,8 +1192,7 @@ q need not be prime, as long as the characteristic is at least
 
 In the group of rational points on an elliptic curve over an
  extension field F_{q^n}, {{Granger10}} extended index calculus to
- solve the static DH problem with a static DH oracle with the following
- queries, for fixed q as n grows:
+ solve the static DH problem with the following costs:
 
 ~~~
 oracle queries:         O(q^{1 - 1/(n + 1)})
