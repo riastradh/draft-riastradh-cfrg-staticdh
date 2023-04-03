@@ -1354,9 +1354,9 @@ Group 14 {{?RFC3526}} and ffdhe2048 {{?RFC7919}} are the multiplicative
 ~~~
 baseline NFS cost:                              ~2^116.9
 
-JLNT (parallelizable) oracle query cost:        ~2^46.4
-JLNT precomputation:                            ~2^92.8
-JLNT per-target cost:                           ~2^87.6
+SDH NFS (parallelizable) oracle query cost:     ~2^46.4
+SDH NFS precomputation:                         ~2^92.8
+SDH NFS per-target cost:                        ~2^87.6
 ~~~
 
 
