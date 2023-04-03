@@ -1220,16 +1220,13 @@ This memo summarizes the state of the art in attacks enabled by static
                 <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-third-oakley-group" class="internal xref">Third Oakley Group</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
-                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-fourth-oakley-group" class="internal xref">Fourth Oakley Group</a></p>
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-group-14-and-ffdhe2048" class="internal xref">Group 14 and ffdhe2048</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
-                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-group-14-and-ffdhe2048" class="internal xref">Group 14 and ffdhe2048</a></p>
+                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-secp256k1" class="internal xref">secp256k1</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6">
-                <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="auto internal xref">7.6</a>.  <a href="#name-secp256k1" class="internal xref">secp256k1</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.7">
-                <p id="section-toc.1-1.7.2.7.1"><a href="#section-7.7" class="auto internal xref">7.7</a>.  <a href="#name-fourq" class="internal xref">FourQ</a></p>
+                <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="auto internal xref">7.6</a>.  <a href="#name-fourq" class="internal xref">FourQ</a></p>
 </li>
             </ul>
 </li>
@@ -1895,7 +1892,9 @@ best p+1 attack cost after 6 626 767 421 380 queries:   ~2^107.2
  Group Description registry, is a Weierstrass curve over F_{2^155},
  with cofactor 12.
 This group provides below 80-bit security against DLP, and so is unfit
- for most use today.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+ for most use today.
+For example, at a rate of about 250 EHz, the Bitcoin network computes
+ more than 2^90 hashes per year <span>[<a href="#BlockchainHashrate" class="cite xref">BlockchainHashrate</a>]</span>.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
 <p id="section-7.3-2">The group is completely broken in practical terms by the <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>
  attack on curves over F_{2^155} as a degree-5 extension field over
  F_{2^31}; see <span>[<a href="#Vitse10" class="cite xref">Vitse10</a>]</span> and <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span> for details.
@@ -1918,77 +1917,38 @@ Index calculus computational cost (i7-4650U cycles):    ~2^39.0
 </div>
 </section>
 </div>
-<div id="fourth-oakley-group">
-<section id="section-7.4">
-        <h3 id="name-fourth-oakley-group">
-<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-fourth-oakley-group" class="section-name selfRef">Fourth Oakley Group</a>
-        </h3>
-<p id="section-7.4-1">The Fourth Oakley Group <span>[<a href="#RFC2409" class="cite xref">RFC2409</a>]</span>, or Group 4 in the IANA IPsec IKE
- Group Description registry, is a Weierstrass curve over F_{2^185},
- with cofactor 4.
-This group provides around 90-bit security against DLP, and so is unfit
- for most use today.
-For example, at a rate of about 250 EHz, the Bitcoin network computes
- more than 2^90 hashes per year <span>[<a href="#BlockchainHashrate" class="cite xref">BlockchainHashrate</a>]</span>.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
-<p id="section-7.4-2">The group is likely breakable in practical terms by the <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> attack
- on curves over F_{2^185} as a degree-5 extension field over F_{2^37}.
-The estimate of the computational cost here is based on the numbers of
- CPU cycles presented by <span>[<a href="#Vitse10" class="cite xref">Vitse10</a>]</span> and <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span> for the Third
- Oakley Group, which is considerably less than most other cost metrics
- counting number of curve additions.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-7.4-3">
-<pre>
-p = 12259964326927110866866776214413170562013096250261263279
-p - 1 = 2 * 3 * 11 * 109 * 8123 * 12277 * 594667 * 514017746554597507 *
-  55905960308440715813
-p + 1 = 2^4 * 5 * 3197899 * 181891629986660813 *
-  263464291405167669025624646993
-
-baseline rho cost:                                              ~2^91.3
-best p-1 attack cost after 6 464 114 577 505 913 queries:       ~2^65.2
-best p+1 attack cost after 255 831 920 queries:                 ~2^77.5
-
-Index calculus (parallelizable) query cost:                     ~2^37.0
-Index calculus computational cost (Intel i7-4650U cycles):      ~2^46.0
-</pre><a href="#section-7.4-3" class="pilcrow">¶</a>
-</div>
-<p id="section-7.4-4">XXX The index calculus computational cost is too low -- is scaled for a
-curve over F_{2^155} and not a curve over F_{2^185} which is presumably
-slightly more expensive.<a href="#section-7.4-4" class="pilcrow">¶</a></p>
-</section>
-</div>
 <div id="group-14-and-ffdhe2048">
-<section id="section-7.5">
+<section id="section-7.4">
         <h3 id="name-group-14-and-ffdhe2048">
-<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-group-14-and-ffdhe2048" class="section-name selfRef">Group 14 and ffdhe2048</a>
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-group-14-and-ffdhe2048" class="section-name selfRef">Group 14 and ffdhe2048</a>
         </h3>
-<p id="section-7.5-1">Group 14 <span>[<a href="#RFC3526" class="cite xref">RFC3526</a>]</span> and ffdhe2048 <span>[<a href="#RFC7919" class="cite xref">RFC7919</a>]</span> are the multiplicative
+<p id="section-7.4-1">Group 14 <span>[<a href="#RFC3526" class="cite xref">RFC3526</a>]</span> and ffdhe2048 <span>[<a href="#RFC7919" class="cite xref">RFC7919</a>]</span> are the multiplicative
  groups of 2048-bit prime fields, recommended for IPsec and TLS,
- respectively.<a href="#section-7.5-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-7.5-2">
+ respectively.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.4-2">
 <pre>
 baseline NFS cost:                              ~2^116.9
 
-JLNT (parallelizable) oracle query cost:        ~2^46.4
-JLNT precomputation:                            ~2^92.8
-JLNT per-target cost:                           ~2^87.6
-</pre><a href="#section-7.5-2" class="pilcrow">¶</a>
+SDH NFS (parallelizable) oracle query cost:     ~2^46.4
+SDH NFS precomputation:                         ~2^92.8
+SDH NFS per-target cost:                        ~2^87.6
+</pre><a href="#section-7.4-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="secp256k1">
-<section id="section-7.6">
+<section id="section-7.5">
         <h3 id="name-secp256k1">
-<a href="#section-7.6" class="section-number selfRef">7.6. </a><a href="#name-secp256k1" class="section-name selfRef">secp256k1</a>
+<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-secp256k1" class="section-name selfRef">secp256k1</a>
         </h3>
-<p id="section-7.6-1">secp256k1 <span>[<a href="#SEC2" class="cite xref">SEC2</a>]</span> is a short Weierstrass curve of prime order over
+<p id="section-7.5-1">secp256k1 <span>[<a href="#SEC2" class="cite xref">SEC2</a>]</span> is a short Weierstrass curve of prime order over
  the field F_q where q = 2^256 - 2^32 - 977, used in Bitcoin and other
- cryptocurrencies.<a href="#section-7.6-1" class="pilcrow">¶</a></p>
-<p id="section-7.6-2">secp256k1 is not recommended by the IETF.
+ cryptocurrencies.<a href="#section-7.5-1" class="pilcrow">¶</a></p>
+<p id="section-7.5-2">secp256k1 is not recommended by the IETF.
 We mention it here only because of its widespread use in
  cryptocurrencies, where the ready availability of high-quality
- implementations makes it tempting for related OPRF applications.<a href="#section-7.6-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-7.6-3">
+ implementations makes it tempting for related OPRF applications.<a href="#section-7.5-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.5-3">
 <pre>
 p = 2^256 - 432420386565659656852420866394968145599
 p - 1 = 2^6 * 3 * 149 * 631 * 107361793816595537 *
@@ -1999,31 +1959,31 @@ p + 1 = 2 * 13 * 83 * 45751 * 509879 *
 baseline rho cost:                                      ~2^127.8
 best p-1 attack cost after 18 051 648 queries:          ~2^115.9
 best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
-</pre><a href="#section-7.6-3" class="pilcrow">¶</a>
+</pre><a href="#section-7.5-3" class="pilcrow">¶</a>
 </div>
-<p id="section-7.6-4">secp256k1 is unaffected by the attacks of <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>, and
+<p id="section-7.5-4">secp256k1 is unaffected by the attacks of <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>, and
  <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since it is defined over a prime field, not an extension
- field.<a href="#section-7.6-4" class="pilcrow">¶</a></p>
+ field.<a href="#section-7.5-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="fourq">
-<section id="section-7.7">
+<section id="section-7.6">
         <h3 id="name-fourq">
-<a href="#section-7.7" class="section-number selfRef">7.7. </a><a href="#name-fourq" class="section-name selfRef">FourQ</a>
+<a href="#section-7.6" class="section-number selfRef">7.6. </a><a href="#name-fourq" class="section-name selfRef">FourQ</a>
         </h3>
-<p id="section-7.7-1">FourQ <span>[<a href="#CL15" class="cite xref">CL15</a>]</span> is a twisted Edwards curve over an extension field
+<p id="section-7.6-1">FourQ <span>[<a href="#CL15" class="cite xref">CL15</a>]</span> is a twisted Edwards curve over an extension field
  F_{q^2} where q = 2^127 - 1, with a prime-order subgroup.
 The designers of FourQ recommend point validation to prevent issues
  with cofactors and twists.
 We do not consider the details of these issues here.
 The implementor MUST do point validation, or the protocol designer MUST
  choose an encoding that is naturally restricted to the prime-order
- subgroup like Ristretto or Decaf.<a href="#section-7.7-1" class="pilcrow">¶</a></p>
-<p id="section-7.7-2">FourQ is not recommended by the IETF.
+ subgroup like Ristretto or Decaf.<a href="#section-7.6-1" class="pilcrow">¶</a></p>
+<p id="section-7.6-2">FourQ is not recommended by the IETF.
 We mention it here only because it has received considerable attention
  in the community with implementations at higher performance than
- Curve25519 taking advantage of arithmetic modulo a Mersenne prime.<a href="#section-7.7-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-7.7-3">
+ Curve25519 taking advantage of arithmetic modulo a Mersenne prime.<a href="#section-7.6-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.6-3">
 <pre>
 p = 73846995687063900142583536357581573884798075859800097461294096333596429543
 p - 1 = 2 * 3^2 * 103043 * 5948609 * 7355633 * 9560163629 *
@@ -2037,10 +1997,10 @@ best p+1 attack cost after 728 queries:                         ~2^117.9
 
 Granger (parallelizable) query cost:                            ~2^84.6
 Granger computational cost:                                     &gt;2^84.6
-</pre><a href="#section-7.7-3" class="pilcrow">¶</a>
+</pre><a href="#section-7.6-3" class="pilcrow">¶</a>
 </div>
-<p id="section-7.7-4">FourQ is unaffected by the attacks of <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> and <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since
- its extension degree is not divisible by 5.<a href="#section-7.7-4" class="pilcrow">¶</a></p>
+<p id="section-7.6-4">FourQ is unaffected by the attacks of <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> and <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since
+ its extension degree is not divisible by 5.<a href="#section-7.6-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
