@@ -4,8 +4,8 @@
 
 Crypto Forum Research Group                               T. R. Campbell
 Internet-Draft                                          Random Float LLC
-Intended status: Informational                              1 April 2023
-Expires: 3 October 2023
+Intended status: Informational                              3 April 2023
+Expires: 5 October 2023
 
 
                 Attacks on Static Diffie-Hellman Oracles
@@ -20,9 +20,7 @@ Abstract
    inability either to recover x or to compute x*Q for a random element
    Q chosen after queries to the static DH oracle.  This memo summarizes
    the state of the art in attacks enabled by static DH oracles, and the
-   resistance of widely used groups to such attacks.  This memo
-   concludes that static DH oracles do not meaningfully threaten the
-   security of any elliptic curve groups recommended by the IETF for DH.
+   resistance of widely used groups to such attacks.
 
 Discussion Venues
 
@@ -50,7 +48,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 3 October 2023.
+   This Internet-Draft will expire on 5 October 2023.
 
 Copyright Notice
 
@@ -74,25 +72,27 @@ Table of Contents
    3.  Static DH Oracle Examples
    4.  Assumptions
    5.  Cofactors
-   6.  Generic Static DH Attacks
-     6.1.  p - 1 Attack
-     6.2.  p + 1 Attack in Quadratic Extension
-     6.3.  Generalizations of the p - 1 and p + 1 Attacks
-     6.4.  Multi-Target Attacks
-   7.  Attacks on Elliptic Curves over Extension Fields
-   8.  Groups
-     8.1.  Ristretto255
-     8.2.  NIST P-256
-     8.3.  secp256k1
-     8.4.  Third Oakley Group
-     8.5.  Fourth Oakley Group
-     8.6.  FourQ
-     8.7.  Finite Fields
-   9.  Security Considerations
-   10. IANA Considerations
-   11. References
-     11.1.  Normative References
-     11.2.  Informative References
+   6.  Attacks
+     6.1.  Attacks on Generic Groups
+       6.1.1.  p - 1 Attack
+       6.1.2.  p + 1 Attack in Quadratic Extension
+       6.1.3.  Generalizations of the p - 1 and p + 1 Attacks
+       6.1.4.  Multi-Target Attacks
+     6.2.  Attacks on Finite Fields
+     6.3.  Attacks on Elliptic Curves over Extension Fields
+   7.  Groups
+     7.1.  Ristretto255
+     7.2.  NIST P-256
+     7.3.  Third Oakley Group
+     7.4.  Fourth Oakley Group
+     7.5.  Group 14 and ffdhe2048
+     7.6.  secp256k1
+     7.7.  FourQ
+   8.  Security Considerations
+   9.  IANA Considerations
+   10. References
+     10.1.  Normative References
+     10.2.  Informative References
    Acknowledgments
    Author's Address
 
@@ -106,12 +106,6 @@ Table of Contents
    given (x*G, y*G), find xy*G.  (Note: For consistency, we write all
    groups additively in this memo, as is typical for elliptic curves.)
 
-   In groups such as Group 14 [RFC3526] and the large prime-order
-   subgroup of Curve25519 [RFC7748] or Ristretto255
-   [I-D.irtf-cfrg-ristretto255-decaf448], solving DLP is essentially the
-   cheapest known way to solve CDH and to break practical protocols
-   based on the group.
-
    Traditional protocols involving Diffie-Hellman, including ephemeral
    key agreement in TLS and static key agreement in the original
    proposal of Diffie and Hellman [DH76], use the shared secret xy*G to
@@ -121,8 +115,9 @@ Table of Contents
 
    Newer protocols based on oblivious pseudorandom function families
    (OPRF, [I-D.irtf-cfrg-voprf]), such as OPAQUE [I-D.irtf-cfrg-opaque]
-   and Privacy Pass [I-D.ietf-privacypass-protocol], take advantage of
-   the algebraic structure of the group to do more: An OPRF is a
+   and Privacy Pass [I-D.ietf-privacypass-protocol], inspired by the
+   Ford-Kaliski password-hardening protocol [FK00], take advantage of
+   the algebraic structure of the group to do more.  An OPRF is a
    protocol by which a client and a server can jointly evaluate a
    pseudorandom function family (PRF) with a key known only to the
    server on an input known only to the client, giving an output also
@@ -133,21 +128,21 @@ Table of Contents
 1.1.  Taxonomy of Problems
 
    A *static DH oracle* reveals x*P given an arbitrary base P where x is
-   a secret.  The *static DH problem* (SDH, [BG04]) is to compute x*Q
-   for random Q determined after the adversary's last oracle query.
+   a secret.  The *static DH problem* (SDH or SDHP, [BG04]) is to
+   compute x*Q for random Q determined after the adversary's last oracle
+   query.
 
    The *discrete log problem with auxiliary inputs* (DLPwAI, [Cheon10])
    is to recover x given (G, x*G, x^2*G, x^3*G, ..., x^q*G) for some q.
-   The DLPwAI is obviously at least as hard as SDH: Given a static DH
+   DLPwAI is obviously at least as hard as SDH: Given a static DH
    oracle, an adversary can find the auxiliary inputs for DLPwAI, and
    then if the adversary can solve DLPwAI they can trivially solve a
    static DH problem by using the secret x to compute x*Q directly given
    the challenge Q.
 
-   It is unknown whether SDH is at least as hard as DLPwAI.  Most SDH
-   attacks work via DLPwAI, with the exception of the [Granger10] attack
-   discussed below on elliptic curves over extension fields, which
-   solves SDH directly but not DLPwAI.
+   It is unknown whether SDH is at least as hard as DLPwAI.  Many SDH
+   attacks work via DLPwAI, but there are exceptions like [JLNT09],
+   [Granger10], and [JV11] which solve SDH directly but not DLPwAI.
 
    The *generalized discrete log problem with auxiliary inputs*
    (GDLPwAI, [Kim14]) is to recover x given (x^e_1 * G, x^e_2 * G, ...,
@@ -356,7 +351,9 @@ Table of Contents
    This memo does not consider the security impact of static DH oracles
    in a composite-order group.
 
-6.  Generic Static DH Attacks
+6.  Attacks
+
+6.1.  Attacks on Generic Groups
 
    Generic attacks treat the group operation as a black box, and thus
    work in any group, including elliptic curves over finite fields and
@@ -370,7 +367,7 @@ Table of Contents
    queries.  Let p be the prime order of the group.
 
    The baseline generic DLP attack on a prime-order group, with only
-   knowledge of G and x*G, static DH oracle, is Pollard's rho
+   knowledge of G and x*G, and no static DH oracle, is Pollard's rho
    [Pollard78], which costs O(sqrt{p}) group operations and O(1) memory,
    and can be effectively parallelized with low communication cost using
    the van Oorschot-Wiener collision search machine [OW99].  For
@@ -381,7 +378,7 @@ Table of Contents
    [SafeCurves] for references and focus here on generic attacks enabled
    by a static DH oracle.
 
-6.1.  p - 1 Attack
+6.1.1.  p - 1 Attack
 
    When q >= d for a divisor d of p - 1, the adversary can recover k
    given (G, k*G, k^d*G) with O(sqrt{p/d} + sqrt{d}) group operations
@@ -391,7 +388,7 @@ Table of Contents
    root of unity.
 
    First, find scalars 0 <= u_1, v_1 < d_1 := ceiling(sqrt{(p - 1)/d})
-   giving a collision
+   giving a collision of the form:
 
    (k^d z^{-u_1}) * G = (z^{d_1 v_1}) * G,
 
@@ -417,7 +414,7 @@ Table of Contents
    baby-step/giant-step tables to a random walk with essentially
    constant memory along the lines of Pollard's kangaroo in [Cheon10].
 
-6.2.  p + 1 Attack in Quadratic Extension
+6.1.2.  p + 1 Attack in Quadratic Extension
 
    When q >= 2d for a divisor d of p + 1, the adversary can recover k
    given (G, k*G, k^2*G, ..., k^{2d}*G) with O(sqrt{p/d} + d) group
@@ -449,7 +446,7 @@ Table of Contents
    intensive baby-step/giant-step tables, and then extended to a random
    walk with essentially constant memory in [Cheon10].
 
-6.3.  Generalizations of the p - 1 and p + 1 Attacks
+6.1.3.  Generalizations of the p - 1 and p + 1 Attacks
 
    The attacks were generalized in [Satoh09] to any divisor d of
    Phi_n(p), where Phi_n is the nth cyclotomic polynomial.  However, in
@@ -472,7 +469,7 @@ Table of Contents
    a divisor d of p +/- 1, so the generalization is ruled out by the
    same limits on feasible query cost.
 
-6.4.  Multi-Target Attacks
+6.1.4.  Multi-Target Attacks
 
    [Kim16] extended the p - 1 attack to the multi-target setting: given
    L independent query responses (G, k_i * G, k_i^d * G) for 1 <= i <=
@@ -487,18 +484,56 @@ Table of Contents
    impact of static DH attacks in a group where a single-target attack
    is already within reach.
 
-7.  Attacks on Elliptic Curves over Extension Fields
+6.2.  Attacks on Finite Fields
+
+   In a finite field F_q for prime q, without a static DH oracle, the
+   state of the art in DLP (and SDH) is the general number field sive,
+   which costs [Barbulescu13]:
+
+   precomputation:         L^{cbrt(64/9) + o(1)}   ~ L^{1.923 + o(1)}
+   per-target cost:        L^{cbrt(3) + o(1)}      ~ L^{1.442 + o(1)},
+
+   where
+
+   L = exp[(log q)^{1/3} (log log q)^{2/3}].
+
+   We do not consider extension fields here, since small-characteristic
+   fields like binary fields have not appeared in IETF recommendations
+   for Diffie-Hellman applications (XXX verify), and medium-
+   characteristic fields appear mainly in pairing-based cryptography
+   which is out of scope for this memo.
+
+   [JLNT09] extended the number field sieve to take advantage of a
+   static DH oracle, with the following attack costs for large-
+   characteristic fields:
+
+   oracle queries:         L^{cbrt(4/9) + o(1)}    ~ L^{0.763 + o(1)}
+   precomputation:         L^{cbrt(32/9) + o(1)}   ~ L^{1.526 + o(1)}
+   per-target cost:        L^{cbrt(3) + o(1)}      ~ L^{1.442 + o(1)}
+
+   These queries are nonadaptive, so they _need not_ be sequential;
+   hence the feasible query cost may be considerably higher than for the
+   generic attacks of [BG04] and [Cheon06]. q need not be prime, as long
+   as the characteristic is at least L^{2/3 + o(1)}; a similar attack
+   was also extended to medium- and small-characteristic fields, with
+   different costs.
+
+6.3.  Attacks on Elliptic Curves over Extension Fields
 
    In the group of rational points on an elliptic curve over an
-   extension field F_{q^n}, after O(q^{1 - 1/(n + 1)}) oracle queries
-   (whether or not the number of queries divides p +/- 1), the adversary
-   can use index calculus as in [Granger10] to solve the static DH
-   problem with O~(q^{1 - 1/(n + 1)}) computation, for fixed n as q
-   grows; here O~(...) denotes O(... log^m q) for some m.  These queries
-   _need not_ be sequential, so the feasible query cost may be
-   considerably higher than for [BG04]- and [Cheon06]-type attacks. q
-   need not be prime; the attacks apply just as well to extension fields
-   of extension fields.
+   extension field F_{q^n}, [Granger10] extended index calculus to solve
+   the static DH problem with a static DH oracle with the following
+   queries, for fixed q as n grows:
+
+   oracle queries:         O(q^{1 - 1/(n + 1)})
+   computation:            O~(q^{1 - 1/(n + 1)}),
+
+   where O~(...) denotes O(... log^m q) for some m.
+
+   These queries are nonadaptive, so they _need not_ be sequential;
+   hence the feasible query cost may be considerably higher than for the
+   generic attacks of [BG04] and [Cheon06]. q need not be prime; the
+   attacks apply just as well to extension fields of extension fields.
 
    At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
    issuing O(sqrt{q}) static DH queries.  The cost for n = 2 is
@@ -513,38 +548,42 @@ Table of Contents
    to defeat DLP without a static DH oracle might succumb after ~2^64
    oracle queries (potentially in parallel) and ~2^64 computation.
 
-   [JV11] showed a similar attack with reduced cost for n = 5, This
-   attack was used to solve SDH in practice in 2010 [Vitse10] on the
-   Third Oakley Group [RFC2409] defined over F_{2^155} with q = 2^31 and
-   n = 5.
+   A similar attack is available with reduced cost for n = 5 as shown in
+   [JV11] and extended in [FHJRV14], which was used to solve SDH in
+   practice on the Third Oakley Group [RFC2409], defined over F_{2^155}
+   with q = 2^31 and n = 5.
 
    Curves over extension fields may have structure that admits attacks
-   cheaper than Pollard's rho, such as [JV12].  Others such as [GG15]
-   found no advantage to index calculus over Pollard's rho on curves in
-   binary extension fields F_{2^n} of prime degree n.  But these did not
-   appear to consider additional advantage from a static DH oracle.  We
-   do not review them further; study of the literature on DLP attacks
-   without a static DH oracle are out of scope for this memo.
+   cheaper than Pollard's rho, such as [JV12] and [GGMP21].  Others such
+   as [GG15] found no advantage to index calculus over Pollard's rho on
+   curves in binary extension fields F_{2^n} of prime degree n.  But
+   these did not appear to consider additional advantage from a static
+   DH oracle.  We do not review them further; study of the literature on
+   DLP attacks without a static DH oracle are out of scope for this
+   memo.
 
-   Protocol designers MUST consider [Granger10] and [JV11] attacks
-   before exposing static DH oracles for any elliptic curves over
-   extension fields, such as the Oakley EC2N groups [RFC2409] or FourQ
-   [CL15].  Protocol designers MUST review the literature on DLP before
-   deploying any elliptic curves over extension fields.
+   Protocol designers MUST consider [Granger10], [JV11], and [FHJRV14]
+   attacks before exposing static DH oracles for any elliptic curves
+   over extension fields, such as the Oakley EC2N groups [RFC2409] or
+   FourQ [CL15].  Protocol designers MUST review the literature on DLP
+   before deploying any elliptic curves over extension fields.
 
-8.  Groups
+7.  Groups
 
-   We discuss mainly groups of order near 2^256.  Much smaller groups
-   provide inadequate generic DLP security even without static DH
-   oracles.  Much larger groups such as Decaf448
-   [I-D.irtf-cfrg-ristretto255-decaf448] and NIST P-384 [FIPS186-4]
-   [SEC2] [RFC5903] are out of reach no matter what minor advantage a
-   static DH oracle confers with the attacks here, and serve only as
-   hedges against potential future breakthroughs in cryptanalysis.  Such
-   breakthroughs are naturally out of scope for a memo discussing the
-   present state of the art.
+   We discuss mainly groups of order near 2^256:
 
-8.1.  Ristretto255
+   *  Much smaller groups provide inadequate generic DLP security even
+      without static DH oracles.
+
+   *  Much larger elliptic curve groups such as Decaf448
+      [I-D.irtf-cfrg-ristretto255-decaf448] and NIST P-384 [FIPS186-4]
+      [SEC2] [RFC5903] are out of reach no matter what minor advantage a
+      static DH oracle confers with the attacks here, and serve only as
+      hedges against potential future breakthroughs in cryptanalysis.
+      Such breakthroughs are naturally out of scope for a memo
+      discussing the present state of the art.
+
+7.1.  Ristretto255
 
    Ristretto255 [I-D.irtf-cfrg-ristretto255-decaf448] is a group of
    prime order based on Curve25519 [Bernstein06] [RFC7748], an elliptic
@@ -560,10 +599,11 @@ Table of Contents
    best p-1 attack cost after 132 queries:         ~2^122.5
    best p+1 attack cost after 14 420 queries:      ~2^119.5
 
-   Ristretto255 is unaffected by the [Granger10] and [JV11] attacks,
-   since it is defined over a prime field, not an extension field.
+   Ristretto255 is unaffected by the attacks of [Granger10], [JV11], and
+   [FHJRV14], since it is defined over a prime field, not an extension
+   field.
 
-8.2.  NIST P-256
+7.2.  NIST P-256
 
    NIST P-256, also known as secp256r1 [FIPS186-4] [SEC2] [RFC5903], is
    a short Weierstrass curve of prime order over the field F_q where q =
@@ -583,10 +623,81 @@ Table of Contents
    best p-1 attack cost: at least                          ~2^100.5
    best p+1 attack cost after 6 626 767 421 380 queries:   ~2^107.2
 
-   NIST P-256 is unaffected by the [Granger10] and [JV11] attacks, since
-   it is defined over a prime field, not an extension field.
+   NIST P-256 is unaffected by the attacks of [Granger10], [JV11], and
+   [FHJRV14], since it is defined over a prime field, not an extension
+   field.
 
-8.3.  secp256k1
+7.3.  Third Oakley Group
+
+   The Third Oakley Group [RFC2409], or Group 3 in the IANA IPsec IKE
+   Group Description registry, is a Weierstrass curve over F_{2^155},
+   with cofactor 12.  This group provides below 80-bit security against
+   DLP, and so is unfit for most use today.
+
+   The group is completely broken in practical terms by the [JV11]
+   attack on curves over F_{2^155} as a degree-5 extension field over
+   F_{2^31}; see [Vitse10] and [FHJRV14] for details.  The estimate of
+   the computational cost here is the number of Intel Core i7-4650U CPU
+   cycles presented in [FHJRV14], which is considerably less than most
+   other cost metrics counting number of curve additions.
+
+p = 3805993847215893016155463826195386266397436443
+p - 1 = 2 * 3 * 10181 * 1239554496673218367 * 50264430795225140347741
+p + 1 = 2^2 * 23 * 436957 * 728069 * 5322133 * 18629415209 * 1311547632725557
+
+baseline rho cost:                                      ~2^75.5
+best p-1 attack after 61 086 queries:                   ~2^67.75
+best p+1 attack after 32 561 013 525 916 052 queries:   ~2^54.9
+
+Index calculus (parallelizable) query cost:             ~2^30.0
+Index calculus computational cost (i7-4650U cycles):    ~2^39.0
+
+7.4.  Fourth Oakley Group
+
+   The Fourth Oakley Group [RFC2409], or Group 4 in the IANA IPsec IKE
+   Group Description registry, is a Weierstrass curve over F_{2^185},
+   with cofactor 4.  This group provides around 90-bit security against
+   DLP, and so is unfit for most use today.  For example, at a rate of
+   about 250 EHz, the Bitcoin network computes more than 2^90 hashes per
+   year [BlockchainHashrate].
+
+   The group is likely breakable in practical terms by the [JV11] attack
+   on curves over F_{2^185} as a degree-5 extension field over F_{2^37}.
+   The estimate of the computational cost here is based on the numbers
+   of CPU cycles presented by [Vitse10] and [FHJRV14] for the Third
+   Oakley Group, which is considerably less than most other cost metrics
+   counting number of curve additions.
+
+ p = 12259964326927110866866776214413170562013096250261263279
+ p - 1 = 2 * 3 * 11 * 109 * 8123 * 12277 * 594667 * 514017746554597507 *
+   55905960308440715813
+ p + 1 = 2^4 * 5 * 3197899 * 181891629986660813 *
+   263464291405167669025624646993
+
+ baseline rho cost:                                              ~2^91.3
+ best p-1 attack cost after 6 464 114 577 505 913 queries:       ~2^65.2
+ best p+1 attack cost after 255 831 920 queries:                 ~2^77.5
+
+ Index calculus (parallelizable) query cost:                     ~2^37.0
+ Index calculus computational cost (Intel i7-4650U cycles):      ~2^46.0
+
+   XXX The index calculus computational cost is too low -- is scaled for
+   a curve over F_{2^155} and not a curve over F_{2^185} which is
+   presumably slightly more expensive.
+
+7.5.  Group 14 and ffdhe2048
+
+   Group 14 [RFC3526] and ffdhe2048 [RFC7919] are the multiplicative
+   groups of 2048-bit prime fields, recommended for IPsec and TLS,
+   respectively.
+
+   baseline NFS cost:                              ~2^116.9
+
+   JLNT oracle queries:                            ~2^46.4
+   JLNT precomputation:                            ~2^92.8
+   JLNT per-target cost:                           ~2^87.6
+
+7.6.  secp256k1
 
    secp256k1 [SEC2] is a short Weierstrass curve of prime order over the
    field F_q where q = 2^256 - 2^32 - 977, used in Bitcoin and other
@@ -607,69 +718,11 @@ Table of Contents
    best p-1 attack cost after 18 051 648 queries:          ~2^115.9
    best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
 
-   secp256k1 is unaffected by the [Granger10] and [JV11] attacks, since
-   it is defined over a prime field, not an extension field.
+   secp256k1 is unaffected by the attacks of [Granger10], [JV11], and
+   [FHJRV14], since it is defined over a prime field, not an extension
+   field.
 
-8.4.  Third Oakley Group
-
-   The Third Oakley Group [RFC2409], or Group 3 in the IANA IPsec IKE
-   Group Description registry, is a Weierstrass curve over F_{2^155},
-   with cofactor 12.  This group provides below 80-bit security against
-   DLP, and so is unfit for most use today.
-
-   The group is completely broken in practical terms by the [JV11]
-   attack on curves over F_{2^155} as a degree-5 extension field over
-   F_{2^31}; see [Vitse10] for details.  The estimate of the
-   computational cost here is the number of CPU cycles presented by
-   [Vitse10], which is considerably less than most other cost metrics
-   counting number of curve additions.
-
-p = 3805993847215893016155463826195386266397436443
-p - 1 = 2 * 3 * 10181 * 1239554496673218367 * 50264430795225140347741
-p + 1 = 2^2 * 23 * 436957 * 728069 * 5322133 * 18629415209 * 1311547632725557
-
-baseline rho cost:                                      ~2^75.5
-best p-1 attack after 61 086 queries:                   ~2^67.75
-best p+1 attack after 32 561 013 525 916 052 queries:   ~2^54.9
-
-JV (parallelizable) query cost:                         ~2^30
-JV computational cost (2010-era Xeon CPU cycles):       ~2^61.6
-
-8.5.  Fourth Oakley Group
-
-   The Fourth Oakley Group [RFC2409], or Group 4 in the IANA IPsec IKE
-   Group Description registry, is a Weierstrass curve over F_{2^185},
-   with cofactor 4.  This group provides around 90-bit security against
-   DLP, and so is unfit for most use today.  For example, at a rate of
-   about 250 EHz, the Bitcoin network computes more than 2^90 hashes per
-   year [BlockchainHashrate].
-
-   The group is likely breakable in practical terms by the [JV11] attack
-   on curves over F_{2^185} as a degree-5 extension field over F_{2^37}.
-   The estimate of the computational cost here is the number of CPU
-   cycles presented by [Vitse10] for the Third Oakley Group, which is
-   considerably less than most other cost metrics counting number of
-   curve additions.
-
- p = 12259964326927110866866776214413170562013096250261263279
- p - 1 = 2 * 3 * 11 * 109 * 8123 * 12277 * 594667 * 514017746554597507 *
-   55905960308440715813
- p + 1 = 2^4 * 5 * 3197899 * 181891629986660813 *
-   263464291405167669025624646993
-
- baseline rho cost:                                              ~2^91.3
- best p-1 attack cost after 6 464 114 577 505 913 queries:       ~2^65.2
- best p+1 attack cost after 255 831 920 queries:                 ~2^77.5
-
- JV (parallelizable) query cost:                                 ~2^37
- JV computational cost (2010-era Xeon CPU cycles):               ~2^67.6
-
-   XXX The JV computational cost is too low -- it assumes 22.95 ms per
-   decomposition trial on 2.93 GHz processor, but that was for a curve
-   over F_{2^155} and not a curve over F_{2^185} which is presumably
-   slightly more expensive.
-
-8.6.  FourQ
+7.7.  FourQ
 
    FourQ [CL15] is a twisted Edwards curve over an extension field
    F_{q^2} where q = 2^127 - 1, with a prime-order subgroup.  The
@@ -697,60 +750,20 @@ best p+1 attack cost after 728 queries:                         ~2^117.9
 Granger (parallelizable) query cost:                            ~2^84.6
 Granger computational cost:                                     >2^84.6
 
-   FourQ is unaffected by the [JV11] attack, since its extension degree
-   is not divisible by 5.
+   FourQ is unaffected by the attacks of [JV11] and [FHJRV14], since its
+   extension degree is not divisible by 5.
 
-8.7.  Finite Fields
-
-   DH over the multiplicative groups of finite fields such as [RFC3526]
-   and [RFC7919] is essentially unaffected by the attacks described here
-   because the group order is so large in order to defeat the general
-   number field sieve that the generic DLPwAI algorithms cited here are
-   out of reach anyway.  For example, no matter what the factorization
-   of p - 1 and p + 1 is for Group 14 of [RFC3526] (the author got bored
-   waiting for gp to answer), the group order p is around 2^2048 anyway,
-   so sqrt{p/d} must be at least around the totally insurmountable
-   2^990.
-
-   XXX OOPS -- this section is not accurate.  References to review and
-   chase citations to:
-
-   *  Joux, Lercier, Naccache, and Thome, "Oracle-Assisted Static
-      Diffie-Hellman Is Easier Than Discrete Logarithms", IMA
-      International Conference on Cryptography and Coding Theory -- IMAC
-      2009. https://sci-hub.se/https://link.springer.com/
-      chapter/10.1007/978-3-642-10868-6_21
-
-   *  Koblitz & Menezes, "Another look at non-standard discrete log and
-      Diffie-Hellman problems". https://eprint.iacr.org/2007/442
-
-   For F_q where q is prime, the summary seems to be:
-
-   *  L^{cbrt{4/9}} oracle queries
-
-   *  L^{cbrt{32/9}} computation
-
-   where L = exp((1 + o(1)) (log q)^{1/3} (log log q)^{2/3}).
-
-   For, e.g., Group 14, with q ~ 2^2048, this requires a little over
-   2^46.3 (parallelizable) queries and 2^92.7 computation.
-
-   In contrast, NFS for DLP without SDH costs L^{cbrt(64/9)}
-   computation, which for Group 14 with q ~ 2^2048 is a little over
-   2^116 computation.  So that's about a factor of 20 million cost
-   reduction, after submitting nearly 100 trillion queries.
-
-9.  Security Considerations
+8.  Security Considerations
 
    This document is a security consideration.
 
-10.  IANA Considerations
+9.  IANA Considerations
 
    This document has no IANA actions.
 
-11.  References
+10.  References
 
-11.1.  Normative References
+10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -761,17 +774,22 @@ Granger computational cost:                                     >2^84.6
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
-11.2.  Informative References
+10.2.  Informative References
+
+   [Barbulescu13]
+              Barbulescu, R., "Algorithms for discrete logarithm in
+              finite fields", PhD University of Lorraine, 2013,
+              <https://hal.univ-lorraine.fr/tel-01750438>.
 
    [BDLSY11]  Bernstein, D. J., Duif, N., Lange, T., Schwabe, P., and B.
               Yang, "High-speed high-security signatures", CHES 2011,
-              Springer LNCS 6917, ISBN 978-3-642-23950-2,
-              DOI 10.1007/978-3-642-23951-9_9, 2011,
-              <https://cr.yp.to/papers.html#ed25519>.
+              Springer LNCS 6917, ISSN 0302-9743,
+              ISBN 978-3-642-23950-2, DOI 10.1007/978-3-642-23951-9_9,
+              2011, <https://cr.yp.to/papers.html#ed25519>.
 
    [Bernstein06]
               Bernstein, D. J., "Curve25519: new Diffie-Hellman speed
-              records", PKC 2006, Springer LNCS 3958,
+              records", PKC 2006, Springer LNCS 3958, ISSN 0302-9743,
               ISBN 978-3-540-33851-2, DOI 10.1007/11745853_14, 2006,
               <https://link.springer.com/chapter/10.1007/11745853_14>.
 
@@ -785,7 +803,8 @@ Granger computational cost:                                     >2^84.6
 
    [Cheon06]  Cheon, J. H., "Security Analysis of the Strong Diffie-
               Hellman Problem", EUROCRYPT 2006, Springer LNCS 4004,
-              ISBN 978-3-540-34546-6, DOI 10.1007/11761679_1, 2006,
+              ISSN 0302-9743, ISBN 978-3-540-34546-6,
+              DOI 10.1007/11761679_1, 2006,
               <https://link.springer.com/chapter/10.1007/11761679_1>.
 
    [Cheon10]  Cheon, J. H., "Discrete Logarithm Problem with Auxiliary
@@ -798,6 +817,12 @@ Granger computational cost:                                     >2^84.6
               decompositions on a Q-curve over the Mersenne prime",
               IACR Cryptology ePrint Archive: Report 2015/565, 2015,
               <https://eprint.iacr.org/2015/565>.
+
+   [CvA89]    Chaum, D. and H. van Antwerpen, "Undeniable Signatures",
+              CRYPTO 1989, Springer LNCS 435, ISSN 0302-9743,
+              ISBN 978-0-387-34805-6, DOI 10.1007/0-387-34805-0_20,
+              1989, <https://link.springer.com/
+              chapter/10.1007/0-387-34805-0_20>.
 
    [Davidson19]
               Davidson, A., "Supporting the latest version of the
@@ -812,12 +837,21 @@ Granger computational cost:                                     >2^84.6
 
    [DH76]     Diffie, W. and M. E. Hellman, "New Directions in
               Cryptography", IEEE Transactions on Information Theory
-              22(6), 1976, <https://www-ee.stanford.edu/~hellman/
-              publications/24.pdf>.
+              22(6), DOI 10.1109/TIT.1976.1055638, 1976, <https://www-
+              ee.stanford.edu/~hellman/publications/24.pdf>.
 
    [eBATS]    Bernstein, D. J. and T. Lange, "eBATS: ECRYPT Benchmarking
               of Asymmetric Systems", 1 April 2023,
               <https://bench.cr.yp.to/ebats.html>.
+
+   [FHJRV14]  Faugère, J.-C., Huot, L., Joux, A., Renault, G., and V.
+              Vitse, "Symmetrized Summation Polynomials: Using Small
+              Order Torsion Points to Speed Up Elliptic Curve Index
+              Calculus", EUROCRYPT 2014, Springer LNCS 8441,
+              ISSN 0302-9743, ISBN 978-3-642-55220-5,
+              DOI 10.1007/978-3-642-55220-5_3, 2014,
+              <https://link.springer.com/
+              chapter/10.1007/978-3-642-55220-5_3>.
 
    [FIPS186-4]
               National Institute of Standards and Technology, "Digital
@@ -825,33 +859,48 @@ Granger computational cost:                                     >2^84.6
               DOI 10.6028/NIST.FIPS.186-4, 2013,
               <https://dx.doi.org/10.6028/NIST.FIPS.186-4>.
 
+   [FK00]     Ford, W. and B. S. Kaliski Jr, "Server-assisted generation
+              of a strong secret from a password", WET ICE 2000,
+              ISSN 1080-1383, ISBN 0-7695-0798-0,
+              DOI 10.1109/ENABL.2000.883724, 2000,
+              <https://ieeexplore.ieee.org/document/883724>.
+
    [GG15]     Galbraith, S. D. and S. W. Gebregiyorgis, "Summation
               Polynomial Algorithms for Elliptic Curves in
               Characteristic Two", INDOCRYPT 2014, Springer LNCS 8885,
-              ISBN 978-3-319-13039-2, DOI 10.1007/978-3-319-13039-2_24,
-              2015, <https://link.springer.com/
+              ISSN 0302-9743, ISBN 978-3-319-13039-2,
+              DOI 10.1007/978-3-319-13039-2_24, 2015,
+              <https://link.springer.com/
               chapter/10.1007/978-3-319-13039-2_24>.
 
    [GG16]     Galbraith, S. D. and P. Gaudry, "Recent progress on the
               elliptic curve discrete logarithm problem", Designs,
-              Codes, and Cryptography 44(1),
+              Codes, and Cryptography 44(1), ISSN 1573-7586,
               DOI 10.1007/s10623-015-0146-7, 2015,
               <https://link.springer.com/
               article/10.1007%2Fs10623-015-0146-7>.
 
+   [GGMP21]   Galbraith, S. D., Granger, R., Merz, S.-P., and C. Petit,
+              "On Index Calculus Algorithms for Subfield Curves",
+              SAC 2021, Springer LNCS 12804, ISSN 0302-9743,
+              ISBN 978-3-030-81652-0, DOI 10.1007/978-3-030-81652-0_5,
+              2021, <https://link.springer.com/
+              chapter/10.1007/978-3-030-81652-0_5>.
+
    [Granger10]
               Granger, R., "On the Static Diffie-Hellman Problem on
               Elliptic Curves over Extension Fields", ASIACRYPT 2010,
-              Springer LNCS 6477, ISBN 978-3-642-17372-1,
-              DOI 10.1007/978-3-642-17373-8_17, 2010,
-              <https://link.springer.com/
+              Springer LNCS 6477, ISSN 0302-9743,
+              ISBN 978-3-642-17372-1, DOI 10.1007/978-3-642-17373-8_17,
+              2010, <https://link.springer.com/
               chapter/10.1007/978-3-642-17373-8_17>.
 
    [Hamburg15]
               Hamburg, M., "Decaf: Eliminating Cofactors Through Point
               Compression", CRYPTO 2015, Springer LNCS 9215,
-              ISBN 978-3-662-47988-9, DOI 10.1007/978-3-662-47989-6_34,
-              2015, <https://link.springer.com/
+              ISSN 0302-9743, ISBN 978-3-662-47988-9,
+              DOI 10.1007/978-3-662-47989-6_34, 2015,
+              <https://link.springer.com/
               chapter/10.1007/978-3-662-47989-6_34>.
 
    [HWBOT]    "CPU Frequency: Hall of Fame -- World Records Achieved
@@ -897,6 +946,14 @@ Granger computational cost:                                     >2^84.6
               <https://www.pcgamesn.com/amd/stuck-on-silicon-past-3nm-
               7-10-years>.
 
+   [JLNT09]   Joux, A., Lercier, R., Naccache, D., and E. Thomé,
+              "Oracle-Assisted Static Diffie-Hellman Is Easier Than
+              Discrete Logarithms", IMACC 2009, Springer LNCS 5921,
+              ISSN 0302-9743, ISBN 978-3-642-10868-6,
+              DOI 10.1007/978-3-642-10868-6_21, 2009,
+              <https://link.springer.com/
+              chapter/10.1007/978-3-642-10868-6_21>.
+
    [JV11]     Joux, A. and V. Vitse, "Elliptic Curve Discrete Logarithm
               Problems over Small Degree Extension Fields", IACR Journal
               of Cryptology 26(1), ISSN 0933-2790,
@@ -905,7 +962,8 @@ Granger computational cost:                                     >2^84.6
               s00145-011-9116-z>.
 
    [JV12]     "Cover and Decomposition Index Calculus on Elliptic Curves
-              Made Practical", EUROCRYPT 2012, ISSN 0302-9743,
+              Made Practical", EUROCRYPT 2012, Springer LNCS 7237,
+              ISSN 0302-9743, ISBN 978-3-642-29011-4,
               DOI 10.1007/978-3-642-29011-4_3, 2012,
               <https://link.springer.com/
               chapter/10.1007/978-3-642-29011-4_3>.
@@ -930,15 +988,16 @@ Granger computational cost:                                     >2^84.6
 
    [Kim16]    Kim, T., "Multiple Discrete Logarithm Problems with
               Auxiliary Inputs", ASIACRYPT 2015, Springer LNCS 9452,
-              ISBN 978-3-662-48796-9, DOI 10.1007/978-3-662-48797-6_8,
-              2015, <https://link.springer.com/
+              ISSN 0302-9743, ISBN 978-3-662-48796-9,
+              DOI 10.1007/978-3-662-48797-6_8, 2015,
+              <https://link.springer.com/
               chapter/10.1007%2F978-3-662-48797-6_8>.
 
    [KKM07]    Koazaki, S., Kutsuma, T., and K. Matsuo, "Remarks on
               Cheon's Algorithms for Pairing-Related Problems",
-              PBC 2007, Springer LNCS 4575, ISBN 978-3-540-73488-8,
-              DOI 10.1007/978-3-540-73489-5_17, 2007,
-              <https://link.springer.com/
+              PBC 2007, Springer LNCS 4575, ISSN 0302-9743,
+              ISBN 978-3-540-73488-8, DOI 10.1007/978-3-540-73489-5_17,
+              2007, <https://link.springer.com/
               chapter/10.1007/978-3-540-73489-5_17>.
 
    [KM07]     Koblitz, N. and A. Menezes, "Another Look at Non-standard
@@ -948,8 +1007,8 @@ Granger computational cost:                                     >2^84.6
 
    [LL97]     Lim, C. H. and P. J. Lee, "A key recovery attack on
               discrete log-based schemes using a prime order subgroup",
-              CRYPTO 1997, Springer LNCS 1294, ISBN 978-3-540-63384-6,
-              DOI 10.1007/BFb0052240, 1997,
+              CRYPTO 1997, Springer LNCS 1294, ISSN 0302-9743,
+              ISBN 978-3-540-63384-6, DOI 10.1007/BFb0052240, 1997,
               <https://link.springer.com/chapter/10.1007/BFb0052240>.
 
    [LS17]     luigi1111 and R. Spagni, "Disclosure of a Major Bug in
@@ -965,8 +1024,8 @@ Granger computational cost:                                     >2^84.6
 
    [Pollard78]
               Pollard, J. M., "Monte Carlo methods for index computation
-              (mod p)", AMS Mathematics of Computation, ISSN 0025-5718,
-              DOI 10.2307/2006496, 1978,
+              (mod p)", AMS Mathematics of Computation 32(143),
+              ISSN 0025-5718, DOI 10.2307/2006496, 1978,
               <https://www.jstor.org/stable/2006496>.
 
    [RFC2409]  Harkins, D. and D. Carrel, "The Internet Key Exchange
@@ -1022,8 +1081,9 @@ Granger computational cost:                                     >2^84.6
    [Schnorr89]
               Schnorr, C. P., "Efficient Identification and Signatures
               for Smart Cards", CRYPTO 1989, Springer LNCS 435,
-              ISBN 978-0-387-97317-3, DOI 10.1007/0-387-34805-0_22,
-              1989, <https://link.springer.com/
+              ISSN 0302-9743, ISBN 978-0-387-97317-3,
+              DOI 10.1007/0-387-34805-0_22, 1989,
+              <https://link.springer.com/
               chapter/10.1007/0-387-34805-0_22>.
 
    [SEC2]     Certicom Research, "SEC 2: Recommended Elliptic Curve
@@ -1042,14 +1102,15 @@ Granger computational cost:                                     >2^84.6
 
    [WZ98]     Wiener, M. J. and R. J. Zuccherato, "Faster Attacks on
               Elliptic Curve Cryptosystems", SAC 1998, Springer LNCS
-              1556, ISBN 978-3-540-65894-8,
+              1556, ISSN 0302-9743, ISBN 978-3-540-65894-8,
               DOI 10.1007/3-540-48892-8_15, 1998,
               <https://link.springer.com/
               chapter/10.1007/3-540-48892-8_15>.
 
    [ZZCGZ14]  Zhang, J., Zhang, Z., Chen, Y., Guo, Y., and Z. Zhang,
               "Black-Box Separations for One-More (Static) CDH and Its
-              Generalization", ASIACRYPT 2014, ISSN 0302-9743,
+              Generalization", ASIACRYPT 2014, Springer LNCS 8874,
+              ISSN 0302-9743, ISBN 978-3-662-45608-8,
               DOI 10.1007/978-3-662-45608-8_20, 2014,
               <https://link.springer.com/
               chapter/10.1007/978-3-662-45608-8_20>.

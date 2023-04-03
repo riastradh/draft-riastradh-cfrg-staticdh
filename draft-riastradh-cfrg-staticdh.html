@@ -15,10 +15,7 @@ Certain cryptographic protocols such as oblivious pseudorandom function
  or to compute x*Q for a random element Q chosen after queries to the
  static DH oracle.
 This memo summarizes the state of the art in attacks enabled by static
- DH oracles, and the resistance of widely used groups to such attacks.
-This memo concludes that static DH oracles do not meaningfully threaten
- the security of any elliptic curve groups recommended by the IETF for
- DH. 
+ DH oracles, and the resistance of widely used groups to such attacks. 
     " name="description">
 <meta content="xml2rfc 3.17.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
@@ -1062,7 +1059,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Campbell</td>
-<td class="center">Expires 3 October 2023</td>
+<td class="center">Expires 5 October 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1075,12 +1072,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-riastradh-cfrg-staticdh-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-04-01" class="published">1 April 2023</time>
+<time datetime="2023-04-03" class="published">3 April 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-10-03">3 October 2023</time></dd>
+<dd class="expires"><time datetime="2023-10-05">5 October 2023</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1101,10 +1098,7 @@ Certain cryptographic protocols such as oblivious pseudorandom function
  or to compute x*Q for a random element Q chosen after queries to the
  static DH oracle.
 This memo summarizes the state of the art in attacks enabled by static
- DH oracles, and the resistance of widely used groups to such attacks.
-This memo concludes that static DH oracles do not meaningfully threaten
- the security of any elliptic curve groups recommended by the IETF for
- DH.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+ DH oracles, and the resistance of widely used groups to such attacks.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-discussion-venues">
@@ -1136,7 +1130,7 @@ This memo concludes that static DH oracles do not meaningfully threaten
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 3 October 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 5 October 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1186,73 +1180,81 @@ This memo concludes that static DH oracles do not meaningfully threaten
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-cofactors" class="internal xref">Cofactors</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-generic-static-dh-attacks" class="internal xref">Generic Static DH Attacks</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-attacks" class="internal xref">Attacks</a></p>
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1">
-                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-p-1-attack" class="internal xref">p - 1 Attack</a></p>
+                <p id="section-toc.1-1.6.2.1.1"><a href="#section-6.1" class="auto internal xref">6.1</a>.  <a href="#name-attacks-on-generic-groups" class="internal xref">Attacks on Generic Groups</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.1">
+                    <p id="section-toc.1-1.6.2.1.2.1.1"><a href="#section-6.1.1" class="auto internal xref">6.1.1</a>.  <a href="#name-p-1-attack" class="internal xref">p - 1 Attack</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.2">
+                    <p id="section-toc.1-1.6.2.1.2.2.1"><a href="#section-6.1.2" class="auto internal xref">6.1.2</a>.  <a href="#name-p-1-attack-in-quadratic-ext" class="internal xref">p + 1 Attack in Quadratic Extension</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.3">
+                    <p id="section-toc.1-1.6.2.1.2.3.1"><a href="#section-6.1.3" class="auto internal xref">6.1.3</a>.  <a href="#name-generalizations-of-the-p-1-" class="internal xref">Generalizations of the p - 1 and p + 1 Attacks</a></p>
+</li>
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.1.2.4">
+                    <p id="section-toc.1-1.6.2.1.2.4.1"><a href="#section-6.1.4" class="auto internal xref">6.1.4</a>.  <a href="#name-multi-target-attacks" class="internal xref">Multi-Target Attacks</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.2">
-                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-p-1-attack-in-quadratic-ext" class="internal xref">p + 1 Attack in Quadratic Extension</a></p>
+                <p id="section-toc.1-1.6.2.2.1"><a href="#section-6.2" class="auto internal xref">6.2</a>.  <a href="#name-attacks-on-finite-fields" class="internal xref">Attacks on Finite Fields</a></p>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.3">
-                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-generalizations-of-the-p-1-" class="internal xref">Generalizations of the p - 1 and p + 1 Attacks</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6.2.4">
-                <p id="section-toc.1-1.6.2.4.1"><a href="#section-6.4" class="auto internal xref">6.4</a>.  <a href="#name-multi-target-attacks" class="internal xref">Multi-Target Attacks</a></p>
+                <p id="section-toc.1-1.6.2.3.1"><a href="#section-6.3" class="auto internal xref">6.3</a>.  <a href="#name-attacks-on-elliptic-curves-" class="internal xref">Attacks on Elliptic Curves over Extension Fields</a></p>
 </li>
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-attacks-on-elliptic-curves-" class="internal xref">Attacks on Elliptic Curves over Extension Fields</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-groups" class="internal xref">Groups</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-ristretto255" class="internal xref">Ristretto255</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-nist-p-256" class="internal xref">NIST P-256</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
+                <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-third-oakley-group" class="internal xref">Third Oakley Group</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
+                <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-fourth-oakley-group" class="internal xref">Fourth Oakley Group</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
+                <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-group-14-and-ffdhe2048" class="internal xref">Group 14 and ffdhe2048</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6">
+                <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="auto internal xref">7.6</a>.  <a href="#name-secp256k1" class="internal xref">secp256k1</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.7">
+                <p id="section-toc.1-1.7.2.7.1"><a href="#section-7.7" class="auto internal xref">7.7</a>.  <a href="#name-fourq" class="internal xref">FourQ</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
-            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-groups" class="internal xref">Groups</a></p>
-<ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
-                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-ristretto255" class="internal xref">Ristretto255</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
-                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-nist-p-256" class="internal xref">NIST P-256</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.3">
-                <p id="section-toc.1-1.8.2.3.1"><a href="#section-8.3" class="auto internal xref">8.3</a>.  <a href="#name-secp256k1" class="internal xref">secp256k1</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.4">
-                <p id="section-toc.1-1.8.2.4.1"><a href="#section-8.4" class="auto internal xref">8.4</a>.  <a href="#name-third-oakley-group" class="internal xref">Third Oakley Group</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.5">
-                <p id="section-toc.1-1.8.2.5.1"><a href="#section-8.5" class="auto internal xref">8.5</a>.  <a href="#name-fourth-oakley-group" class="internal xref">Fourth Oakley Group</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.6">
-                <p id="section-toc.1-1.8.2.6.1"><a href="#section-8.6" class="auto internal xref">8.6</a>.  <a href="#name-fourq" class="internal xref">FourQ</a></p>
-</li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.7">
-                <p id="section-toc.1-1.8.2.7.1"><a href="#section-8.7" class="auto internal xref">8.7</a>.  <a href="#name-finite-fields" class="internal xref">Finite Fields</a></p>
-</li>
-            </ul>
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
-            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.9.1"><a href="#section-9" class="auto internal xref">9</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
-            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
-</li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#section-11" class="auto internal xref">11</a>. <a href="#name-references" class="internal xref">References</a></p>
+            <p id="section-toc.1-1.10.1"><a href="#section-10" class="auto internal xref">10</a>. <a href="#name-references" class="internal xref">References</a></p>
 <ul class="compact toc ulBare ulEmpty">
-<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.1">
-                <p id="section-toc.1-1.11.2.1.1"><a href="#section-11.1" class="auto internal xref">11.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.1">
+                <p id="section-toc.1-1.10.2.1.1"><a href="#section-10.1" class="auto internal xref">10.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
 </li>
-              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11.2.2">
-                <p id="section-toc.1-1.11.2.2.1"><a href="#section-11.2" class="auto internal xref">11.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10.2.2">
+                <p id="section-toc.1-1.10.2.2.1"><a href="#section-10.2" class="auto internal xref">10.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
+            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
 </li>
-          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
-            <p id="section-toc.1-1.13.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1271,28 +1273,24 @@ Ephemeral Diffie-Hellman key agreement such as in TLS <span>[<a href="#RFC8446" 
  given (x*G, y*G), find xy*G.
 (Note: For consistency, we write all groups additively in this memo, as
  is typical for elliptic curves.)<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">In groups such as Group 14 <span>[<a href="#RFC3526" class="cite xref">RFC3526</a>]</span> and the large prime-order
- subgroup of Curve25519 <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span> or Ristretto255
- <span>[<a href="#I-D.irtf-cfrg-ristretto255-decaf448" class="cite xref">I-D.irtf-cfrg-ristretto255-decaf448</a>]</span>, solving DLP is essentially
- the cheapest known way to solve CDH and to break practical protocols
- based on the group.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">Traditional protocols involving Diffie-Hellman, including ephemeral key
+<p id="section-1-2">Traditional protocols involving Diffie-Hellman, including ephemeral key
  agreement in TLS and static key agreement in the original proposal of
  Diffie and Hellman <span>[<a href="#DH76" class="cite xref">DH76</a>]</span>, use the shared secret xy*G to derive a
  key for encryption, and necessarily avoid exposing xy*G itself to an
  adversary -- the adversary only learns x*G, y*G, and the ciphertext
- encrypted using xy*G, but not xy*G itself.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">Newer protocols based on oblivious pseudorandom function families
+ encrypted using xy*G, but not xy*G itself.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">Newer protocols based on oblivious pseudorandom function families
  (OPRF, <span>[<a href="#I-D.irtf-cfrg-voprf" class="cite xref">I-D.irtf-cfrg-voprf</a>]</span>), such as OPAQUE
  <span>[<a href="#I-D.irtf-cfrg-opaque" class="cite xref">I-D.irtf-cfrg-opaque</a>]</span> and Privacy Pass
- <span>[<a href="#I-D.ietf-privacypass-protocol" class="cite xref">I-D.ietf-privacypass-protocol</a>]</span>, take advantage of the algebraic
- structure of the group to do more:
+ <span>[<a href="#I-D.ietf-privacypass-protocol" class="cite xref">I-D.ietf-privacypass-protocol</a>]</span>, inspired by the Ford-Kaliski
+ password-hardening protocol <span>[<a href="#FK00" class="cite xref">FK00</a>]</span>, take advantage of the algebraic
+ structure of the group to do more.
 An OPRF is a protocol by which a client and a server can jointly
  evaluate a pseudorandom function family (PRF) with a key known only to
  the server on an input known only to the client, giving an output also
  known only to the client.
 To do this, the server deliberately exposes x*P given an arbitrary
- element P, where x is a secret key known only to the server.<a href="#section-1-4" class="pilcrow">¶</a></p>
+ element P, where x is a secret key known only to the server.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <div id="taxonomy-of-problems">
 <section id="section-1.1">
         <h3 id="name-taxonomy-of-problems">
@@ -1300,21 +1298,21 @@ To do this, the server deliberately exposes x*P given an arbitrary
         </h3>
 <p id="section-1.1-1">A <strong>static DH oracle</strong> reveals x*P given an arbitrary base P where x
  is a secret.
-The <strong>static DH problem</strong> (SDH, <span>[<a href="#BG04" class="cite xref">BG04</a>]</span>) is to compute x*Q for random
- Q determined after the adversary's last oracle query.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+The <strong>static DH problem</strong> (SDH or SDHP, <span>[<a href="#BG04" class="cite xref">BG04</a>]</span>) is to compute x*Q
+ for random Q determined after the adversary's last oracle query.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 <p id="section-1.1-2">The <strong>discrete log problem with auxiliary inputs</strong> (DLPwAI,
  <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>) is to recover x given
  (G, x*G, x^2*G, x^3*G, ..., x^q*G)
  for some q.
-The DLPwAI is obviously at least as hard as SDH:
+DLPwAI is obviously at least as hard as SDH:
 Given a static DH oracle, an adversary can find the auxiliary inputs
  for DLPwAI, and then if the adversary can solve DLPwAI they can
  trivially solve a static DH problem by using the secret x to compute
  x*Q directly given the challenge Q.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
 <p id="section-1.1-3">It is unknown whether SDH is at least as hard as DLPwAI.
-Most SDH attacks work via DLPwAI, with the exception of the
- <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span> attack discussed below on elliptic curves over extension
- fields, which solves SDH directly but not DLPwAI.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+Many SDH attacks work via DLPwAI, but there are exceptions like
+ <span>[<a href="#JLNT09" class="cite xref">JLNT09</a>]</span>, <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, and <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> which solve SDH directly but
+ not DLPwAI.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
 <p id="section-1.1-4">The <strong>generalized discrete log problem with auxiliary inputs</strong>
  (GDLPwAI, <span>[<a href="#Kim14" class="cite xref">Kim14</a>]</span>) is to recover x given
  (x^e_1 * G, x^e_2 * G, ..., x^e_q * G)
@@ -1548,23 +1546,28 @@ These quantities can then serve to distinguish users by their tokens
  a composite-order group.<a href="#section-5-5" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="generic-static-dh-attacks">
+<div id="attacks">
 <section id="section-6">
-      <h2 id="name-generic-static-dh-attacks">
-<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-generic-static-dh-attacks" class="section-name selfRef">Generic Static DH Attacks</a>
+      <h2 id="name-attacks">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-attacks" class="section-name selfRef">Attacks</a>
       </h2>
-<p id="section-6-1">Generic attacks treat the group operation as a black box, and thus work
+<div id="attacks-on-generic-groups">
+<section id="section-6.1">
+        <h3 id="name-attacks-on-generic-groups">
+<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-attacks-on-generic-groups" class="section-name selfRef">Attacks on Generic Groups</a>
+        </h3>
+<p id="section-6.1-1">Generic attacks treat the group operation as a black box, and thus work
  in any group, including elliptic curves over finite fields and
- multiplicative groups of finite fields.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">All known generic attacks take advantage of the ring structure in the
+ multiplicative groups of finite fields.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1-2">All known generic attacks take advantage of the ring structure in the
  powers of the scalar k to reduce the cost of a generic search for k.
 The adversary queries the oracle at an element G to find k*G, then
  queries the oracle at k*G to find k*(k*G) = k^2*G, then at k^2*G
  to find k*(k^2*G) = k^3*G, ad nauseam, until k^q*G after q
  sequential queries.
-Let p be the prime order of the group.<a href="#section-6-2" class="pilcrow">¶</a></p>
-<p id="section-6-3">The baseline generic DLP attack on a prime-order group, with only
- knowledge of G and x*G, static DH oracle, is Pollard's rho
+Let p be the prime order of the group.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1-3">The baseline generic DLP attack on a prime-order group, with only
+ knowledge of G and x*G, and no static DH oracle, is Pollard's rho
  <span>[<a href="#Pollard78" class="cite xref">Pollard78</a>]</span>, which costs O(sqrt{p}) group operations and O(1)
  memory, and can be effectively parallelized with low communication
  cost using the van Oorschot-Wiener collision search machine <span>[<a href="#OW99" class="cite xref">OW99</a>]</span>.
@@ -1575,212 +1578,267 @@ For elliptic curves the negation map <span>[<a href="#WZ98" class="cite xref">WZ
 For other specialized DLP attacks on transfers, twists, side channels,
  etc., we direct the reader to resources such as <span>[<a href="#SafeCurves" class="cite xref">SafeCurves</a>]</span> for
  references and focus here on generic attacks enabled by a static DH
- oracle.<a href="#section-6-3" class="pilcrow">¶</a></p>
+ oracle.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
 <div id="p-1-attack">
-<section id="section-6.1">
-        <h3 id="name-p-1-attack">
-<a href="#section-6.1" class="section-number selfRef">6.1. </a><a href="#name-p-1-attack" class="section-name selfRef">p - 1 Attack</a>
-        </h3>
-<p id="section-6.1-1">When q &gt;= d for a divisor d of p - 1, the adversary can recover k given
+<section id="section-6.1.1">
+          <h4 id="name-p-1-attack">
+<a href="#section-6.1.1" class="section-number selfRef">6.1.1. </a><a href="#name-p-1-attack" class="section-name selfRef">p - 1 Attack</a>
+          </h4>
+<p id="section-6.1.1-1">When q &gt;= d for a divisor d of p - 1, the adversary can recover k given
  (G, k*G, k^d*G) with O(sqrt{p/d} + sqrt{d}) group operations and
- essentially constant memory as follows:<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">Let z_0 be a generator of (Z/pZ)^*, and z := z_0^d a (p - 1)/d-th root
- of unity.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.1-3">First, find scalars 0 &lt;= u_1, v_1 &lt; d_1 := ceiling(sqrt{(p - 1)/d})
- giving a collision<a href="#section-6.1-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.1-4">
+ essentially constant memory as follows:<a href="#section-6.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1.1-2">Let z_0 be a generator of (Z/pZ)^*, and z := z_0^d a (p - 1)/d-th root
+ of unity.<a href="#section-6.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1.1-3">First, find scalars 0 &lt;= u_1, v_1 &lt; d_1 := ceiling(sqrt{(p - 1)/d})
+ giving a collision of the form:<a href="#section-6.1.1-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.1-4">
 <pre>
 (k^d z^{-u_1}) * G = (z^{d_1 v_1}) * G,
-</pre><a href="#section-6.1-4" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.1-4" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1-5">by repeatedly multiplying the left by z^{-1} and the right by z^{d_1}.
-This collision implies:<a href="#section-6.1-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.1-6">
+<p id="section-6.1.1-5">by repeatedly multiplying the left by z^{-1} and the right by z^{d_1}.
+This collision implies:<a href="#section-6.1.1-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.1-6">
 <pre>
 k^d = z^{u_1 + d_1 v_1}.
-</pre><a href="#section-6.1-6" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.1-6" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1-7">Next, find scalars 0 &lt;= u_2, v_2 &lt; d_2 := ceiling(sqrt{d}) giving a
- collision:<a href="#section-6.1-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.1-8">
+<p id="section-6.1.1-7">Next, find scalars 0 &lt;= u_2, v_2 &lt; d_2 := ceiling(sqrt{d}) giving a
+ collision:<a href="#section-6.1.1-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.1-8">
 <pre>
 (k z_0^{-u_2 (p - 1)/d}) * G
   = (z_0^{u_1 + d_1 v_1 + d_2 v_2 (p - 1)/d}) * G.
-</pre><a href="#section-6.1-8" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.1-8" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1-9">This collision implies:<a href="#section-6.1-9" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.1-10">
+<p id="section-6.1.1-9">This collision implies:<a href="#section-6.1.1-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.1-10">
 <pre>
 k = z_0^{u_1 + d_1 v_1 + (u_2 + d_2 v_2) (p - 1)/d},
-</pre><a href="#section-6.1-10" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.1-10" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1-11">as desired.<a href="#section-6.1-11" class="pilcrow">¶</a></p>
-<p id="section-6.1-12">This class of attacks was presented in <span>[<a href="#BG04" class="cite xref">BG04</a>]</span> and <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span>, with
+<p id="section-6.1.1-11">as desired.<a href="#section-6.1.1-11" class="pilcrow">¶</a></p>
+<p id="section-6.1.1-12">This class of attacks was presented in <span>[<a href="#BG04" class="cite xref">BG04</a>]</span> and <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span>, with
  improved cost analysis in <span>[<a href="#KKM07" class="cite xref">KKM07</a>]</span>, and extended from
  memory-intensive baby-step/giant-step tables to a random walk with
  essentially constant memory along the lines of Pollard's kangaroo in
- <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>.<a href="#section-6.1-12" class="pilcrow">¶</a></p>
+ <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>.<a href="#section-6.1.1-12" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="p-1-attack-in-quadratic-extension">
-<section id="section-6.2">
-        <h3 id="name-p-1-attack-in-quadratic-ext">
-<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-p-1-attack-in-quadratic-ext" class="section-name selfRef">p + 1 Attack in Quadratic Extension</a>
-        </h3>
-<p id="section-6.2-1">When q &gt;= 2d for a divisor d of p + 1, the adversary can recover k
+<section id="section-6.1.2">
+          <h4 id="name-p-1-attack-in-quadratic-ext">
+<a href="#section-6.1.2" class="section-number selfRef">6.1.2. </a><a href="#name-p-1-attack-in-quadratic-ext" class="section-name selfRef">p + 1 Attack in Quadratic Extension</a>
+          </h4>
+<p id="section-6.1.2-1">When q &gt;= 2d for a divisor d of p + 1, the adversary can recover k
  given (G, k*G, k^2*G, ..., k^{2d}*G) with O(sqrt{p/d} + d) group
  operations and essentially constant memory using a similar technique
- in F_{p^2}.<a href="#section-6.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.2-2">The basic idea is to start with a generator z of the subgroup of order
+ in F_{p^2}.<a href="#section-6.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.1.2-2">The basic idea is to start with a generator z of the subgroup of order
  p + 1 of F_{p^2}, let w = z^d, and search for a collision in the
- equation<a href="#section-6.2-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.2-3">
+ equation<a href="#section-6.1.2-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.2-3">
 <pre>
 b^d w^{-m v} = w^u
-</pre><a href="#section-6.2-3" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.2-3" class="pilcrow">¶</a>
 </div>
-<p id="section-6.2-4">indirectly, where b = f(k) + g(k) theta is an element of order p + 1
+<p id="section-6.1.2-4">indirectly, where b = f(k) + g(k) theta is an element of order p + 1
  of F_{p^2} represented by a square root theta of a quadratic
  nonresidue in F_p using nonconstant rational functions f and g over
- F_p.<a href="#section-6.2-4" class="pilcrow">¶</a></p>
-<p id="section-6.2-5">The adversary can't evaluate this equation directly without knowing b,
+ F_p.<a href="#section-6.1.2-4" class="pilcrow">¶</a></p>
+<p id="section-6.1.2-5">The adversary can't evaluate this equation directly without knowing b,
  but it can be tested by proxy of scalar multiplication of G by fixed
- polynomials P_1, P_2, and P_3 of k such that<a href="#section-6.2-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.2-6">
+ polynomials P_1, P_2, and P_3 of k such that<a href="#section-6.1.2-5" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.2-6">
 <pre>
 b^d = (f(k) + g(k) theta)^d = [P_1(k) + P_2(k) theta]/P_3(k).
-</pre><a href="#section-6.2-6" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.2-6" class="pilcrow">¶</a>
 </div>
-<p id="section-6.2-7">The inputs (G, k*G, k^2*G, ..., k^{2d}*G) can be used to evaluate
+<p id="section-6.1.2-7">The inputs (G, k*G, k^2*G, ..., k^{2d}*G) can be used to evaluate
  the necessary linear combinations of P_1(k)*G, P_2(k)*G, and
  P_3(k)*G to test for collisions of the desired form b^d w^{-m v} =
- w^u.<a href="#section-6.2-7" class="pilcrow">¶</a></p>
-<p id="section-6.2-8">This class of attacks was first presented in <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span> with
+ w^u.<a href="#section-6.1.2-7" class="pilcrow">¶</a></p>
+<p id="section-6.1.2-8">This class of attacks was first presented in <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span> with
  memory-intensive baby-step/giant-step tables, and then extended to a
- random walk with essentially constant memory in <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>.<a href="#section-6.2-8" class="pilcrow">¶</a></p>
+ random walk with essentially constant memory in <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>.<a href="#section-6.1.2-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="generalizations-of-the-p-1-and-p-1-attacks">
-<section id="section-6.3">
-        <h3 id="name-generalizations-of-the-p-1-">
-<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-generalizations-of-the-p-1-" class="section-name selfRef">Generalizations of the p - 1 and p + 1 Attacks</a>
-        </h3>
-<p id="section-6.3-1">The attacks were generalized in <span>[<a href="#Satoh09" class="cite xref">Satoh09</a>]</span> to any divisor d of
+<section id="section-6.1.3">
+          <h4 id="name-generalizations-of-the-p-1-">
+<a href="#section-6.1.3" class="section-number selfRef">6.1.3. </a><a href="#name-generalizations-of-the-p-1-" class="section-name selfRef">Generalizations of the p - 1 and p + 1 Attacks</a>
+          </h4>
+<p id="section-6.1.3-1">The attacks were generalized in <span>[<a href="#Satoh09" class="cite xref">Satoh09</a>]</span> to any divisor d of
  Phi_n(p), where Phi_n is the nth cyclotomic polynomial.
 However, in <span>[<a href="#KCL14" class="cite xref">KCL14</a>]</span> the generalization was concluded to have no cost
  advantage over standard discrete log algorithms without a static DH
- oracle.<a href="#section-6.3-1" class="pilcrow">¶</a></p>
-<p id="section-6.3-2">A variant of these attacks proposed in <span>[<a href="#KC12" class="cite xref">KC12</a>]</span> uses a polynomial f
+ oracle.<a href="#section-6.1.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.1.3-2">A variant of these attacks proposed in <span>[<a href="#KC12" class="cite xref">KC12</a>]</span> uses a polynomial f
  over F_p of arbitrary degree d (which need not divide p +/- 1) and
  runs in time O~(sqrt{p/t} + d) where t is the number of absolutely
  irreducible factors of f(x) - f(y), and O~(...) denotes O(... log^m p)
  for some m.
 However, <span>[<a href="#KC12" class="cite xref">KC12</a>]</span> was unable to find any polynomials f providing better
  than O~(sqrt{p/d} + d) cost, and only achieved that cost in the case
- that d does divide p +/- 1.<a href="#section-6.3-2" class="pilcrow">¶</a></p>
-<p id="section-6.3-3">The attacks were also generalized in <span>[<a href="#Kim14" class="cite xref">Kim14</a>]</span> to the GDLPwAI taking a
+ that d does divide p +/- 1.<a href="#section-6.1.3-2" class="pilcrow">¶</a></p>
+<p id="section-6.1.3-3">The attacks were also generalized in <span>[<a href="#Kim14" class="cite xref">Kim14</a>]</span> to the GDLPwAI taking a
  collection of elements k^i * G for every i in a subgroup of
  (Z/{p-1}Z)^* and finding k at somewhat lower computational cost.
 However, it is no easier for an adversary to learn just these elements
  with a static DH oracle than to learn all the elements up to a divisor
  d of p +/- 1, so the generalization is ruled out by the same limits on
- feasible query cost.<a href="#section-6.3-3" class="pilcrow">¶</a></p>
+ feasible query cost.<a href="#section-6.1.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="multi-target-attacks">
-<section id="section-6.4">
-        <h3 id="name-multi-target-attacks">
-<a href="#section-6.4" class="section-number selfRef">6.4. </a><a href="#name-multi-target-attacks" class="section-name selfRef">Multi-Target Attacks</a>
-        </h3>
-<p id="section-6.4-1"><span>[<a href="#Kim16" class="cite xref">Kim16</a>]</span> extended the p - 1 attack to the multi-target setting: given
+<section id="section-6.1.4">
+          <h4 id="name-multi-target-attacks">
+<a href="#section-6.1.4" class="section-number selfRef">6.1.4. </a><a href="#name-multi-target-attacks" class="section-name selfRef">Multi-Target Attacks</a>
+          </h4>
+<p id="section-6.1.4-1"><span>[<a href="#Kim16" class="cite xref">Kim16</a>]</span> extended the p - 1 attack to the multi-target setting: given
  L independent query responses (G, k_i * G, k_i^d * G) for 1 &lt;= i &lt;=
  L, compute <em>all</em> the k_i in O(sqrt{L p/d} + sqrt{L d}) scalar
  multiplications, provided L &lt;&lt; min(p/d, d)^{1/4}.
 In brief, attacking a batch of L targets is sqrt{L} times cheaper than
- attacking each of the L targets independently.<a href="#section-6.4-1" class="pilcrow">¶</a></p>
-<p id="section-6.4-2">However, this multi-target attack doesn't reduce the number of
+ attacking each of the L targets independently.<a href="#section-6.1.4-1" class="pilcrow">¶</a></p>
+<p id="section-6.1.4-2">However, this multi-target attack doesn't reduce the number of
  sequential queries needed to start, nor does it reduce the expected
  time to the <em>first</em> k_i.
 Thus, it is relevant only to amplify the impact of static DH attacks in
- a group where a single-target attack is already within reach.<a href="#section-6.4-2" class="pilcrow">¶</a></p>
+ a group where a single-target attack is already within reach.<a href="#section-6.1.4-2" class="pilcrow">¶</a></p>
 </section>
 </div>
+</section>
+</div>
+<div id="attacks-on-finite-fields">
+<section id="section-6.2">
+        <h3 id="name-attacks-on-finite-fields">
+<a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-attacks-on-finite-fields" class="section-name selfRef">Attacks on Finite Fields</a>
+        </h3>
+<p id="section-6.2-1">In a finite field F_q for prime q, without a static DH oracle, the
+ state of the art in DLP (and SDH) is the general number field sive,
+ which costs <span>[<a href="#Barbulescu13" class="cite xref">Barbulescu13</a>]</span>:<a href="#section-6.2-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.2-2">
+<pre>
+precomputation:         L^{cbrt(64/9) + o(1)}   ~ L^{1.923 + o(1)}
+per-target cost:        L^{cbrt(3) + o(1)}      ~ L^{1.442 + o(1)},
+</pre><a href="#section-6.2-2" class="pilcrow">¶</a>
+</div>
+<p id="section-6.2-3">where<a href="#section-6.2-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.2-4">
+<pre>
+L = exp[(log q)^{1/3} (log log q)^{2/3}].
+</pre><a href="#section-6.2-4" class="pilcrow">¶</a>
+</div>
+<p id="section-6.2-5">We do not consider extension fields here, since small-characteristic
+ fields like binary fields have not appeared in IETF recommendations
+ for Diffie-Hellman applications (XXX verify), and
+ medium-characteristic fields appear mainly in pairing-based
+ cryptography which is out of scope for this memo.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
+<p id="section-6.2-6"><span>[<a href="#JLNT09" class="cite xref">JLNT09</a>]</span> extended the number field sieve to take advantage of a
+ static DH oracle, with the following attack costs for
+ large-characteristic fields:<a href="#section-6.2-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.2-7">
+<pre>
+oracle queries:         L^{cbrt(4/9) + o(1)}    ~ L^{0.763 + o(1)}
+precomputation:         L^{cbrt(32/9) + o(1)}   ~ L^{1.526 + o(1)}
+per-target cost:        L^{cbrt(3) + o(1)}      ~ L^{1.442 + o(1)}
+</pre><a href="#section-6.2-7" class="pilcrow">¶</a>
+</div>
+<p id="section-6.2-8">These queries are nonadaptive, so they <em>need not</em> be sequential; hence
+ the feasible query cost may be considerably higher than for the generic
+ attacks of <span>[<a href="#BG04" class="cite xref">BG04</a>]</span> and <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span>.
+q need not be prime, as long as the characteristic is at least
+ L^{2/3 + o(1)}; a similar attack was also extended to medium- and
+ small-characteristic fields, with different costs.<a href="#section-6.2-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="attacks-on-elliptic-curves-over-extension-fields">
-<section id="section-7">
-      <h2 id="name-attacks-on-elliptic-curves-">
-<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-attacks-on-elliptic-curves-" class="section-name selfRef">Attacks on Elliptic Curves over Extension Fields</a>
-      </h2>
-<p id="section-7-1">In the group of rational points on an elliptic curve over an
- extension field F_{q^n}, after O(q^{1 - 1/(n + 1)}) oracle queries
- (whether or not the number of queries divides p +/- 1), the adversary
- can use index calculus as in <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span> to solve the static DH
- problem with O~(q^{1 - 1/(n + 1)}) computation, for fixed n as q
- grows; here O~(...) denotes O(... log^m q) for some m.
-These queries <em>need not</em> be sequential, so the feasible query cost may
- be considerably higher than for <span>[<a href="#BG04" class="cite xref">BG04</a>]</span>- and <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span>-type
- attacks.
+<section id="section-6.3">
+        <h3 id="name-attacks-on-elliptic-curves-">
+<a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-attacks-on-elliptic-curves-" class="section-name selfRef">Attacks on Elliptic Curves over Extension Fields</a>
+        </h3>
+<p id="section-6.3-1">In the group of rational points on an elliptic curve over an
+ extension field F_{q^n}, <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span> extended index calculus to
+ solve the static DH problem with a static DH oracle with the following
+ queries, for fixed q as n grows:<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.3-2">
+<pre>
+oracle queries:         O(q^{1 - 1/(n + 1)})
+computation:            O~(q^{1 - 1/(n + 1)}),
+</pre><a href="#section-6.3-2" class="pilcrow">¶</a>
+</div>
+<p id="section-6.3-3">where O~(...) denotes O(... log^m q) for some m.<a href="#section-6.3-3" class="pilcrow">¶</a></p>
+<p id="section-6.3-4">These queries are nonadaptive, so they <em>need not</em> be sequential; hence
+ the feasible query cost may be considerably higher than for the generic
+ attacks of <span>[<a href="#BG04" class="cite xref">BG04</a>]</span> and <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span>.
 q need not be prime; the attacks apply just as well to extension fields
- of extension fields.<a href="#section-7-1" class="pilcrow">¶</a></p>
-<p id="section-7-2">At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
+ of extension fields.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
+<p id="section-6.3-5">At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
  issuing O(sqrt{q}) static DH queries.
 The cost for n = 2 is O(q^{2/3}) queries and O~(q^{2/3}) computation;
  when p ~ q^2 ~ 2^128, this reduces the cost to ~2^80 but requires
  ~2^80 oracle queries which is likely unrealistic even if they are
- parallelized.<a href="#section-7-2" class="pilcrow">¶</a></p>
-<p id="section-7-3">The cost for n = 4 is O(q^{4/5}) queries and O~(q^{4/5}) computation,
+ parallelized.<a href="#section-6.3-5" class="pilcrow">¶</a></p>
+<p id="section-6.3-6">The cost for n = 4 is O(q^{4/5}) queries and O~(q^{4/5}) computation,
  which is considerably cheaper than the cheapest DLP attacks (without a
  static DH oracle) on such curves based on index calculus at
  O~(q^{3/2}) <span>[<a href="#GG16" class="cite xref">GG16</a>]</span>.
 For example, a curve over F_{q^4} for q ~ 2^80 to defeat DLP without a
  static DH oracle might succumb after ~2^64 oracle queries (potentially
- in parallel) and ~2^64 computation.<a href="#section-7-3" class="pilcrow">¶</a></p>
-<p id="section-7-4"><span>[<a href="#JV11" class="cite xref">JV11</a>]</span> showed a similar attack with reduced cost for n = 5,
-This attack was used to solve SDH in practice in 2010 <span>[<a href="#Vitse10" class="cite xref">Vitse10</a>]</span> on
- the Third Oakley Group <span>[<a href="#RFC2409" class="cite xref">RFC2409</a>]</span> defined over F_{2^155} with q =
- 2^31 and n = 5.<a href="#section-7-4" class="pilcrow">¶</a></p>
-<p id="section-7-5">Curves over extension fields may have structure that admits attacks
- cheaper than Pollard's rho, such as <span>[<a href="#JV12" class="cite xref">JV12</a>]</span>.
+ in parallel) and ~2^64 computation.<a href="#section-6.3-6" class="pilcrow">¶</a></p>
+<p id="section-6.3-7">A similar attack is available with reduced cost for n = 5 as shown in
+ <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> and extended in <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, which was used to solve SDH in
+ practice on the Third Oakley Group <span>[<a href="#RFC2409" class="cite xref">RFC2409</a>]</span>, defined over
+ F_{2^155} with q = 2^31 and n = 5.<a href="#section-6.3-7" class="pilcrow">¶</a></p>
+<p id="section-6.3-8">Curves over extension fields may have structure that admits attacks
+ cheaper than Pollard's rho, such as <span>[<a href="#JV12" class="cite xref">JV12</a>]</span> and <span>[<a href="#GGMP21" class="cite xref">GGMP21</a>]</span>.
 Others such as <span>[<a href="#GG15" class="cite xref">GG15</a>]</span> found no advantage to index calculus over
  Pollard's rho on curves in binary extension fields F_{2^n} of prime
  degree n.
 But these did not appear to consider additional advantage from a static
  DH oracle.
 We do not review them further; study of the literature on DLP attacks
- without a static DH oracle are out of scope for this memo.<a href="#section-7-5" class="pilcrow">¶</a></p>
-<p id="section-7-6">Protocol designers MUST consider <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span> and <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> attacks
- before exposing static DH oracles for any elliptic curves over
- extension fields, such as the Oakley EC2N groups <span>[<a href="#RFC2409" class="cite xref">RFC2409</a>]</span> or FourQ
- <span>[<a href="#CL15" class="cite xref">CL15</a>]</span>.
+ without a static DH oracle are out of scope for this memo.<a href="#section-6.3-8" class="pilcrow">¶</a></p>
+<p id="section-6.3-9">Protocol designers MUST consider <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>, and
+ <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span> attacks before exposing static DH oracles for any elliptic
+ curves over extension fields, such as the Oakley EC2N groups
+ <span>[<a href="#RFC2409" class="cite xref">RFC2409</a>]</span> or FourQ <span>[<a href="#CL15" class="cite xref">CL15</a>]</span>.
 Protocol designers MUST review the literature on DLP before deploying
- any elliptic curves over extension fields.<a href="#section-7-6" class="pilcrow">¶</a></p>
+ any elliptic curves over extension fields.<a href="#section-6.3-9" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="groups">
-<section id="section-8">
+<section id="section-7">
       <h2 id="name-groups">
-<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-groups" class="section-name selfRef">Groups</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-groups" class="section-name selfRef">Groups</a>
       </h2>
-<p id="section-8-1">We discuss mainly groups of order near 2^256.
-Much smaller groups provide inadequate generic DLP security even
- without static DH oracles.
-Much larger groups such as Decaf448
- <span>[<a href="#I-D.irtf-cfrg-ristretto255-decaf448" class="cite xref">I-D.irtf-cfrg-ristretto255-decaf448</a>]</span> and NIST P-384 <span>[<a href="#FIPS186-4" class="cite xref">FIPS186-4</a>]</span>
-        <span>[<a href="#SEC2" class="cite xref">SEC2</a>]</span> <span>[<a href="#RFC5903" class="cite xref">RFC5903</a>]</span> are out of reach no matter what minor advantage
- a static DH oracle confers with the attacks here, and serve only as
- hedges against potential future breakthroughs in cryptanalysis.
-Such breakthroughs are naturally out of scope for a memo discussing the
- present state of the art.<a href="#section-8-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">We discuss mainly groups of order near 2^256:<a href="#section-7-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-2.1">Much smaller groups provide inadequate generic DLP security even
+ without static DH oracles.<a href="#section-7-2.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-7-2.2">Much larger elliptic curve groups such as Decaf448
+ <span>[<a href="#I-D.irtf-cfrg-ristretto255-decaf448" class="cite xref">I-D.irtf-cfrg-ristretto255-decaf448</a>]</span> and NIST P-384
+ <span>[<a href="#FIPS186-4" class="cite xref">FIPS186-4</a>]</span> <span>[<a href="#SEC2" class="cite xref">SEC2</a>]</span> <span>[<a href="#RFC5903" class="cite xref">RFC5903</a>]</span> are out of reach no matter what
+ minor advantage a static DH oracle confers with the attacks here,
+ and serve only as hedges against potential future breakthroughs in
+ cryptanalysis.
+Such breakthroughs are naturally out of scope for a memo discussing
+ the present state of the art.<a href="#section-7-2.2" class="pilcrow">¶</a>
+</li>
+      </ul>
 <div id="ristretto255">
-<section id="section-8.1">
+<section id="section-7.1">
         <h3 id="name-ristretto255">
-<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-ristretto255" class="section-name selfRef">Ristretto255</a>
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-ristretto255" class="section-name selfRef">Ristretto255</a>
         </h3>
-<p id="section-8.1-1">Ristretto255 <span>[<a href="#I-D.irtf-cfrg-ristretto255-decaf448" class="cite xref">I-D.irtf-cfrg-ristretto255-decaf448</a>]</span> is a group of
+<p id="section-7.1-1">Ristretto255 <span>[<a href="#I-D.irtf-cfrg-ristretto255-decaf448" class="cite xref">I-D.irtf-cfrg-ristretto255-decaf448</a>]</span> is a group of
  prime order based on Curve25519 <span>[<a href="#Bernstein06" class="cite xref">Bernstein06</a>]</span> <span>[<a href="#RFC7748" class="cite xref">RFC7748</a>]</span>, an
- elliptic curve over the prime field F_{2^255 - 19}.<a href="#section-8.1-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8.1-2">
+ elliptic curve over the prime field F_{2^255 - 19}.<a href="#section-7.1-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.1-2">
 <pre>
 p = 2^252 + 27742317777372353535851937790883648493
 p - 1 = 2^2 * 3 * 11 * 198211423230930754013084525763697 *
@@ -1791,25 +1849,26 @@ p + 1 = 2 * 5 * 7 * 103 * 684245902131068969 *
 baseline rho cost:                              ~2^125.8
 best p-1 attack cost after 132 queries:         ~2^122.5
 best p+1 attack cost after 14 420 queries:      ~2^119.5
-</pre><a href="#section-8.1-2" class="pilcrow">¶</a>
+</pre><a href="#section-7.1-2" class="pilcrow">¶</a>
 </div>
-<p id="section-8.1-3">Ristretto255 is unaffected by the <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span> and <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> attacks,
- since it is defined over a prime field, not an extension field.<a href="#section-8.1-3" class="pilcrow">¶</a></p>
+<p id="section-7.1-3">Ristretto255 is unaffected by the attacks of <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>,
+ and <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since it is defined over a prime field, not an
+ extension field.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="nist-p-256">
-<section id="section-8.2">
+<section id="section-7.2">
         <h3 id="name-nist-p-256">
-<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-nist-p-256" class="section-name selfRef">NIST P-256</a>
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-nist-p-256" class="section-name selfRef">NIST P-256</a>
         </h3>
-<p id="section-8.2-1">NIST P-256, also known as secp256r1 <span>[<a href="#FIPS186-4" class="cite xref">FIPS186-4</a>]</span> <span>[<a href="#SEC2" class="cite xref">SEC2</a>]</span>
+<p id="section-7.2-1">NIST P-256, also known as secp256r1 <span>[<a href="#FIPS186-4" class="cite xref">FIPS186-4</a>]</span> <span>[<a href="#SEC2" class="cite xref">SEC2</a>]</span>
           <span>[<a href="#RFC5903" class="cite xref">RFC5903</a>]</span>, is a short Weierstrass curve of prime order over the
  field F_q where q = 2^256 - 2^224 + 2^192 + 2^96 - 1.
 For NIST P-256, p - 1 has many small factors, but p itself is large
  enough that even if the adversary can achieve 2^55 sequential queries
  over the course of a century, it would still cost over 2^100 group
- operations to mount a static DH attack.<a href="#section-8.2-1" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8.2-2">
+ operations to mount a static DH attack.<a href="#section-7.2-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.2-2">
 <pre>
 p = 2^256 - 2^224 + 2^192 - 89188191075325690597107910205041859247
 p - 1 = 2^4 * 3 * 71 * 131 * 373 * 3407 * 17449 * 38189 * 187019741 *
@@ -1820,58 +1879,30 @@ p + 1 = 2 * 5 * 1879 * 176337611 *
 baseline rho cost:                                      ~2^127.8
 best p-1 attack cost: at least                          ~2^100.5
 best p+1 attack cost after 6 626 767 421 380 queries:   ~2^107.2
-</pre><a href="#section-8.2-2" class="pilcrow">¶</a>
+</pre><a href="#section-7.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-8.2-3">NIST P-256 is unaffected by the <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span> and <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> attacks,
- since it is defined over a prime field, not an extension field.<a href="#section-8.2-3" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="secp256k1">
-<section id="section-8.3">
-        <h3 id="name-secp256k1">
-<a href="#section-8.3" class="section-number selfRef">8.3. </a><a href="#name-secp256k1" class="section-name selfRef">secp256k1</a>
-        </h3>
-<p id="section-8.3-1">secp256k1 <span>[<a href="#SEC2" class="cite xref">SEC2</a>]</span> is a short Weierstrass curve of prime order over
- the field F_q where q = 2^256 - 2^32 - 977, used in Bitcoin and other
- cryptocurrencies.<a href="#section-8.3-1" class="pilcrow">¶</a></p>
-<p id="section-8.3-2">secp256k1 is not recommended by the IETF.
-We mention it here only because of its widespread use in
- cryptocurrencies, where the ready availability of high-quality
- implementations makes it tempting for related OPRF applications.<a href="#section-8.3-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8.3-3">
-<pre>
-p = 2^256 - 432420386565659656852420866394968145599
-p - 1 = 2^6 * 3 * 149 * 631 * 107361793816595537 *
-  174723607534414371449 * 341948486974166000522343609283189
-p + 1 = 2 * 13 * 83 * 45751 * 509879 *
-  2300168931843757888934889794142140465088020300168077349902139959
-
-baseline rho cost:                                      ~2^127.8
-best p-1 attack cost after 18 051 648 queries:          ~2^115.9
-best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
-</pre><a href="#section-8.3-3" class="pilcrow">¶</a>
-</div>
-<p id="section-8.3-4">secp256k1 is unaffected by the <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span> and <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> attacks,
- since it is defined over a prime field, not an extension field.<a href="#section-8.3-4" class="pilcrow">¶</a></p>
+<p id="section-7.2-3">NIST P-256 is unaffected by the attacks of <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>, and
+ <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since it is defined over a prime field, not an extension
+ field.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="third-oakley-group">
-<section id="section-8.4">
+<section id="section-7.3">
         <h3 id="name-third-oakley-group">
-<a href="#section-8.4" class="section-number selfRef">8.4. </a><a href="#name-third-oakley-group" class="section-name selfRef">Third Oakley Group</a>
+<a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-third-oakley-group" class="section-name selfRef">Third Oakley Group</a>
         </h3>
-<p id="section-8.4-1">The Third Oakley Group <span>[<a href="#RFC2409" class="cite xref">RFC2409</a>]</span>, or Group 3 in the IANA IPsec IKE
+<p id="section-7.3-1">The Third Oakley Group <span>[<a href="#RFC2409" class="cite xref">RFC2409</a>]</span>, or Group 3 in the IANA IPsec IKE
  Group Description registry, is a Weierstrass curve over F_{2^155},
  with cofactor 12.
 This group provides below 80-bit security against DLP, and so is unfit
- for most use today.<a href="#section-8.4-1" class="pilcrow">¶</a></p>
-<p id="section-8.4-2">The group is completely broken in practical terms by the <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>
+ for most use today.<a href="#section-7.3-1" class="pilcrow">¶</a></p>
+<p id="section-7.3-2">The group is completely broken in practical terms by the <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>
  attack on curves over F_{2^155} as a degree-5 extension field over
- F_{2^31}; see <span>[<a href="#Vitse10" class="cite xref">Vitse10</a>]</span> for details.
-The estimate of the computational cost here is the number of CPU cycles
- presented by <span>[<a href="#Vitse10" class="cite xref">Vitse10</a>]</span>, which is considerably less than most other
- cost metrics counting number of curve additions.<a href="#section-8.4-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8.4-3">
+ F_{2^31}; see <span>[<a href="#Vitse10" class="cite xref">Vitse10</a>]</span> and <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span> for details.
+The estimate of the computational cost here is the number of Intel Core
+ i7-4650U CPU cycles presented in <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, which is considerably
+ less than most other cost metrics counting number of curve additions.<a href="#section-7.3-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.3-3">
 <pre>
 p = 3805993847215893016155463826195386266397436443
 p - 1 = 2 * 3 * 10181 * 1239554496673218367 * 50264430795225140347741
@@ -1881,31 +1912,31 @@ baseline rho cost:                                      ~2^75.5
 best p-1 attack after 61 086 queries:                   ~2^67.75
 best p+1 attack after 32 561 013 525 916 052 queries:   ~2^54.9
 
-JV (parallelizable) query cost:                         ~2^30
-JV computational cost (2010-era Xeon CPU cycles):       ~2^61.6
-</pre><a href="#section-8.4-3" class="pilcrow">¶</a>
+Index calculus (parallelizable) query cost:             ~2^30.0
+Index calculus computational cost (i7-4650U cycles):    ~2^39.0
+</pre><a href="#section-7.3-3" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="fourth-oakley-group">
-<section id="section-8.5">
+<section id="section-7.4">
         <h3 id="name-fourth-oakley-group">
-<a href="#section-8.5" class="section-number selfRef">8.5. </a><a href="#name-fourth-oakley-group" class="section-name selfRef">Fourth Oakley Group</a>
+<a href="#section-7.4" class="section-number selfRef">7.4. </a><a href="#name-fourth-oakley-group" class="section-name selfRef">Fourth Oakley Group</a>
         </h3>
-<p id="section-8.5-1">The Fourth Oakley Group <span>[<a href="#RFC2409" class="cite xref">RFC2409</a>]</span>, or Group 4 in the IANA IPsec IKE
+<p id="section-7.4-1">The Fourth Oakley Group <span>[<a href="#RFC2409" class="cite xref">RFC2409</a>]</span>, or Group 4 in the IANA IPsec IKE
  Group Description registry, is a Weierstrass curve over F_{2^185},
  with cofactor 4.
 This group provides around 90-bit security against DLP, and so is unfit
  for most use today.
 For example, at a rate of about 250 EHz, the Bitcoin network computes
- more than 2^90 hashes per year <span>[<a href="#BlockchainHashrate" class="cite xref">BlockchainHashrate</a>]</span>.<a href="#section-8.5-1" class="pilcrow">¶</a></p>
-<p id="section-8.5-2">The group is likely breakable in practical terms by the <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> attack
+ more than 2^90 hashes per year <span>[<a href="#BlockchainHashrate" class="cite xref">BlockchainHashrate</a>]</span>.<a href="#section-7.4-1" class="pilcrow">¶</a></p>
+<p id="section-7.4-2">The group is likely breakable in practical terms by the <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> attack
  on curves over F_{2^185} as a degree-5 extension field over F_{2^37}.
-The estimate of the computational cost here is the number of CPU cycles
- presented by <span>[<a href="#Vitse10" class="cite xref">Vitse10</a>]</span> for the Third Oakley Group, which is
- considerably less than most other cost metrics counting number of
- curve additions.<a href="#section-8.5-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8.5-3">
+The estimate of the computational cost here is based on the numbers of
+ CPU cycles presented by <span>[<a href="#Vitse10" class="cite xref">Vitse10</a>]</span> and <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span> for the Third
+ Oakley Group, which is considerably less than most other cost metrics
+ counting number of curve additions.<a href="#section-7.4-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.4-3">
 <pre>
 p = 12259964326927110866866776214413170562013096250261263279
 p - 1 = 2 * 3 * 11 * 109 * 8123 * 12277 * 594667 * 514017746554597507 *
@@ -1917,34 +1948,82 @@ baseline rho cost:                                              ~2^91.3
 best p-1 attack cost after 6 464 114 577 505 913 queries:       ~2^65.2
 best p+1 attack cost after 255 831 920 queries:                 ~2^77.5
 
-JV (parallelizable) query cost:                                 ~2^37
-JV computational cost (2010-era Xeon CPU cycles):               ~2^67.6
-</pre><a href="#section-8.5-3" class="pilcrow">¶</a>
+Index calculus (parallelizable) query cost:                     ~2^37.0
+Index calculus computational cost (Intel i7-4650U cycles):      ~2^46.0
+</pre><a href="#section-7.4-3" class="pilcrow">¶</a>
 </div>
-<p id="section-8.5-4">XXX The JV computational cost is too low -- it assumes 22.95 ms per
-decomposition trial on 2.93 GHz processor, but that was for a curve
-over F_{2^155} and not a curve over F_{2^185} which is presumably
-slightly more expensive.<a href="#section-8.5-4" class="pilcrow">¶</a></p>
+<p id="section-7.4-4">XXX The index calculus computational cost is too low -- is scaled for a
+curve over F_{2^155} and not a curve over F_{2^185} which is presumably
+slightly more expensive.<a href="#section-7.4-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="group-14-and-ffdhe2048">
+<section id="section-7.5">
+        <h3 id="name-group-14-and-ffdhe2048">
+<a href="#section-7.5" class="section-number selfRef">7.5. </a><a href="#name-group-14-and-ffdhe2048" class="section-name selfRef">Group 14 and ffdhe2048</a>
+        </h3>
+<p id="section-7.5-1">Group 14 <span>[<a href="#RFC3526" class="cite xref">RFC3526</a>]</span> and ffdhe2048 <span>[<a href="#RFC7919" class="cite xref">RFC7919</a>]</span> are the multiplicative
+ groups of 2048-bit prime fields, recommended for IPsec and TLS,
+ respectively.<a href="#section-7.5-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.5-2">
+<pre>
+baseline NFS cost:                              ~2^116.9
+
+JLNT oracle queries:                            ~2^46.4
+JLNT precomputation:                            ~2^92.8
+JLNT per-target cost:                           ~2^87.6
+</pre><a href="#section-7.5-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="secp256k1">
+<section id="section-7.6">
+        <h3 id="name-secp256k1">
+<a href="#section-7.6" class="section-number selfRef">7.6. </a><a href="#name-secp256k1" class="section-name selfRef">secp256k1</a>
+        </h3>
+<p id="section-7.6-1">secp256k1 <span>[<a href="#SEC2" class="cite xref">SEC2</a>]</span> is a short Weierstrass curve of prime order over
+ the field F_q where q = 2^256 - 2^32 - 977, used in Bitcoin and other
+ cryptocurrencies.<a href="#section-7.6-1" class="pilcrow">¶</a></p>
+<p id="section-7.6-2">secp256k1 is not recommended by the IETF.
+We mention it here only because of its widespread use in
+ cryptocurrencies, where the ready availability of high-quality
+ implementations makes it tempting for related OPRF applications.<a href="#section-7.6-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.6-3">
+<pre>
+p = 2^256 - 432420386565659656852420866394968145599
+p - 1 = 2^6 * 3 * 149 * 631 * 107361793816595537 *
+  174723607534414371449 * 341948486974166000522343609283189
+p + 1 = 2 * 13 * 83 * 45751 * 509879 *
+  2300168931843757888934889794142140465088020300168077349902139959
+
+baseline rho cost:                                      ~2^127.8
+best p-1 attack cost after 18 051 648 queries:          ~2^115.9
+best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
+</pre><a href="#section-7.6-3" class="pilcrow">¶</a>
+</div>
+<p id="section-7.6-4">secp256k1 is unaffected by the attacks of <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>, and
+ <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since it is defined over a prime field, not an extension
+ field.<a href="#section-7.6-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="fourq">
-<section id="section-8.6">
+<section id="section-7.7">
         <h3 id="name-fourq">
-<a href="#section-8.6" class="section-number selfRef">8.6. </a><a href="#name-fourq" class="section-name selfRef">FourQ</a>
+<a href="#section-7.7" class="section-number selfRef">7.7. </a><a href="#name-fourq" class="section-name selfRef">FourQ</a>
         </h3>
-<p id="section-8.6-1">FourQ <span>[<a href="#CL15" class="cite xref">CL15</a>]</span> is a twisted Edwards curve over an extension field
+<p id="section-7.7-1">FourQ <span>[<a href="#CL15" class="cite xref">CL15</a>]</span> is a twisted Edwards curve over an extension field
  F_{q^2} where q = 2^127 - 1, with a prime-order subgroup.
 The designers of FourQ recommend point validation to prevent issues
  with cofactors and twists.
 We do not consider the details of these issues here.
 The implementor MUST do point validation, or the protocol designer MUST
  choose an encoding that is naturally restricted to the prime-order
- subgroup like Ristretto or Decaf.<a href="#section-8.6-1" class="pilcrow">¶</a></p>
-<p id="section-8.6-2">FourQ is not recommended by the IETF.
+ subgroup like Ristretto or Decaf.<a href="#section-7.7-1" class="pilcrow">¶</a></p>
+<p id="section-7.7-2">FourQ is not recommended by the IETF.
 We mention it here only because it has received considerable attention
  in the community with implementations at higher performance than
- Curve25519 taking advantage of arithmetic modulo a Mersenne prime.<a href="#section-8.6-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-8.6-3">
+ Curve25519 taking advantage of arithmetic modulo a Mersenne prime.<a href="#section-7.7-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-7.7-3">
 <pre>
 p = 73846995687063900142583536357581573884798075859800097461294096333596429543
 p - 1 = 2 * 3^2 * 103043 * 5948609 * 7355633 * 9560163629 *
@@ -1958,80 +2037,37 @@ best p+1 attack cost after 728 queries:                         ~2^117.9
 
 Granger (parallelizable) query cost:                            ~2^84.6
 Granger computational cost:                                     &gt;2^84.6
-</pre><a href="#section-8.6-3" class="pilcrow">¶</a>
+</pre><a href="#section-7.7-3" class="pilcrow">¶</a>
 </div>
-<p id="section-8.6-4">FourQ is unaffected by the <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> attack, since its extension degree
- is not divisible by 5.<a href="#section-8.6-4" class="pilcrow">¶</a></p>
-</section>
-</div>
-<div id="finite-fields">
-<section id="section-8.7">
-        <h3 id="name-finite-fields">
-<a href="#section-8.7" class="section-number selfRef">8.7. </a><a href="#name-finite-fields" class="section-name selfRef">Finite Fields</a>
-        </h3>
-<p id="section-8.7-1">DH over the multiplicative groups of finite fields such as <span>[<a href="#RFC3526" class="cite xref">RFC3526</a>]</span>
- and <span>[<a href="#RFC7919" class="cite xref">RFC7919</a>]</span> is essentially unaffected by the attacks described
- here because the group order is so large in order to defeat the
- general number field sieve that the generic DLPwAI algorithms cited
- here are out of reach anyway.
-For example, no matter what the factorization of p - 1 and p + 1 is for
- Group 14 of <span>[<a href="#RFC3526" class="cite xref">RFC3526</a>]</span> (the author got bored waiting for gp to
- answer), the group order p is around 2^2048 anyway, so sqrt{p/d} must
- be at least around the totally insurmountable 2^990.<a href="#section-8.7-1" class="pilcrow">¶</a></p>
-<p id="section-8.7-2">XXX OOPS -- this section is not accurate.
-References to review and chase citations to:<a href="#section-8.7-2" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-8.7-3.1">Joux, Lercier, Naccache, and Thome, "Oracle-Assisted Static
-Diffie-Hellman Is Easier Than Discrete Logarithms", IMA International
-Conference on Cryptography and Coding Theory -- IMAC 2009.
-https://sci-hub.se/https://link.springer.com/chapter/10.1007/978-3-642-10868-6_21<a href="#section-8.7-3.1" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-8.7-3.2">Koblitz &amp; Menezes, "Another look at non-standard discrete log and
-Diffie-Hellman problems".
-https://eprint.iacr.org/2007/442<a href="#section-8.7-3.2" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-8.7-4">For F_q where q is prime, the summary seems to be:<a href="#section-8.7-4" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-8.7-5.1">L^{cbrt{4/9}} oracle queries<a href="#section-8.7-5.1" class="pilcrow">¶</a>
-</li>
-          <li class="normal" id="section-8.7-5.2">L^{cbrt{32/9}} computation<a href="#section-8.7-5.2" class="pilcrow">¶</a>
-</li>
-        </ul>
-<p id="section-8.7-6">where L = exp((1 + o(1)) (log q)^{1/3} (log log q)^{2/3}).<a href="#section-8.7-6" class="pilcrow">¶</a></p>
-<p id="section-8.7-7">For, e.g., Group 14, with q ~ 2^2048, this requires a little over
- 2^46.3 (parallelizable) queries and 2^92.7 computation.<a href="#section-8.7-7" class="pilcrow">¶</a></p>
-<p id="section-8.7-8">In contrast, NFS for DLP without SDH costs L^{cbrt(64/9)} computation,
- which for Group 14 with q ~ 2^2048 is a little over 2^116 computation.
-So that's about a factor of 20 million cost reduction, after submitting
- nearly 100 trillion queries.<a href="#section-8.7-8" class="pilcrow">¶</a></p>
+<p id="section-7.7-4">FourQ is unaffected by the attacks of <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> and <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since
+ its extension degree is not divisible by 5.<a href="#section-7.7-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-9">
+<section id="section-8">
       <h2 id="name-security-considerations">
-<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-9-1">This document is a security consideration.<a href="#section-9-1" class="pilcrow">¶</a></p>
+<p id="section-8-1">This document is a security consideration.<a href="#section-8-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-10">
+<section id="section-9">
       <h2 id="name-iana-considerations">
-<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-9" class="section-number selfRef">9. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-10-1">This document has no IANA actions.<a href="#section-10-1" class="pilcrow">¶</a></p>
+<p id="section-9-1">This document has no IANA actions.<a href="#section-9-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<section id="section-11">
+<section id="section-10">
       <h2 id="name-references">
-<a href="#section-11" class="section-number selfRef">11. </a><a href="#name-references" class="section-name selfRef">References</a>
+<a href="#section-10" class="section-number selfRef">10. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
-<section id="section-11.1">
+<section id="section-10.1">
         <h3 id="name-normative-references">
-<a href="#section-11.1" class="section-number selfRef">11.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<a href="#section-10.1" class="section-number selfRef">10.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
         </h3>
 <dl class="references">
 <dt id="RFC2119">[RFC2119]</dt>
@@ -2044,18 +2080,22 @@ So that's about a factor of 20 million cost reduction, after submitting
 <dd class="break"></dd>
 </dl>
 </section>
-<section id="section-11.2">
+<section id="section-10.2">
         <h3 id="name-informative-references">
-<a href="#section-11.2" class="section-number selfRef">11.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+<a href="#section-10.2" class="section-number selfRef">10.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
         </h3>
 <dl class="references">
+<dt id="Barbulescu13">[Barbulescu13]</dt>
+        <dd>
+<span class="refAuthor">Barbulescu, R.</span>, <span class="refTitle">"Algorithms for discrete logarithm in finite fields"</span>, <span class="seriesInfo">PhD University of Lorraine</span>, <time datetime="2013" class="refDate">2013</time>, <span>&lt;<a href="https://hal.univ-lorraine.fr/tel-01750438">https://hal.univ-lorraine.fr/tel-01750438</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="BDLSY11">[BDLSY11]</dt>
         <dd>
-<span class="refAuthor">Bernstein, D. J.</span>, <span class="refAuthor">Duif, N.</span>, <span class="refAuthor">Lange, T.</span>, <span class="refAuthor">Schwabe, P.</span>, and <span class="refAuthor">B. Yang</span>, <span class="refTitle">"High-speed high-security signatures"</span>, <span class="seriesInfo">CHES 2011</span>, <span class="seriesInfo">Springer LNCS 6917</span>, <span class="seriesInfo">ISBN 978-3-642-23950-2</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-23951-9_9</span>, <time datetime="2011" class="refDate">2011</time>, <span>&lt;<a href="https://cr.yp.to/papers.html#ed25519">https://cr.yp.to/papers.html#ed25519</a>&gt;</span>. </dd>
+<span class="refAuthor">Bernstein, D. J.</span>, <span class="refAuthor">Duif, N.</span>, <span class="refAuthor">Lange, T.</span>, <span class="refAuthor">Schwabe, P.</span>, and <span class="refAuthor">B. Yang</span>, <span class="refTitle">"High-speed high-security signatures"</span>, <span class="seriesInfo">CHES 2011</span>, <span class="seriesInfo">Springer LNCS 6917</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-642-23950-2</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-23951-9_9</span>, <time datetime="2011" class="refDate">2011</time>, <span>&lt;<a href="https://cr.yp.to/papers.html#ed25519">https://cr.yp.to/papers.html#ed25519</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Bernstein06">[Bernstein06]</dt>
         <dd>
-<span class="refAuthor">Bernstein, D. J.</span>, <span class="refTitle">"Curve25519: new Diffie-Hellman speed records"</span>, <span class="seriesInfo">PKC 2006</span>, <span class="seriesInfo">Springer LNCS 3958</span>, <span class="seriesInfo">ISBN 978-3-540-33851-2</span>, <span class="seriesInfo">DOI 10.1007/11745853_14</span>, <time datetime="2006" class="refDate">2006</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/11745853_14">https://link.springer.com/chapter/10.1007/11745853_14</a>&gt;</span>. </dd>
+<span class="refAuthor">Bernstein, D. J.</span>, <span class="refTitle">"Curve25519: new Diffie-Hellman speed records"</span>, <span class="seriesInfo">PKC 2006</span>, <span class="seriesInfo">Springer LNCS 3958</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-540-33851-2</span>, <span class="seriesInfo">DOI 10.1007/11745853_14</span>, <time datetime="2006" class="refDate">2006</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/11745853_14">https://link.springer.com/chapter/10.1007/11745853_14</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="BG04">[BG04]</dt>
         <dd>
@@ -2067,7 +2107,7 @@ So that's about a factor of 20 million cost reduction, after submitting
 <dd class="break"></dd>
 <dt id="Cheon06">[Cheon06]</dt>
         <dd>
-<span class="refAuthor">Cheon, J. H.</span>, <span class="refTitle">"Security Analysis of the Strong Diffie-Hellman Problem"</span>, <span class="seriesInfo">EUROCRYPT 2006</span>, <span class="seriesInfo">Springer LNCS 4004</span>, <span class="seriesInfo">ISBN 978-3-540-34546-6</span>, <span class="seriesInfo">DOI 10.1007/11761679_1</span>, <time datetime="2006" class="refDate">2006</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/11761679_1">https://link.springer.com/chapter/10.1007/11761679_1</a>&gt;</span>. </dd>
+<span class="refAuthor">Cheon, J. H.</span>, <span class="refTitle">"Security Analysis of the Strong Diffie-Hellman Problem"</span>, <span class="seriesInfo">EUROCRYPT 2006</span>, <span class="seriesInfo">Springer LNCS 4004</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-540-34546-6</span>, <span class="seriesInfo">DOI 10.1007/11761679_1</span>, <time datetime="2006" class="refDate">2006</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/11761679_1">https://link.springer.com/chapter/10.1007/11761679_1</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Cheon10">[Cheon10]</dt>
         <dd>
@@ -2076,6 +2116,10 @@ So that's about a factor of 20 million cost reduction, after submitting
 <dt id="CL15">[CL15]</dt>
         <dd>
 <span class="refAuthor">Costello, C.</span> and <span class="refAuthor">P. Longa</span>, <span class="refTitle">"FourQ: four-dimensional decompositions on a Q-curve over the Mersenne prime"</span>, <span class="seriesInfo">IACR Cryptology ePrint Archive: Report 2015/565</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://eprint.iacr.org/2015/565">https://eprint.iacr.org/2015/565</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="CvA89">[CvA89]</dt>
+        <dd>
+<span class="refAuthor">Chaum, D.</span> and <span class="refAuthor">H. van Antwerpen</span>, <span class="refTitle">"Undeniable Signatures"</span>, <span class="seriesInfo">CRYPTO 1989</span>, <span class="seriesInfo">Springer LNCS 435</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-0-387-34805-6</span>, <span class="seriesInfo">DOI 10.1007/0-387-34805-0_20</span>, <time datetime="1989" class="refDate">1989</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/0-387-34805-0_20">https://link.springer.com/chapter/10.1007/0-387-34805-0_20</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Davidson19">[Davidson19]</dt>
         <dd>
@@ -2087,31 +2131,43 @@ So that's about a factor of 20 million cost reduction, after submitting
 <dd class="break"></dd>
 <dt id="DH76">[DH76]</dt>
         <dd>
-<span class="refAuthor">Diffie, W.</span> and <span class="refAuthor">M. E. Hellman</span>, <span class="refTitle">"New Directions in Cryptography"</span>, <span class="seriesInfo">IEEE Transactions on Information Theory 22(6)</span>, <time datetime="1976" class="refDate">1976</time>, <span>&lt;<a href="https://www-ee.stanford.edu/~hellman/publications/24.pdf">https://www-ee.stanford.edu/~hellman/publications/24.pdf</a>&gt;</span>. </dd>
+<span class="refAuthor">Diffie, W.</span> and <span class="refAuthor">M. E. Hellman</span>, <span class="refTitle">"New Directions in Cryptography"</span>, <span class="seriesInfo">IEEE Transactions on Information Theory 22(6)</span>, <span class="seriesInfo">DOI 10.1109/TIT.1976.1055638</span>, <time datetime="1976" class="refDate">1976</time>, <span>&lt;<a href="https://www-ee.stanford.edu/~hellman/publications/24.pdf">https://www-ee.stanford.edu/~hellman/publications/24.pdf</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="eBATS">[eBATS]</dt>
         <dd>
 <span class="refAuthor">Bernstein, D. J.</span> and <span class="refAuthor">T. Lange</span>, <span class="refTitle">"eBATS: ECRYPT Benchmarking of Asymmetric Systems"</span>, <time datetime="2023-04-01" class="refDate">1 April 2023</time>, <span>&lt;<a href="https://bench.cr.yp.to/ebats.html">https://bench.cr.yp.to/ebats.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="FHJRV14">[FHJRV14]</dt>
+        <dd>
+<span class="refAuthor">Faugère, J.-C.</span>, <span class="refAuthor">Huot, L.</span>, <span class="refAuthor">Joux, A.</span>, <span class="refAuthor">Renault, G.</span>, and <span class="refAuthor">V. Vitse</span>, <span class="refTitle">"Symmetrized Summation Polynomials: Using Small Order Torsion Points to Speed Up Elliptic Curve Index Calculus"</span>, <span class="seriesInfo">EUROCRYPT 2014</span>, <span class="seriesInfo">Springer LNCS 8441</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-642-55220-5</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-55220-5_3</span>, <time datetime="2014" class="refDate">2014</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-642-55220-5_3">https://link.springer.com/chapter/10.1007/978-3-642-55220-5_3</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="FIPS186-4">[FIPS186-4]</dt>
         <dd>
 <span class="refAuthor">National Institute of Standards and Technology</span>, <span class="refTitle">"Digital Signature Standard"</span>, <span class="seriesInfo">FIPS PUB 186-4</span>, <span class="seriesInfo">DOI 10.6028/NIST.FIPS.186-4</span>, <time datetime="2013" class="refDate">2013</time>, <span>&lt;<a href="https://dx.doi.org/10.6028/NIST.FIPS.186-4">https://dx.doi.org/10.6028/NIST.FIPS.186-4</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="FK00">[FK00]</dt>
+        <dd>
+<span class="refAuthor">Ford, W.</span> and <span class="refAuthor">B. S. Kaliski Jr</span>, <span class="refTitle">"Server-assisted generation of a strong secret from a password"</span>, <span class="seriesInfo">WET ICE 2000</span>, <span class="seriesInfo">ISSN 1080-1383</span>, <span class="seriesInfo">ISBN 0-7695-0798-0</span>, <span class="seriesInfo">DOI 10.1109/ENABL.2000.883724</span>, <time datetime="2000" class="refDate">2000</time>, <span>&lt;<a href="https://ieeexplore.ieee.org/document/883724">https://ieeexplore.ieee.org/document/883724</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="GG15">[GG15]</dt>
         <dd>
-<span class="refAuthor">Galbraith, S. D.</span> and <span class="refAuthor">S. W. Gebregiyorgis</span>, <span class="refTitle">"Summation Polynomial Algorithms for Elliptic Curves in Characteristic Two"</span>, <span class="seriesInfo">INDOCRYPT 2014</span>, <span class="seriesInfo">Springer LNCS 8885</span>, <span class="seriesInfo">ISBN 978-3-319-13039-2</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-13039-2_24</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-319-13039-2_24">https://link.springer.com/chapter/10.1007/978-3-319-13039-2_24</a>&gt;</span>. </dd>
+<span class="refAuthor">Galbraith, S. D.</span> and <span class="refAuthor">S. W. Gebregiyorgis</span>, <span class="refTitle">"Summation Polynomial Algorithms for Elliptic Curves in Characteristic Two"</span>, <span class="seriesInfo">INDOCRYPT 2014</span>, <span class="seriesInfo">Springer LNCS 8885</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-319-13039-2</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-13039-2_24</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-319-13039-2_24">https://link.springer.com/chapter/10.1007/978-3-319-13039-2_24</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="GG16">[GG16]</dt>
         <dd>
-<span class="refAuthor">Galbraith, S. D.</span> and <span class="refAuthor">P. Gaudry</span>, <span class="refTitle">"Recent progress on the elliptic curve discrete logarithm problem"</span>, <span class="seriesInfo">Designs, Codes, and Cryptography 44(1)</span>, <span class="seriesInfo">DOI 10.1007/s10623-015-0146-7</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://link.springer.com/article/10.1007%2Fs10623-015-0146-7">https://link.springer.com/article/10.1007%2Fs10623-015-0146-7</a>&gt;</span>. </dd>
+<span class="refAuthor">Galbraith, S. D.</span> and <span class="refAuthor">P. Gaudry</span>, <span class="refTitle">"Recent progress on the elliptic curve discrete logarithm problem"</span>, <span class="seriesInfo">Designs, Codes, and Cryptography 44(1)</span>, <span class="seriesInfo">ISSN 1573-7586</span>, <span class="seriesInfo">DOI 10.1007/s10623-015-0146-7</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://link.springer.com/article/10.1007%2Fs10623-015-0146-7">https://link.springer.com/article/10.1007%2Fs10623-015-0146-7</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="GGMP21">[GGMP21]</dt>
+        <dd>
+<span class="refAuthor">Galbraith, S. D.</span>, <span class="refAuthor">Granger, R.</span>, <span class="refAuthor">Merz, S.-P.</span>, and <span class="refAuthor">C. Petit</span>, <span class="refTitle">"On Index Calculus Algorithms for Subfield Curves"</span>, <span class="seriesInfo">SAC 2021</span>, <span class="seriesInfo">Springer LNCS 12804</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-030-81652-0</span>, <span class="seriesInfo">DOI 10.1007/978-3-030-81652-0_5</span>, <time datetime="2021" class="refDate">2021</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-030-81652-0_5">https://link.springer.com/chapter/10.1007/978-3-030-81652-0_5</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Granger10">[Granger10]</dt>
         <dd>
-<span class="refAuthor">Granger, R.</span>, <span class="refTitle">"On the Static Diffie-Hellman Problem on Elliptic Curves over Extension Fields"</span>, <span class="seriesInfo">ASIACRYPT 2010</span>, <span class="seriesInfo">Springer LNCS 6477</span>, <span class="seriesInfo">ISBN 978-3-642-17372-1</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-17373-8_17</span>, <time datetime="2010" class="refDate">2010</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-642-17373-8_17">https://link.springer.com/chapter/10.1007/978-3-642-17373-8_17</a>&gt;</span>. </dd>
+<span class="refAuthor">Granger, R.</span>, <span class="refTitle">"On the Static Diffie-Hellman Problem on Elliptic Curves over Extension Fields"</span>, <span class="seriesInfo">ASIACRYPT 2010</span>, <span class="seriesInfo">Springer LNCS 6477</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-642-17372-1</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-17373-8_17</span>, <time datetime="2010" class="refDate">2010</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-642-17373-8_17">https://link.springer.com/chapter/10.1007/978-3-642-17373-8_17</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Hamburg15">[Hamburg15]</dt>
         <dd>
-<span class="refAuthor">Hamburg, M.</span>, <span class="refTitle">"Decaf: Eliminating Cofactors Through Point Compression"</span>, <span class="seriesInfo">CRYPTO 2015</span>, <span class="seriesInfo">Springer LNCS 9215</span>, <span class="seriesInfo">ISBN 978-3-662-47988-9</span>, <span class="seriesInfo">DOI 10.1007/978-3-662-47989-6_34</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-662-47989-6_34">https://link.springer.com/chapter/10.1007/978-3-662-47989-6_34</a>&gt;</span>. </dd>
+<span class="refAuthor">Hamburg, M.</span>, <span class="refTitle">"Decaf: Eliminating Cofactors Through Point Compression"</span>, <span class="seriesInfo">CRYPTO 2015</span>, <span class="seriesInfo">Springer LNCS 9215</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-662-47988-9</span>, <span class="seriesInfo">DOI 10.1007/978-3-662-47989-6_34</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-662-47989-6_34">https://link.springer.com/chapter/10.1007/978-3-662-47989-6_34</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="HWBOT">[HWBOT]</dt>
         <dd>
@@ -2141,13 +2197,17 @@ So that's about a factor of 20 million cost reduction, after submitting
         <dd>
 <span class="refAuthor">James, D.</span>, <span class="refTitle">"Forget graphene CPUs, AMD says "we're stuck on silicon for at least seven to ten years""</span>, <time datetime="2019" class="refDate">2019</time>, <span>&lt;<a href="https://www.pcgamesn.com/amd/stuck-on-silicon-past-3nm-7-10-years">https://www.pcgamesn.com/amd/stuck-on-silicon-past-3nm-7-10-years</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="JLNT09">[JLNT09]</dt>
+        <dd>
+<span class="refAuthor">Joux, A.</span>, <span class="refAuthor">Lercier, R.</span>, <span class="refAuthor">Naccache, D.</span>, and <span class="refAuthor">E. Thomé</span>, <span class="refTitle">"Oracle-Assisted Static Diffie-Hellman Is Easier Than Discrete Logarithms"</span>, <span class="seriesInfo">IMACC 2009</span>, <span class="seriesInfo">Springer LNCS 5921</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-642-10868-6</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-10868-6_21</span>, <time datetime="2009" class="refDate">2009</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-642-10868-6_21">https://link.springer.com/chapter/10.1007/978-3-642-10868-6_21</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="JV11">[JV11]</dt>
         <dd>
 <span class="refAuthor">Joux, A.</span> and <span class="refAuthor">V. Vitse</span>, <span class="refTitle">"Elliptic Curve Discrete Logarithm Problems over Small Degree Extension Fields"</span>, <span class="seriesInfo">IACR Journal of Cryptology 26(1)</span>, <span class="seriesInfo">ISSN 0933-2790</span>, <span class="seriesInfo">DOI 10.1007/s00145-011-9116-z</span>, <time datetime="2011" class="refDate">2011</time>, <span>&lt;<a href="https://link.springer.com/article/10.1007/s00145-011-9116-z">https://link.springer.com/article/10.1007/s00145-011-9116-z</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="JV12">[JV12]</dt>
         <dd>
-<span class="refTitle">"Cover and Decomposition Index Calculus on Elliptic Curves Made Practical"</span>, <span class="seriesInfo">EUROCRYPT 2012</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-29011-4_3</span>, <time datetime="2012" class="refDate">2012</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-642-29011-4_3">https://link.springer.com/chapter/10.1007/978-3-642-29011-4_3</a>&gt;</span>. </dd>
+<span class="refTitle">"Cover and Decomposition Index Calculus on Elliptic Curves Made Practical"</span>, <span class="seriesInfo">EUROCRYPT 2012</span>, <span class="seriesInfo">Springer LNCS 7237</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-642-29011-4</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-29011-4_3</span>, <time datetime="2012" class="refDate">2012</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-642-29011-4_3">https://link.springer.com/chapter/10.1007/978-3-642-29011-4_3</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="KC12">[KC12]</dt>
         <dd>
@@ -2163,11 +2223,11 @@ So that's about a factor of 20 million cost reduction, after submitting
 <dd class="break"></dd>
 <dt id="Kim16">[Kim16]</dt>
         <dd>
-<span class="refAuthor">Kim, T.</span>, <span class="refTitle">"Multiple Discrete Logarithm Problems with Auxiliary Inputs"</span>, <span class="seriesInfo">ASIACRYPT 2015</span>, <span class="seriesInfo">Springer LNCS 9452</span>, <span class="seriesInfo">ISBN 978-3-662-48796-9</span>, <span class="seriesInfo">DOI 10.1007/978-3-662-48797-6_8</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007%2F978-3-662-48797-6_8">https://link.springer.com/chapter/10.1007%2F978-3-662-48797-6_8</a>&gt;</span>. </dd>
+<span class="refAuthor">Kim, T.</span>, <span class="refTitle">"Multiple Discrete Logarithm Problems with Auxiliary Inputs"</span>, <span class="seriesInfo">ASIACRYPT 2015</span>, <span class="seriesInfo">Springer LNCS 9452</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-662-48796-9</span>, <span class="seriesInfo">DOI 10.1007/978-3-662-48797-6_8</span>, <time datetime="2015" class="refDate">2015</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007%2F978-3-662-48797-6_8">https://link.springer.com/chapter/10.1007%2F978-3-662-48797-6_8</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="KKM07">[KKM07]</dt>
         <dd>
-<span class="refAuthor">Koazaki, S.</span>, <span class="refAuthor">Kutsuma, T.</span>, and <span class="refAuthor">K. Matsuo</span>, <span class="refTitle">"Remarks on Cheon's Algorithms for Pairing-Related Problems"</span>, <span class="seriesInfo">PBC 2007</span>, <span class="seriesInfo">Springer LNCS 4575</span>, <span class="seriesInfo">ISBN 978-3-540-73488-8</span>, <span class="seriesInfo">DOI 10.1007/978-3-540-73489-5_17</span>, <time datetime="2007" class="refDate">2007</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-540-73489-5_17">https://link.springer.com/chapter/10.1007/978-3-540-73489-5_17</a>&gt;</span>. </dd>
+<span class="refAuthor">Koazaki, S.</span>, <span class="refAuthor">Kutsuma, T.</span>, and <span class="refAuthor">K. Matsuo</span>, <span class="refTitle">"Remarks on Cheon's Algorithms for Pairing-Related Problems"</span>, <span class="seriesInfo">PBC 2007</span>, <span class="seriesInfo">Springer LNCS 4575</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-540-73488-8</span>, <span class="seriesInfo">DOI 10.1007/978-3-540-73489-5_17</span>, <time datetime="2007" class="refDate">2007</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-540-73489-5_17">https://link.springer.com/chapter/10.1007/978-3-540-73489-5_17</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="KM07">[KM07]</dt>
         <dd>
@@ -2175,7 +2235,7 @@ So that's about a factor of 20 million cost reduction, after submitting
 <dd class="break"></dd>
 <dt id="LL97">[LL97]</dt>
         <dd>
-<span class="refAuthor">Lim, C. H.</span> and <span class="refAuthor">P. J. Lee</span>, <span class="refTitle">"A key recovery attack on discrete log-based schemes using a prime order subgroup"</span>, <span class="seriesInfo">CRYPTO 1997</span>, <span class="seriesInfo">Springer LNCS 1294</span>, <span class="seriesInfo">ISBN 978-3-540-63384-6</span>, <span class="seriesInfo">DOI 10.1007/BFb0052240</span>, <time datetime="1997" class="refDate">1997</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/BFb0052240">https://link.springer.com/chapter/10.1007/BFb0052240</a>&gt;</span>. </dd>
+<span class="refAuthor">Lim, C. H.</span> and <span class="refAuthor">P. J. Lee</span>, <span class="refTitle">"A key recovery attack on discrete log-based schemes using a prime order subgroup"</span>, <span class="seriesInfo">CRYPTO 1997</span>, <span class="seriesInfo">Springer LNCS 1294</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-540-63384-6</span>, <span class="seriesInfo">DOI 10.1007/BFb0052240</span>, <time datetime="1997" class="refDate">1997</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/BFb0052240">https://link.springer.com/chapter/10.1007/BFb0052240</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="LS17">[LS17]</dt>
         <dd>
@@ -2187,7 +2247,7 @@ So that's about a factor of 20 million cost reduction, after submitting
 <dd class="break"></dd>
 <dt id="Pollard78">[Pollard78]</dt>
         <dd>
-<span class="refAuthor">Pollard, J. M.</span>, <span class="refTitle">"Monte Carlo methods for index computation (mod p)"</span>, <span class="seriesInfo">AMS Mathematics of Computation</span>, <span class="seriesInfo">ISSN 0025-5718</span>, <span class="seriesInfo">DOI 10.2307/2006496</span>, <time datetime="1978" class="refDate">1978</time>, <span>&lt;<a href="https://www.jstor.org/stable/2006496">https://www.jstor.org/stable/2006496</a>&gt;</span>. </dd>
+<span class="refAuthor">Pollard, J. M.</span>, <span class="refTitle">"Monte Carlo methods for index computation (mod p)"</span>, <span class="seriesInfo">AMS Mathematics of Computation 32(143)</span>, <span class="seriesInfo">ISSN 0025-5718</span>, <span class="seriesInfo">DOI 10.2307/2006496</span>, <time datetime="1978" class="refDate">1978</time>, <span>&lt;<a href="https://www.jstor.org/stable/2006496">https://www.jstor.org/stable/2006496</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC2409">[RFC2409]</dt>
         <dd>
@@ -2235,7 +2295,7 @@ So that's about a factor of 20 million cost reduction, after submitting
 <dd class="break"></dd>
 <dt id="Schnorr89">[Schnorr89]</dt>
         <dd>
-<span class="refAuthor">Schnorr, C. P.</span>, <span class="refTitle">"Efficient Identification and Signatures for Smart Cards"</span>, <span class="seriesInfo">CRYPTO 1989</span>, <span class="seriesInfo">Springer LNCS 435</span>, <span class="seriesInfo">ISBN 978-0-387-97317-3</span>, <span class="seriesInfo">DOI 10.1007/0-387-34805-0_22</span>, <time datetime="1989" class="refDate">1989</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/0-387-34805-0_22">https://link.springer.com/chapter/10.1007/0-387-34805-0_22</a>&gt;</span>. </dd>
+<span class="refAuthor">Schnorr, C. P.</span>, <span class="refTitle">"Efficient Identification and Signatures for Smart Cards"</span>, <span class="seriesInfo">CRYPTO 1989</span>, <span class="seriesInfo">Springer LNCS 435</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-0-387-97317-3</span>, <span class="seriesInfo">DOI 10.1007/0-387-34805-0_22</span>, <time datetime="1989" class="refDate">1989</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/0-387-34805-0_22">https://link.springer.com/chapter/10.1007/0-387-34805-0_22</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="SEC2">[SEC2]</dt>
         <dd>
@@ -2251,11 +2311,11 @@ So that's about a factor of 20 million cost reduction, after submitting
 <dd class="break"></dd>
 <dt id="WZ98">[WZ98]</dt>
         <dd>
-<span class="refAuthor">Wiener, M. J.</span> and <span class="refAuthor">R. J. Zuccherato</span>, <span class="refTitle">"Faster Attacks on Elliptic Curve Cryptosystems"</span>, <span class="seriesInfo">SAC 1998</span>, <span class="seriesInfo">Springer LNCS 1556</span>, <span class="seriesInfo">ISBN 978-3-540-65894-8</span>, <span class="seriesInfo">DOI 10.1007/3-540-48892-8_15</span>, <time datetime="1998" class="refDate">1998</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/3-540-48892-8_15">https://link.springer.com/chapter/10.1007/3-540-48892-8_15</a>&gt;</span>. </dd>
+<span class="refAuthor">Wiener, M. J.</span> and <span class="refAuthor">R. J. Zuccherato</span>, <span class="refTitle">"Faster Attacks on Elliptic Curve Cryptosystems"</span>, <span class="seriesInfo">SAC 1998</span>, <span class="seriesInfo">Springer LNCS 1556</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-540-65894-8</span>, <span class="seriesInfo">DOI 10.1007/3-540-48892-8_15</span>, <time datetime="1998" class="refDate">1998</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/3-540-48892-8_15">https://link.springer.com/chapter/10.1007/3-540-48892-8_15</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="ZZCGZ14">[ZZCGZ14]</dt>
       <dd>
-<span class="refAuthor">Zhang, J.</span>, <span class="refAuthor">Zhang, Z.</span>, <span class="refAuthor">Chen, Y.</span>, <span class="refAuthor">Guo, Y.</span>, and <span class="refAuthor">Z. Zhang</span>, <span class="refTitle">"Black-Box Separations for One-More (Static) CDH and Its Generalization"</span>, <span class="seriesInfo">ASIACRYPT 2014</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">DOI 10.1007/978-3-662-45608-8_20</span>, <time datetime="2014" class="refDate">2014</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-662-45608-8_20">https://link.springer.com/chapter/10.1007/978-3-662-45608-8_20</a>&gt;</span>. </dd>
+<span class="refAuthor">Zhang, J.</span>, <span class="refAuthor">Zhang, Z.</span>, <span class="refAuthor">Chen, Y.</span>, <span class="refAuthor">Guo, Y.</span>, and <span class="refAuthor">Z. Zhang</span>, <span class="refTitle">"Black-Box Separations for One-More (Static) CDH and Its Generalization"</span>, <span class="seriesInfo">ASIACRYPT 2014</span>, <span class="seriesInfo">Springer LNCS 8874</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-662-45608-8</span>, <span class="seriesInfo">DOI 10.1007/978-3-662-45608-8_20</span>, <time datetime="2014" class="refDate">2014</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-662-45608-8_20">https://link.springer.com/chapter/10.1007/978-3-662-45608-8_20</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
 </section>
