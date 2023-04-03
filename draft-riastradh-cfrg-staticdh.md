@@ -39,6 +39,7 @@ informative:
     date: 1976
     seriesinfo:
       IEEE: Transactions on Information Theory 22(6)
+      DOI: 10.1109/TIT.1976.1055638
 
   Pollard78:
     title: Monte Carlo methods for index computation (mod p)
@@ -48,7 +49,7 @@ informative:
       name: John M. Pollard
     date: 1978
     seriesinfo:
-      AMS: Mathematics of Computation
+      AMS: Mathematics of Computation 32(143)
       ISSN: 0025-5718
       DOI: 10.2307/2006496
 
@@ -62,6 +63,7 @@ informative:
     seriesinfo:
       CRYPTO: 1989
       Springer: LNCS 435
+      ISSN: 0302-9743
       ISBN: 978-0-387-97317-3
       DOI: 10.1007/0-387-34805-0_22
 
@@ -81,6 +83,7 @@ informative:
     seriesinfo:
       CRYPTO: 1997
       Springer: LNCS 1294
+      ISSN: 0302-9743
       ISBN: 978-3-540-63384-6
       DOI: 10.1007/BFb0052240
 
@@ -98,6 +101,7 @@ informative:
     seriesinfo:
       SAC: 1998
       Springer: LNCS 1556
+      ISSN: 0302-9743
       ISBN: 978-3-540-65894-8
       DOI: 10.1007/3-540-48892-8_15
 
@@ -160,6 +164,7 @@ informative:
     seriesinfo:
       PKC: 2006
       Springer: LNCS 3958
+      ISSN: 0302-9743
       ISBN: 978-3-540-33851-2
       DOI: 10.1007/11745853_14
 
@@ -173,6 +178,7 @@ informative:
     seriesinfo:
       EUROCRYPT: 2006
       Springer: LNCS 4004
+      ISSN: 0302-9743
       ISBN: 978-3-540-34546-6
       DOI: 10.1007/11761679_1
 
@@ -193,6 +199,7 @@ informative:
     seriesinfo:
       PBC: 2007
       Springer: LNCS 4575
+      ISSN: 0302-9743
       ISBN: 978-3-540-73488-8
       DOI: 10.1007/978-3-540-73489-5_17
 
@@ -232,7 +239,9 @@ informative:
     date: 2009
     seriesinfo:
       IMACC: 2009
+      Springer: LNCS 5921
       ISSN: 0302-9743
+      ISBN: 978-3-642-10868-6
       DOI: 10.1007/978-3-642-10868-6_21
 
   Satoh09:
@@ -278,6 +287,7 @@ informative:
     seriesinfo:
       ASIACRYPT: 2010
       Springer: LNCS 6477
+      ISSN: 0302-9743
       ISBN: 978-3-642-17372-1
       DOI: 10.1007/978-3-642-17373-8_17
 
@@ -314,6 +324,7 @@ informative:
     seriesinfo:
       CHES: 2011
       Springer: LNCS 6917
+      ISSN: 0302-9743
       ISBN: 978-3-642-23950-2
       DOI: 10.1007/978-3-642-23951-9_9
 
@@ -342,7 +353,9 @@ informative:
     date: 2012
     seriesinfo:
       EUROCRYPT: 2012
+      Springer: LNCS 7237
       ISSN: 0302-9743
+      ISBN: 978-3-642-29011-4
       DOI: 10.1007/978-3-642-29011-4_3
 
   KC12:
@@ -463,7 +476,9 @@ informative:
     date: 2014
     seriesinfo:
       ASIACRYPT: 2014
+      Springer: LNCS 8874
       ISSN: 0302-9743
+      ISBN: 978-3-662-45608-8
       DOI: 10.1007/978-3-662-45608-8_20
 
   CL15:
@@ -498,6 +513,7 @@ informative:
     seriesinfo:
       INDOCRYPT: 2014
       Springer: LNCS 8885
+      ISSN: 0302-9743
       ISBN: 978-3-319-13039-2
       DOI: 10.1007/978-3-319-13039-2_24
 
@@ -511,6 +527,7 @@ informative:
     seriesinfo:
       CRYPTO: 2015
       Springer: LNCS 9215
+      ISSN: 0302-9743
       ISBN: 978-3-662-47988-9
       DOI: 10.1007/978-3-662-47989-6_34
 
@@ -527,6 +544,7 @@ informative:
     date: 2015
     seriesinfo:
       "Designs, Codes, and Cryptography": 44(1)
+      ISSN: 1573-7586
       DOI: 10.1007/s10623-015-0146-7
 
   Kim16:
@@ -539,6 +557,7 @@ informative:
     seriesinfo:
       ASIACRYPT: 2015
       Springer: LNCS 9452
+      ISSN: 0302-9743
       ISBN: 978-3-662-48796-9
       DOI: 10.1007/978-3-662-48797-6_8
 
