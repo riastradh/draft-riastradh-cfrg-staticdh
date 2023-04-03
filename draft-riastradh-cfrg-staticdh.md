@@ -776,11 +776,6 @@ Static DH oracles only expose x\*P, not arbitrary powers of x, so
  of the powers of x, this economy is of theoretical rather than
  practical interest.
 
-The **strong DH problem** {{Cheon06}} is to compute x^{q + 1} \* G
- given (G, x\*G, x^2\*G, ..., x^q\*G).
-There is no known way to improve on static DH attacks to solve the
- strong DH problem, so we do not discuss it further in this memo.
-
 A more detailed taxonomy of related problems is given in {{KM07}}
  together with some relations between them; some black-box separations
  are given in {{ZZCGZ14}}.
