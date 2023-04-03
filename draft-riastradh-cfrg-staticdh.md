@@ -211,6 +211,29 @@ informative:
     seriesinfo:
       IACR: "Cryptology ePrint Archive: Report 2007/442"
 
+  JLNT09:
+    title: >
+      Oracle-Assisted Static Diffie-Hellman Is Easier Than
+      Discrete Logarithms
+    target: https://link.springer.com/chapter/10.1007/978-3-642-10868-6_21
+    author:
+      -
+        ins: A. Joux
+        name: Antoine Joux
+      -
+        ins: R. Lercier
+        name: Reynald Lercier
+      -
+        ins: D. Naccache
+        name: David Naccache
+      -
+        ins: E. Thomé
+        name: Emmanuel Thomé
+    date: 2009
+    seriesinfo:
+      IMACC: 2009
+      ISSN: 0302-9743
+      DOI: 10.1007/978-3-642-10868-6_21
 
   Satoh09:
     title: On Generalization of Cheon's algorithm
@@ -336,6 +359,16 @@ informative:
     date: 2012
     seriesinfo:
       IACR: "Cryptology ePrint Archive: Report 2012/609"
+
+  Barbulescu13:
+    title: Algorithms for discrete logarithm in finite fields
+    target: https://hal.univ-lorraine.fr/tel-01750438
+    author:
+      ins: R. Barbulescu
+      name: Razvan Barbulescu
+    date: 2013
+    seriesinfo:
+      PhD: University of Lorraine
 
   FIPS186-4:
     title: Digital Signature Standard
@@ -584,12 +617,6 @@ Ephemeral Diffie-Hellman key agreement such as in TLS {{?RFC8446}}
 (Note: For consistency, we write all groups additively in this memo, as
  is typical for elliptic curves.)
 
-In groups such as Group 14 {{?RFC3526}} and the large prime-order
- subgroup of Curve25519 {{?RFC7748}} or Ristretto255
- {{?I-D.irtf-cfrg-ristretto255-decaf448}}, solving DLP is essentially
- the cheapest known way to solve CDH and to break practical protocols
- based on the group.
-
 Traditional protocols involving Diffie-Hellman, including ephemeral key
  agreement in TLS and static key agreement in the original proposal of
  Diffie and Hellman {{DH76}}, use the shared secret xy\*G to derive a
@@ -614,23 +641,23 @@ To do this, the server deliberately exposes x\*P given an arbitrary
 
 A **static DH oracle** reveals x\*P given an arbitrary base P where x
  is a secret.
-The **static DH problem** (SDH, {{BG04}}) is to compute x\*Q for random
- Q determined after the adversary's last oracle query.
+The **static DH problem** (SDH or SDHP, {{BG04}}) is to compute x\*Q
+ for random Q determined after the adversary's last oracle query.
 
 The **discrete log problem with auxiliary inputs** (DLPwAI,
  {{Cheon10}}) is to recover x given
  (G, x\*G, x^2\*G, x^3\*G, ..., x^q\*G)
  for some q.
-The DLPwAI is obviously at least as hard as SDH:
+DLPwAI is obviously at least as hard as SDH:
 Given a static DH oracle, an adversary can find the auxiliary inputs
  for DLPwAI, and then if the adversary can solve DLPwAI they can
  trivially solve a static DH problem by using the secret x to compute
  x\*Q directly given the challenge Q.
 
 It is unknown whether SDH is at least as hard as DLPwAI.
-Most SDH attacks work via DLPwAI, with the exception of the
- {{Granger10}} attack discussed below on elliptic curves over extension
- fields, which solves SDH directly but not DLPwAI.
+Many SDH attacks work via DLPwAI, but there are exceptions like
+ {{JLNT09}}, {{Granger10}}, and {{JV11}} which solve SDH directly but
+ not DLPwAI.
 
 The **generalized discrete log problem with auxiliary inputs**
  (GDLPwAI, {{Kim14}}) is to recover x given
@@ -854,7 +881,10 @@ This memo does not consider the security impact of static DH oracles in
  a composite-order group.
 
 
-# Generic Static DH Attacks
+# Attacks
+
+
+## Attacks on Generic Groups
 
 Generic attacks treat the group operation as a black box, and thus work
  in any group, including elliptic curves over finite fields and
@@ -883,7 +913,7 @@ For other specialized DLP attacks on transfers, twists, side channels,
  oracle.
 
 
-## p - 1 Attack
+### p - 1 Attack
 
 When q >= d for a divisor d of p - 1, the adversary can recover k given
  (G, k\*G, k^d\*G) with O(sqrt{p/d} + sqrt{d}) group operations and
@@ -893,7 +923,7 @@ Let z_0 be a generator of (Z/pZ)^\*, and z := z_0^d a (p - 1)/d-th root
  of unity.
 
 First, find scalars 0 <= u_1, v_1 < d_1 := ceiling(sqrt{(p - 1)/d})
- giving a collision
+ giving a collision of the form:
 
 ~~~
 (k^d z^{-u_1}) * G = (z^{d_1 v_1}) * G,
@@ -920,7 +950,7 @@ This collision implies:
 k = z_0^{u_1 + d_1 v_1 + (u_2 + d_2 v_2) (p - 1)/d},
 ~~~
 
-as desired.
+ as desired.
 
 This class of attacks was presented in {{BG04}} and {{Cheon06}}, with
  improved cost analysis in {{KKM07}}, and extended from
@@ -929,7 +959,7 @@ This class of attacks was presented in {{BG04}} and {{Cheon06}}, with
  {{Cheon10}}.
 
 
-## p + 1 Attack in Quadratic Extension
+### p + 1 Attack in Quadratic Extension
 
 When q >= 2d for a divisor d of p + 1, the adversary can recover k
  given (G, k\*G, k^2\*G, ..., k^{2d}\*G) with O(sqrt{p/d} + d) group
@@ -966,7 +996,8 @@ This class of attacks was first presented in {{Cheon06}} with
  memory-intensive baby-step/giant-step tables, and then extended to a
  random walk with essentially constant memory in {{Cheon10}}.
 
-## Generalizations of the p - 1 and p + 1 Attacks
+
+### Generalizations of the p - 1 and p + 1 Attacks
 
 The attacks were generalized in {{Satoh09}} to any divisor d of
  Phi_n(p), where Phi_n is the nth cyclotomic polynomial.
@@ -992,7 +1023,7 @@ However, it is no easier for an adversary to learn just these elements
  feasible query cost.
 
 
-## Multi-Target Attacks
+### Multi-Target Attacks
 
 {{Kim16}} extended the p - 1 attack to the multi-target setting: given
  L independent query responses (G, k_i \* G, k_i^d \* G) for 1 <= i <=
@@ -1008,17 +1039,64 @@ Thus, it is relevant only to amplify the impact of static DH attacks in
  a group where a single-target attack is already within reach.
 
 
-# Attacks on Elliptic Curves over Extension Fields
+## Attacks on Finite Fields
+
+In a finite field F_q for prime q, without a static DH oracle, the
+ state of the art in DLP (and SDH) is the general number field sive,
+ which costs {{Barbulescu13}}:
+
+~~~
+precomputation:         L^{cbrt(64/9) + o(1)}   ~ L^{1.923 + o(1)}
+per-target cost:        L^{cbrt(3) + o(1)}      ~ L^{1.442 + o(1)},
+~~~
+
+ where
+
+~~~
+L = exp[(log q)^{1/3} (log log q)^{2/3}].
+~~~
+
+We do not consider extension fields here, since small-characteristic
+ fields like binary fields have not appeared in IETF recommendations
+ for Diffie-Hellman applications (XXX verify), and
+ medium-characteristic fields appear mainly in pairing-based
+ cryptography which is out of scope for this memo.
+
+{{JLNT09}} extended the number field sieve to take advantage of a
+ static DH oracle, with the following attack costs for
+ large-characteristic fields:
+
+~~~
+oracle queries:         L^{cbrt(4/9) + o(1)}    ~ L^{0.763 + o(1)}
+precomputation:         L^{cbrt(32/9) + o(1)}   ~ L^{1.526 + o(1)}
+per-target cost:        L^{cbrt(3) + o(1)}      ~ L^{1.442 + o(1)}
+~~~
+
+These queries are nonadaptive, so they _need not_ be sequential; hence
+ the feasible query cost may be considerably higher than for the generic
+ attacks of {{BG04}} and {{Cheon06}}.
+q need not be prime, as long as the characteristic is at least
+ L^{2/3 + o(1)}; a similar attack was also extended to medium- and
+ small-characteristic fields, with different costs.
+
+
+## Attacks on Elliptic Curves over Extension Fields
 
 In the group of rational points on an elliptic curve over an
- extension field F_{q^n}, after O(q^{1 - 1/(n + 1)}) oracle queries
- (whether or not the number of queries divides p +/- 1), the adversary
- can use index calculus as in {{Granger10}} to solve the static DH
- problem with O~(q^{1 - 1/(n + 1)}) computation, for fixed n as q
- grows; here O~(...) denotes O(... log^m q) for some m.
-These queries _need not_ be sequential, so the feasible query cost may
- be considerably higher than for {{BG04}}- and {{Cheon06}}-type
- attacks.
+ extension field F_{q^n}, {{Granger10}} extended index calculus to
+ solve the static DH problem with a static DH oracle with the following
+ queries, for fixed q as n grows:
+
+~~~
+oracle queries:         O(q^{1 - 1/(n + 1)})
+computation:            O~(q^{1 - 1/(n + 1)}),
+~~~
+
+ where O~(...) denotes O(... log^m q) for some m.
+
+These queries are nonadaptive, so they _need not_ be sequential; hence
+ the feasible query cost may be considerably higher than for the generic
+ attacks of {{BG04}} and {{Cheon06}}.
 q need not be prime; the attacks apply just as well to extension fields
  of extension fields.
 
@@ -1038,9 +1116,9 @@ For example, a curve over F_{q^4} for q ~ 2^80 to defeat DLP without a
  in parallel) and ~2^64 computation.
 
 {{JV11}} showed a similar attack with reduced cost for n = 5,
-This attack was used to solve SDH in practice in 2010 {{Vitse10}} on
- the Third Oakley Group {{?RFC2409}} defined over F_{2^155} with q =
- 2^31 and n = 5.
+This attack was used to show how SDH could be solved in practice in
+ 2010 {{Vitse10}} on the Third Oakley Group {{?RFC2409}} defined over
+ F_{2^155} with q = 2^31 and n = 5.
 
 Curves over extension fields may have structure that admits attacks
  cheaper than Pollard's rho, such as {{JV12}}.
@@ -1063,16 +1141,19 @@ Protocol designers MUST review the literature on DLP before deploying
 # Groups
 
 
-We discuss mainly groups of order near 2^256.
-Much smaller groups provide inadequate generic DLP security even
- without static DH oracles.
-Much larger groups such as Decaf448
- {{?I-D.irtf-cfrg-ristretto255-decaf448}} and NIST P-384 {{FIPS186-4}}
- {{SEC2}} {{?RFC5903}} are out of reach no matter what minor advantage
- a static DH oracle confers with the attacks here, and serve only as
- hedges against potential future breakthroughs in cryptanalysis.
-Such breakthroughs are naturally out of scope for a memo discussing the
- present state of the art.
+We discuss mainly groups of order near 2^256:
+
+- Much smaller groups provide inadequate generic DLP security even
+   without static DH oracles.
+
+- Much larger elliptic curve groups such as Decaf448
+   {{?I-D.irtf-cfrg-ristretto255-decaf448}} and NIST P-384
+   {{FIPS186-4}} {{SEC2}} {{?RFC5903}} are out of reach no matter what
+   minor advantage a static DH oracle confers with the attacks here,
+   and serve only as hedges against potential future breakthroughs in
+   cryptanalysis.
+  Such breakthroughs are naturally out of scope for a memo discussing
+   the present state of the art.
 
 
 ## Ristretto255
@@ -1190,6 +1271,21 @@ over F_{2^155} and not a curve over F_{2^185} which is presumably
 slightly more expensive.
 
 
+## Group 14 and ffdhe2048
+
+Group 14 {{?RFC3526}} and ffdhe2048 {{?RFC7919}} are the multiplicative
+ groups of a finite fields of 2048-bit safe prime characteristics,
+ recommended for IPsec and TLS, respectively.
+
+~~~
+baseline NFS cost:                              ~2^116.9
+
+JLNT oracle queries:                            ~2^46.4
+JLNT precomputation:                            ~2^92.8
+JLNT per-target cost:                           ~2^87.6
+~~~
+
+
 ## secp256k1
 
 secp256k1 {{SEC2}} is a short Weierstrass curve of prime order over
@@ -1250,46 +1346,6 @@ Granger computational cost:                                     >2^84.6
 
 FourQ is unaffected by the {{JV11}} attack, since its extension degree
  is not divisible by 5.
-
-
-## Finite Fields
-
-DH over the multiplicative groups of finite fields such as {{?RFC3526}}
- and {{?RFC7919}} is essentially unaffected by the attacks described
- here because the group order is so large in order to defeat the
- general number field sieve that the generic DLPwAI algorithms cited
- here are out of reach anyway.
-For example, no matter what the factorization of p - 1 and p + 1 is for
- Group 14 of {{?RFC3526}} (the author got bored waiting for gp to
- answer), the group order p is around 2^2048 anyway, so sqrt{p/d} must
- be at least around the totally insurmountable 2^990.
-
-XXX OOPS -- this section is not accurate.
-References to review and chase citations to:
-
-- Joux, Lercier, Naccache, and Thome, "Oracle-Assisted Static
-  Diffie-Hellman Is Easier Than Discrete Logarithms", IMA International
-  Conference on Cryptography and Coding Theory -- IMAC 2009.
-  https://sci-hub.se/https://link.springer.com/chapter/10.1007/978-3-642-10868-6_21
-
-- Koblitz & Menezes, "Another look at non-standard discrete log and
-  Diffie-Hellman problems".
-  https://eprint.iacr.org/2007/442
-
-For F_q where q is prime, the summary seems to be:
-
-- L^{cbrt{4/9}} oracle queries
-- L^{cbrt{32/9}} computation
-
- where L = exp((1 + o(1)) (log q)^{1/3} (log log q)^{2/3}).
-
-For, e.g., Group 14, with q ~ 2^2048, this requires a little over
- 2^46.3 (parallelizable) queries and 2^92.7 computation.
-
-In contrast, NFS for DLP without SDH costs L^{cbrt(64/9)} computation,
- which for Group 14 with q ~ 2^2048 is a little over 2^116 computation.
-So that's about a factor of 20 million cost reduction, after submitting
- nearly 100 trillion queries.
 
 
 # Security Considerations
