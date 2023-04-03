@@ -53,6 +53,24 @@ informative:
       ISSN: 0025-5718
       DOI: 10.2307/2006496
 
+  CvA89:
+    title: Undeniable Signatures
+    target: https://link.springer.com/chapter/10.1007/0-387-34805-0_20
+    author:
+      -
+        ins: D. Chaum
+        name: David Chaum
+      -
+        ins: H. van Antwerpen
+        name: Hans van Antwerpen
+    date: 1989
+    seriesinfo:
+      CRYPTO: 1989
+      Springer: LNCS 435
+      ISSN: 0302-9743
+      ISBN: 978-0-387-34805-6
+      DOI: 10.1007/0-387-34805-0_20
+
   Schnorr89:
     title: Efficient Identification and Signatures for Smart Cards
     target: https://link.springer.com/chapter/10.1007/0-387-34805-0_22
@@ -120,6 +138,23 @@ informative:
       IACR: Journal of Cryptology 12
       ISSN: 0933-2790
       DOI: 10.1007/PL00003816
+
+  FK00:
+    title: Server-assisted generation of a strong secret from a password
+    target: https://ieeexplore.ieee.org/document/883724
+    author:
+      -
+        ins: W. Ford
+        name: Warwick Ford
+      -
+        ins: B.S. Kaliski Jr.
+        name: Burton S. Kaliski Jr.
+    date: 2000
+    seriesinfo:
+      "WET ICE": 2000
+      ISSN: 1080-1383
+      ISBN: 0-7695-0798-0
+      DOI: 10.1109/ENABL.2000.883724
 
   SEC2:
     title: "SEC 2: Recommended Elliptic Curve Domain Parameters"
@@ -699,8 +734,9 @@ Traditional protocols involving Diffie-Hellman, including ephemeral key
 Newer protocols based on oblivious pseudorandom function families
  (OPRF, {{?I-D.irtf-cfrg-voprf}}), such as OPAQUE
  {{?I-D.irtf-cfrg-opaque}} and Privacy Pass
- {{?I-D.ietf-privacypass-protocol}}, take advantage of the algebraic
- structure of the group to do more:
+ {{?I-D.ietf-privacypass-protocol}}, inspired by the Ford-Kaliski
+ password-hardening protocol {{FK00}}, take advantage of the algebraic
+ structure of the group to do more.
 An OPRF is a protocol by which a client and a server can jointly
  evaluate a pseudorandom function family (PRF) with a key known only to
  the server on an input known only to the client, giving an output also
