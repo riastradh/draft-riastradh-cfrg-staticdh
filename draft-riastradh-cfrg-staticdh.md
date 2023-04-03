@@ -1383,8 +1383,8 @@ slightly more expensive.
 ## Group 14 and ffdhe2048
 
 Group 14 {{?RFC3526}} and ffdhe2048 {{?RFC7919}} are the multiplicative
- groups of a finite fields of 2048-bit safe prime characteristics,
- recommended for IPsec and TLS, respectively.
+ groups of 2048-bit prime fields, recommended for IPsec and TLS,
+ respectively.
 
 ~~~
 baseline NFS cost:                              ~2^116.9
