@@ -1242,7 +1242,6 @@ Protocol designers MUST review the literature on DLP before deploying
 
 # Groups
 
-
 We discuss mainly groups of order near 2^256:
 
 - Much smaller groups provide inadequate generic DLP security even
@@ -1331,26 +1330,11 @@ p - 1 = 2 * 3 * 10181 * 1239554496673218367 * 50264430795225140347741
 p + 1 = 2^2 * 23 * 436957 * 728069 * 5322133 * 18629415209 * 1311547632725557
 
 baseline rho cost:                                      ~2^75.5
-best p-1 attack after 61 086 queries:                   ~2^67.75
+best p-1 attack after 61 086 queries:                   ~2^67.8
 best p+1 attack after 32 561 013 525 916 052 queries:   ~2^54.9
 
 Index calculus (parallelizable) query cost:             ~2^30.0
 Index calculus computational cost (i7-4650U cycles):    ~2^39.0
-~~~
-
-
-## Group 14 and ffdhe2048
-
-Group 14 {{?RFC3526}} and ffdhe2048 {{?RFC7919}} are the multiplicative
- groups of 2048-bit prime fields, recommended for IPsec and TLS,
- respectively.
-
-~~~
-baseline NFS cost:                              ~2^116.9
-
-SDH NFS (parallelizable) oracle query cost:     ~2^46.4
-SDH NFS precomputation:                         ~2^92.8
-SDH NFS per-target cost:                        ~2^87.6
 ~~~
 
 
@@ -1415,6 +1399,32 @@ Granger computational cost:                                     >2^84.6
 
 FourQ is unaffected by the attacks of {{JV11}} and {{FHJRV14}}, since
  its extension degree is not divisible by 5.
+
+
+## Multiplicative groups of finite fields of prime order
+
+Multiplicative groups of finite fields of prime order have been have
+ been deployed in various IETF protocols including TLS and IPsec for
+ traditional Diffie-Hellman applications.
+Exposing a static DH oracle substantially improves the NFS attack
+ costs, and the oracle queries needed by the improved attack are
+ nonadaptive, so they can be parallelized.
+We summarize the NFS costs for several common prime sizes as used in
+ {{?RFC2409}}, {{?RFC3526}}, and {{?RFC7919}}, provided the prime has
+ no additional structure that could be exploited, for example, by the
+ special number field sieve:
+
+~~~
+bits   baseline   queries   precomp   per-target
+
+1024    ~2^86.7   ~2^34.4   ~2^68.8    ~2^65.0
+1536   ~2^103.3   ~2^41.0   ~2^82.0    ~2^77.5
+2048   ~2^116.9   ~2^46.4   ~2^92.8    ~2^87.6
+3072   ~2^138.7   ~2^55.0  ~2^110.1   ~2^104.0
+4096   ~2^156.5   ~2^62.1  ~2^124.2   ~2^117.4
+6144   ~2^185.2   ~2^73.5  ~2^147.0   ~2^138.9
+8192   ~2^208.5   ~2^82.7  ~2^165.5   ~2^156.3
+~~~
 
 
 # Security Considerations
