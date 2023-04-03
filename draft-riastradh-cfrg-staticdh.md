@@ -567,6 +567,30 @@ informative:
       name: Henry de Valence
     date: 2020-10-04
 
+  GGMP21:
+    title: On Index Calculus Algorithms for Subfield Curves
+    target: https://link.springer.com/chapter/10.1007/978-3-030-81652-0_5
+    author:
+      -
+        ins: S.D. Galbraith
+        name: Steven D. Galbraith
+      -
+        ins: R. Granger
+        name: Robert Granger
+      -
+        ins: S-P Merz
+        name: Simon-Philipp Merz
+      -
+        ins: C. Petit
+        name: Christophe Petit
+    date: 2021
+    seriesinfo:
+      SAC: 2021
+      Springer: LNCS 12804
+      ISSN: 0302-9743
+      ISBN: 978-3-030-81652-0
+      DOI: 10.1007/978-3-030-81652-0_5
+
   eBATS:
     title: "eBATS: ECRYPT Benchmarking of Asymmetric Systems"
     target: https://bench.cr.yp.to/ebats.html
@@ -1121,7 +1145,7 @@ This attack was used to show how SDH could be solved in practice in
  F_{2^155} with q = 2^31 and n = 5.
 
 Curves over extension fields may have structure that admits attacks
- cheaper than Pollard's rho, such as {{JV12}}.
+ cheaper than Pollard's rho, such as {{JV12}} and {{GGMP21}}.
 Others such as {{GG15}} found no advantage to index calculus over
  Pollard's rho on curves in binary extension fields F_{2^n} of prime
  degree n.
