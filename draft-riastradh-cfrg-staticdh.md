@@ -1321,6 +1321,8 @@ The Third Oakley Group {{?RFC2409}}, or Group 3 in the IANA IPsec IKE
  with cofactor 12.
 This group provides below 80-bit security against DLP, and so is unfit
  for most use today.
+For example, at a rate of about 250 EHz, the Bitcoin network computes
+ more than 2^90 hashes per year {{BlockchainHashrate}}.
 
 The group is completely broken in practical terms by the {{JV11}}
  attack on curves over F_{2^155} as a degree-5 extension field over
@@ -1341,43 +1343,6 @@ best p+1 attack after 32 561 013 525 916 052 queries:   ~2^54.9
 Index calculus (parallelizable) query cost:             ~2^30.0
 Index calculus computational cost (i7-4650U cycles):    ~2^39.0
 ~~~
-
-
-## Fourth Oakley Group
-
-The Fourth Oakley Group {{?RFC2409}}, or Group 4 in the IANA IPsec IKE
- Group Description registry, is a Weierstrass curve over F_{2^185},
- with cofactor 4.
-This group provides around 90-bit security against DLP, and so is unfit
- for most use today.
-For example, at a rate of about 250 EHz, the Bitcoin network computes
- more than 2^90 hashes per year {{BlockchainHashrate}}.
-
-The group is likely breakable in practical terms by the {{JV11}} attack
- on curves over F_{2^185} as a degree-5 extension field over F_{2^37}.
-The estimate of the computational cost here is based on the numbers of
- CPU cycles presented by {{Vitse10}} and {{FHJRV14}} for the Third
- Oakley Group, which is considerably less than most other cost metrics
- counting number of curve additions.
-
-~~~
-p = 12259964326927110866866776214413170562013096250261263279
-p - 1 = 2 * 3 * 11 * 109 * 8123 * 12277 * 594667 * 514017746554597507 *
-  55905960308440715813
-p + 1 = 2^4 * 5 * 3197899 * 181891629986660813 *
-  263464291405167669025624646993
-
-baseline rho cost:                                              ~2^91.3
-best p-1 attack cost after 6 464 114 577 505 913 queries:       ~2^65.2
-best p+1 attack cost after 255 831 920 queries:                 ~2^77.5
-
-Index calculus (parallelizable) query cost:                     ~2^37.0
-Index calculus computational cost (Intel i7-4650U cycles):      ~2^46.0
-~~~
-
-XXX The index calculus computational cost is too low -- is scaled for a
-curve over F_{2^155} and not a curve over F_{2^185} which is presumably
-slightly more expensive.
 
 
 ## Group 14 and ffdhe2048
