@@ -1,0 +1,5 @@
+Scripts to generate tables of group information and attack costs.
+Requires pari/gp 2.15 and seadata.
+
+https://pari.math.u-bordeaux.fr/
+https://pari.math.u-bordeaux.fr/packages.html
