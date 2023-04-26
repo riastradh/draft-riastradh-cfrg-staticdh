@@ -428,6 +428,24 @@ informative:
       FIPS: PUB 186-4
       DOI: 10.6028/NIST.FIPS.186-4
 
+  JP13:
+    title: The Special Number Field Sieve in F_{p^n}
+    target: https://link.springer.com/chapter/10.1007/978-3-319-04873-4_3
+    author:
+      -
+        ins: A. Joux
+        name: Antoine Joux
+      -
+        ins: C. Pierrot
+        name: Cécile Pierrot
+    date: 2023
+    seriesinfo:
+      "Pairing-Based Cryptography": 2023
+      Springer: LNCS 8365
+      ISSN: 0302-9743
+      ISBN: 978-3-319-04873-4
+      DOI: 10.1007/978-3-319-04873-4_3
+
   FHJRV14:
     title: >
       Symmetrized Summation Polynomials: Using Small Order Torsion
@@ -566,6 +584,30 @@ informative:
       ISBN: 978-3-662-47988-9
       DOI: 10.1007/978-3-662-47989-6_34
 
+  FGHT16:
+    title: A kilobit hidden SNFS discrete logarithm computation
+    target: https://link.springer.com/chapter/10.1007/978-3-319-56620-7_8
+    author:
+      -
+        ins: J. Fried
+        name: Joshua Fried
+      -
+        ins: P. Gaudry
+        name: Pierrick Gaudry
+      -
+        ins: N. Heninger
+        name: Nadia Heninger
+      -
+        ins: E. Thomé
+        name: Emmanuel Thomé
+    date: 2016
+    seriesinfo:
+      EUROCRYPT: 2017
+      Springer: LNCS 10210
+      ISSN: 0302-9743
+      ISBN: 978-3-319-56620-7
+      DOI: 10.1007/978-3-319-56620-7_8
+
   GG16:
     title: Recent progress on the elliptic curve discrete logarithm problem
     target: https://link.springer.com/article/10.1007%2Fs10623-015-0146-7
@@ -673,6 +715,29 @@ informative:
       ISSN: 0302-9743
       ISBN: 978-3-030-81652-0
       DOI: 10.1007/978-3-030-81652-0_5
+
+  GKLWZ20:
+    title: Computation of a 30750-Bit Binary Field Discrete Logarithm
+    target: https://eprint.iacr.org/2020/965
+    author:
+      -
+        ins: R. Granger
+        name: Robert Granger
+      -
+        ins: T. Kleinjung
+        name: Thorsten Kleinjung
+      -
+        ins: A.K. Lenstra
+        name: Arjen K. Lenstra
+      -
+        ins: B. Wesolowski
+        name: Benjamin Wesolowski
+      -
+        ins: J. Zumbrägel
+        name: Jens Zumbrägel
+    date: 2020
+    seriesinfo:
+      IACR: "Cryptology ePrint Archive: Report 2020/965"
 
   eBATS:
     title: "eBATS: ECRYPT Benchmarking of Asymmetric Systems"
@@ -1161,9 +1226,11 @@ L = exp[(log q)^{1/3} (log log q)^{2/3}].
 
 We do not consider extension fields here, since small-characteristic
  fields like binary fields have not appeared in IETF recommendations
- for Diffie-Hellman applications (XXX verify), and
- medium-characteristic fields appear mainly in pairing-based
- cryptography which is out of scope for this memo.
+ for Diffie-Hellman applications (XXX verify) and have been completely
+ broken {{GKLWZ20}}, while medium-characteristic fields appear mainly
+ in pairing-based cryptography which is out of scope for this memo.
+Primes with sparse polynomial representations may also be vulnerable to
+ the special number field sieve {{JP13}} {{FGHT16}}.
 
 {{JLNT09}} extended the number field sieve to take advantage of a
  static DH oracle, with the following attack costs for
