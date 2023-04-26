@@ -13,34 +13,11 @@ L = ellcard(E);
 p = L/(2^3 * 7^2);
 
 printf("p = %d\n", p);
-printf("p - 1 = ");
-printfactors(p - 1);
+printfactors("p - 1", p - 1);
+printfactors("p + 1", p + 1);
 printf("\n");
-printf("p + 1 = ");
-printfactors(p + 1);
+printrhopm1pp1costs(p);
 printf("\n");
-
-printf("\n");
-
-printf("%-55s ~2^%.1f\n", "baseline rho cost:", log_rho(p)/log(2));
-
-d = best_pm1_d(p, seq_q_max);
-printf("%-55s ~2^%.1f\n", \
-    strprintf("best p-1 attack cost after %d queries:", d), \
-    log_pm1_cost(p, d)/log(2));
-
-d = best_pp1_d(p, seq_q_max);
-printf("%-55s ~2^%.1f\n", \
-    strprintf("best p+1 attack cost after %d queries:", 2*d), \
-    log_pp1_cost(p, d)/log(2));
-
-printf("\n");
-
-printf("%-55s ~2^%.1f\n", \
-    "Granger (parallelizable) query cost:", \
-    (2/3)*log(q)/log(2));
-printf("%-55s >2^%.1f\n", \
-    "Granger computational cost:", \
-    (2/3)*log(q)/log(2));
+printgrangercosts(q, 2);
 
 quit();
