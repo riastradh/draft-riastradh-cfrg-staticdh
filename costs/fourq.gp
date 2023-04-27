@@ -10,9 +10,11 @@ d = dy*i + dx;
 a = -1;
 E = ellinit(ellfromeqn(a*x^2 + y^2 - 1 - d*x^2*y^2), i);
 L = ellcard(E);
-p = L/(2^3 * 7^2);
+h = 2^3 * 7^2;
+p = L/h;
 
-printf("p = %d\n", p);
+printf("p = (2^254 - 2^128 - %d)/(2^3 * 7^2)\n  = %d\n", \
+    2^254 - 2^128 - L, p);
 printfactors("p - 1", p - 1);
 printfactors("p + 1", p + 1);
 printf("\n");
