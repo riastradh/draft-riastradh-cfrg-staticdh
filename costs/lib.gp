@@ -30,12 +30,14 @@ logaddexp(a, b) = {
 
 \\ Estimate the log computational cost of a p-1 attack with divisor d.
 log_pm1_cost(p, d) = {
+    if ((p - 1) % d != 0, error("must have d | (p - 1)"));
     \\ log (sqrt{p/d} + sqrt d)
     return (logaddexp(log(p/d)/2, log(d)/2));
 };
 
 \\ Estimate the log computational cost of a p+1 attack with divisor d.
 log_pp1_cost(p, d) = {
+    if ((p + 1) % d != 0, error("must have d | (p + 1)"));
     \\ log (sqrt{p/d} + d)
     return (logaddexp(log(p/d)/2, log(d)));
 };
