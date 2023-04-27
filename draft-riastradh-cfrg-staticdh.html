@@ -17,20 +17,18 @@ Certain cryptographic protocols such as oblivious pseudorandom function
 This memo summarizes the state of the art in attacks enabled by static
  DH oracles, and the resistance of widely used groups to such attacks. 
     " name="description">
-<meta content="xml2rfc 3.17.0" name="generator">
+<meta content="xml2rfc 3.17.1" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-riastradh-cfrg-staticdh-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.17.0
-    Python 3.10.10
+  xml2rfc 3.17.1
+    Python 3.10.11
     appdirs 1.4.4
     ConfigArgParse 1.5.3
     google-i18n-address 2.5.2
-    html5lib 1.1
     intervaltree 3.1.0
     Jinja2 3.1.2
     lxml 4.9.2
-    MarkupSafe 2.1.1
     pycountry 22.3.5
     PyYAML 6.0
     requests 2.28.1
@@ -1059,7 +1057,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Campbell</td>
-<td class="center">Expires 5 October 2023</td>
+<td class="center">Expires 29 October 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1072,12 +1070,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-riastradh-cfrg-staticdh-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-04-03" class="published">3 April 2023</time>
+<time datetime="2023-04-27" class="published">27 April 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-10-05">5 October 2023</time></dd>
+<dd class="expires"><time datetime="2023-10-29">29 October 2023</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1130,7 +1128,7 @@ This memo summarizes the state of the art in attacks enabled by static
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 October 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 29 October 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1212,21 +1210,51 @@ This memo summarizes the state of the art in attacks enabled by static
 <ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1">
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="auto internal xref">7.1</a>.  <a href="#name-ristretto255" class="internal xref">Ristretto255</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.1.2.1">
+                    <p id="section-toc.1-1.7.2.1.2.1.1"><a href="#section-7.1.1" class="auto internal xref">7.1.1</a>.  <a href="#name-source-code" class="internal xref">Source code</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2">
                 <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="auto internal xref">7.2</a>.  <a href="#name-nist-p-256" class="internal xref">NIST P-256</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.2.2.1">
+                    <p id="section-toc.1-1.7.2.2.2.1.1"><a href="#section-7.2.1" class="auto internal xref">7.2.1</a>.  <a href="#name-source-code-2" class="internal xref">Source code</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3">
                 <p id="section-toc.1-1.7.2.3.1"><a href="#section-7.3" class="auto internal xref">7.3</a>.  <a href="#name-third-oakley-group" class="internal xref">Third Oakley Group</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.3.2.1">
+                    <p id="section-toc.1-1.7.2.3.2.1.1"><a href="#section-7.3.1" class="auto internal xref">7.3.1</a>.  <a href="#name-source-code-3" class="internal xref">Source code</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4">
                 <p id="section-toc.1-1.7.2.4.1"><a href="#section-7.4" class="auto internal xref">7.4</a>.  <a href="#name-secp256k1" class="internal xref">secp256k1</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.4.2.1">
+                    <p id="section-toc.1-1.7.2.4.2.1.1"><a href="#section-7.4.1" class="auto internal xref">7.4.1</a>.  <a href="#name-source-code-4" class="internal xref">Source code</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5">
                 <p id="section-toc.1-1.7.2.5.1"><a href="#section-7.5" class="auto internal xref">7.5</a>.  <a href="#name-fourq" class="internal xref">FourQ</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.5.2.1">
+                    <p id="section-toc.1-1.7.2.5.2.1.1"><a href="#section-7.5.1" class="auto internal xref">7.5.1</a>.  <a href="#name-source-code-5" class="internal xref">Source code</a></p>
+</li>
+                </ul>
 </li>
               <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6">
                 <p id="section-toc.1-1.7.2.6.1"><a href="#section-7.6" class="auto internal xref">7.6</a>.  <a href="#name-multiplicative-groups-of-fi" class="internal xref">Multiplicative groups of finite fields of prime order</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7.2.6.2.1">
+                    <p id="section-toc.1-1.7.2.6.2.1.1"><a href="#section-7.6.1" class="auto internal xref">7.6.1</a>.  <a href="#name-source-code-6" class="internal xref">Source code</a></p>
+</li>
+                </ul>
 </li>
             </ul>
 </li>
@@ -1248,10 +1276,13 @@ This memo summarizes the state of the art in attacks enabled by static
             </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
-            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.11.1"><a href="#appendix-A" class="auto internal xref">Appendix A</a>.  <a href="#name-attack-cost-estimate-subrou" class="internal xref">Attack Cost Estimate Subroutines</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
-            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.12.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
+            <p id="section-toc.1-1.13.1"><a href="#appendix-C" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
@@ -1709,7 +1740,7 @@ Thus, it is relevant only to amplify the impact of static DH attacks in
 <a href="#section-6.2" class="section-number selfRef">6.2. </a><a href="#name-attacks-on-finite-fields" class="section-name selfRef">Attacks on Finite Fields</a>
         </h3>
 <p id="section-6.2-1">In a finite field F_q for prime q, without a static DH oracle, the
- state of the art in DLP (and SDH) is the general number field sive,
+ state of the art in DLP (and SDH) is the general number field sieve,
  which costs <span>[<a href="#Barbulescu13" class="cite xref">Barbulescu13</a>]</span>:<a href="#section-6.2-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.2-2">
 <pre>
@@ -1725,9 +1756,11 @@ L = exp[(log q)^{1/3} (log log q)^{2/3}].
 </div>
 <p id="section-6.2-5">We do not consider extension fields here, since small-characteristic
  fields like binary fields have not appeared in IETF recommendations
- for Diffie-Hellman applications (XXX verify), and
- medium-characteristic fields appear mainly in pairing-based
- cryptography which is out of scope for this memo.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
+ for Diffie-Hellman applications (XXX verify) and have been completely
+ broken <span>[<a href="#GKLWZ20" class="cite xref">GKLWZ20</a>]</span>, while medium-characteristic fields appear mainly
+ in pairing-based cryptography which is out of scope for this memo.
+Primes with sparse polynomial representations may also be vulnerable to
+ the special number field sieve <span>[<a href="#JP13" class="cite xref">JP13</a>]</span> <span>[<a href="#FGHT16" class="cite xref">FGHT16</a>]</span>.<a href="#section-6.2-5" class="pilcrow">¶</a></p>
 <p id="section-6.2-6"><span>[<a href="#JLNT09" class="cite xref">JLNT09</a>]</span> extended the number field sieve to take advantage of a
  static DH oracle, with the following attack costs for
  large-characteristic fields:<a href="#section-6.2-6" class="pilcrow">¶</a></p>
@@ -1751,9 +1784,10 @@ q need not be prime, as long as the characteristic is at least
         <h3 id="name-attacks-on-elliptic-curves-">
 <a href="#section-6.3" class="section-number selfRef">6.3. </a><a href="#name-attacks-on-elliptic-curves-" class="section-name selfRef">Attacks on Elliptic Curves over Extension Fields</a>
         </h3>
-<p id="section-6.3-1">In the group of rational points on an elliptic curve over an
- extension field F_{q^n}, <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span> extended index calculus to
- solve the static DH problem with the following costs:<a href="#section-6.3-1" class="pilcrow">¶</a></p>
+<p id="section-6.3-1">In the group of rational points on an elliptic curve over an extension
+ field F_{q^n} for medium to large prime power q, <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>
+ extended index calculus to solve the static DH problem with the
+ following costs:<a href="#section-6.3-1" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-6.3-2">
 <pre>
 oracle queries:         O(q^{1 - 1/(n + 1)})
@@ -1765,7 +1799,7 @@ computation:            O~(q^{1 - 1/(n + 1)}),
  the feasible query cost may be considerably higher than for the generic
  attacks of <span>[<a href="#BG04" class="cite xref">BG04</a>]</span> and <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span>.
 q need not be prime; the attacks apply just as well to extension fields
- of extension fields.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
+ of extension fields, e.g. to binary fields of composite extension degree.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
 <p id="section-6.3-5">At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
  issuing O(sqrt{q}) static DH queries.
 The cost for n = 2 is O(q^{2/3}) queries and O~(q^{2/3}) computation;
@@ -1822,6 +1856,10 @@ Such breakthroughs are naturally out of scope for a memo discussing
  the present state of the art.<a href="#section-7-2.2" class="pilcrow">¶</a>
 </li>
       </ul>
+<p id="section-7-3">The attack cost estimates were computed using PARI/GP <span>[<a href="#PariGP" class="cite xref">PariGP</a>]</span>
+ version 2.15.3, with the optional seadata-small package installed
+ <span>[<a href="#PariGPPkgs" class="cite xref">PariGPPkgs</a>]</span>, and with a small library of subroutines in the
+ appendix.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <div id="ristretto255">
 <section id="section-7.1">
         <h3 id="name-ristretto255">
@@ -1838,14 +1876,41 @@ p - 1 = 2^2 * 3 * 11 * 198211423230930754013084525763697 *
 p + 1 = 2 * 5 * 7 * 103 * 684245902131068969 *
   1466936914520620440380580414586728830413895967152734051
 
-baseline rho cost:                              ~2^125.8
-best p-1 attack cost after 132 queries:         ~2^122.5
-best p+1 attack cost after 14 420 queries:      ~2^119.5
+baseline rho cost:                                      ~2^125.8
+best p-1 attack cost after 132 queries:                 ~2^122.5
+best p+1 attack cost after 14420 queries:               ~2^119.6
 </pre><a href="#section-7.1-2" class="pilcrow">¶</a>
 </div>
 <p id="section-7.1-3">Ristretto255 is unaffected by the attacks of <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>,
  and <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since it is defined over a prime field, not an
  extension field.<a href="#section-7.1-3" class="pilcrow">¶</a></p>
+<div id="source-code">
+<section id="section-7.1.1">
+          <h4 id="name-source-code">
+<a href="#section-7.1.1" class="section-number selfRef">7.1.1. </a><a href="#name-source-code" class="section-name selfRef">Source code</a>
+          </h4>
+<div class="alignLeft art-text artwork" id="section-7.1.1-1">
+<pre>
+read("lib.gp");
+
+\\ https://cr.yp.to/papers.html#curve25519
+\\ https://www.rfc-editor.org/info/rfc7748
+\\ https://datatracker.ietf.org/doc/draft-irtf-cfrg-ristretto255-decaf448/07/
+curve25519 = ellinit([0, 486662, 0, 1, 0], 2^255 - 19);
+L = ellcard(curve25519);
+p = L/8;
+
+printf("p = 2^252 + %d\n", p - 2^252);
+printfactors("p - 1", p - 1);
+printfactors("p + 1", p + 1);
+printf("\n");
+printecrhopm1pp1costs(p);
+
+quit();
+</pre><a href="#section-7.1.1-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="nist-p-256">
@@ -1869,13 +1934,40 @@ p + 1 = 2 * 5 * 1879 * 176337611 *
   34946779280882916835155272231706129710560967816144871596921775673
 
 baseline rho cost:                                      ~2^127.8
-best p-1 attack cost: at least                          ~2^100.5
-best p+1 attack cost after 6 626 767 421 380 queries:   ~2^107.2
+best p-1 attack cost after 35558258230900122 queries:   ~2^100.5
+best p+1 attack cost after 6626767421380 queries:       ~2^107.2
 </pre><a href="#section-7.2-2" class="pilcrow">¶</a>
 </div>
 <p id="section-7.2-3">NIST P-256 is unaffected by the attacks of <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>, and
  <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since it is defined over a prime field, not an extension
  field.<a href="#section-7.2-3" class="pilcrow">¶</a></p>
+<div id="source-code-1">
+<section id="section-7.2.1">
+          <h4 id="name-source-code-2">
+<a href="#section-7.2.1" class="section-number selfRef">7.2.1. </a><a href="#name-source-code-2" class="section-name selfRef">Source code</a>
+          </h4>
+<div class="alignLeft art-text artwork" id="section-7.2.1-1">
+<pre>
+read("lib.gp");
+
+\\ https://www.secg.org/sec2-v2.pdf#page=13
+\\ https://nvlpubs.nist.gov/nistpubs/fips/nist.fips.186-4.pdf#page=101
+\\ a.k.a. secp256r1
+B = 0x5AC635D8AA3A93E7B3EBBD55769886BC651D06B0CC53B0F63BCE3C3E27D2604B;
+E = ellinit([-3, B], 2^256 - 2^224 + 2^192 + 2^96 - 1);
+p = ellcard(E);
+
+printf("p = 2^256 - 2^224 + 2^192 - %d\n", 2^256 - 2^224 + 2^192 - p);
+printfactors("p - 1", p - 1);
+printfactors("p + 1", p + 1);
+printf("\n");
+printecrhopm1pp1costs(p);
+
+quit();
+</pre><a href="#section-7.2.1-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="third-oakley-group">
@@ -1900,15 +1992,60 @@ The estimate of the computational cost here is the number of Intel Core
 <pre>
 p = 3805993847215893016155463826195386266397436443
 p - 1 = 2 * 3 * 10181 * 1239554496673218367 * 50264430795225140347741
-p + 1 = 2^2 * 23 * 436957 * 728069 * 5322133 * 18629415209 * 1311547632725557
+p + 1 = 2^2 * 23 * 436957 * 728069 * 5322133 * 18629415209 *
+  1311547632725557
 
 baseline rho cost:                                      ~2^75.5
-best p-1 attack after 61 086 queries:                   ~2^67.8
-best p+1 attack after 32 561 013 525 916 052 queries:   ~2^54.9
+best p-1 attack cost after 61086 queries:               ~2^67.8
+best p+1 attack cost after 32561013525916052 queries:   ~2^53.9
 
-Index calculus (parallelizable) query cost:             ~2^30.0
-Index calculus computational cost (i7-4650U cycles):    ~2^39.0
+index calculus (parallelizable) query cost:             ~2^30.0
+index calculus computational cost (i7-4650U cycles):    ~2^39.0
 </pre><a href="#section-7.3-3" class="pilcrow">¶</a>
+</div>
+<div id="source-code-2">
+<section id="section-7.3.1">
+          <h4 id="name-source-code-3">
+<a href="#section-7.3.1" class="section-number selfRef">7.3.1. </a><a href="#name-source-code-3" class="section-name selfRef">Source code</a>
+          </h4>
+<div class="alignLeft art-text artwork" id="section-7.3.1-1">
+<pre>
+read("lib.gp");
+
+\\ https://www.rfc-editor.org/rfc/rfc2409#section-6.3
+\\ https://www.rfc-editor.org/rfc/rfc2412#page-37
+u = 'u;
+u = ffgen(Mod(u^155 + u^62 + 1, 2));
+a = 0;
+\\ 0x07338f
+b = 1 + u + u^2 + u^3 \
+    + u^7 \
+    + u^8 + u^9 \
+    + u^12 + u^13 \
+    + u^16 + u^17 + u^18;
+E = ellinit([1, a, 0, 0, b], u);
+L = ellcard(E);
+p = L/12;
+
+printf("p = %d\n", p);
+printfactors("p - 1", p - 1);
+printfactors("p + 1", p + 1);
+printf("\n");
+printecrhopm1pp1costs(p);
+printf("\n");
+
+\\ https://link.springer.com/chapter/10.1007/978-3-642-55220-5_3
+printf("%-55s ~2^%.1f\n", \
+    "index calculus (parallelizable) query cost:", \
+    30.0);
+printf("%-55s ~2^%.1f\n", \
+    "index calculus computational cost (i7-4650U cycles):", \
+    39.0);
+
+quit();
+</pre><a href="#section-7.3.1-1" class="pilcrow">¶</a>
+</div>
+</section>
 </div>
 </section>
 </div>
@@ -1933,13 +2070,37 @@ p + 1 = 2 * 13 * 83 * 45751 * 509879 *
   2300168931843757888934889794142140465088020300168077349902139959
 
 baseline rho cost:                                      ~2^127.8
-best p-1 attack cost after 18 051 648 queries:          ~2^115.9
-best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
+best p-1 attack cost after 18051648 queries:            ~2^115.9
+best p+1 attack cost after 100681378340764 queries:     ~2^105.2
 </pre><a href="#section-7.4-3" class="pilcrow">¶</a>
 </div>
 <p id="section-7.4-4">secp256k1 is unaffected by the attacks of <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, <span>[<a href="#JV11" class="cite xref">JV11</a>]</span>, and
  <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since it is defined over a prime field, not an extension
  field.<a href="#section-7.4-4" class="pilcrow">¶</a></p>
+<div id="source-code-3">
+<section id="section-7.4.1">
+          <h4 id="name-source-code-4">
+<a href="#section-7.4.1" class="section-number selfRef">7.4.1. </a><a href="#name-source-code-4" class="section-name selfRef">Source code</a>
+          </h4>
+<div class="alignLeft art-text artwork" id="section-7.4.1-1">
+<pre>
+read("lib.gp");
+
+\\ https://www.secg.org/sec2-v2.pdf#page=13
+E = ellinit([0, 7], 2^256 - 2^32 - 977);
+p = ellcard(E);
+
+printf("p = 2^256 - %d\n", 2^256 - p);
+printfactors("p - 1", p - 1);
+printfactors("p + 1", p + 1);
+printf("\n");
+printecrhopm1pp1costs(p);
+
+quit();
+</pre><a href="#section-7.4.1-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="fourq">
@@ -1961,22 +2122,59 @@ We mention it here only because it has received considerable attention
  Curve25519 taking advantage of arithmetic modulo a Mersenne prime.<a href="#section-7.5-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7.5-3">
 <pre>
-p = 73846995687063900142583536357581573884798075859800097461294096333596429543
+p = (2^254 - 2^128 - 136368062447564341573735631776713817672)/(2^3 * 7^2)
+  = 73846995687063900142583536357581573884798075859800097461294096333596429543
 p - 1 = 2 * 3^2 * 103043 * 5948609 * 7355633 * 9560163629 *
   95178976488652476489556669482413803056485341
 p + 1 = 2^3 * 7 * 13 *
   101438180888824038657394967524150513578019334972252881128151231227467623
 
-baseline rho cost:                                              ~2^122.5
-best p-1 attack cost after 17 731 942 934 814 846 queries:      ~2^95.7
-best p+1 attack cost after 728 queries:                         ~2^117.9
+baseline rho cost:                                      ~2^122.5
+best p-1 attack cost after 17731942934814846 queries:   ~2^95.7
+best p+1 attack cost after 1456 queries:                ~2^117.9
 
-Granger (parallelizable) query cost:                            ~2^84.6
-Granger computational cost:                                     &gt;2^84.6
+Granger (parallelizable) query cost:                    ~2^84.7
+Granger computational cost:                             &gt;2^84.7
 </pre><a href="#section-7.5-3" class="pilcrow">¶</a>
 </div>
 <p id="section-7.5-4">FourQ is unaffected by the attacks of <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> and <span>[<a href="#FHJRV14" class="cite xref">FHJRV14</a>]</span>, since
  its extension degree is not divisible by 5.<a href="#section-7.5-4" class="pilcrow">¶</a></p>
+<div id="source-code-4">
+<section id="section-7.5.1">
+          <h4 id="name-source-code-5">
+<a href="#section-7.5.1" class="section-number selfRef">7.5.1. </a><a href="#name-source-code-5" class="section-name selfRef">Source code</a>
+          </h4>
+<div class="alignLeft art-text artwork" id="section-7.5.1-1">
+<pre>
+read("lib.gp");
+
+\\ https://eprint.iacr.org/2015/565
+q = 2^127 - 1;
+i = 'i;
+i = ffgen(Mod(i^2 + 1, q));
+dx = 4205857648805777768770;
+dy = 125317048443780598345676279555970305165;
+d = dy*i + dx;
+a = -1;
+E = ellinit(ellfromeqn(a*x^2 + y^2 - 1 - d*x^2*y^2), i);
+L = ellcard(E);
+h = 2^3 * 7^2;
+p = L/h;
+
+printf("p = (2^254 - 2^128 - %d)/(2^3 * 7^2)\n  = %d\n", \
+    2^254 - 2^128 - L, p);
+printfactors("p - 1", p - 1);
+printfactors("p + 1", p + 1);
+printf("\n");
+printecrhopm1pp1costs(p);
+printf("\n");
+printgrangercosts(q, 2);
+
+quit();
+</pre><a href="#section-7.5.1-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
 </section>
 </div>
 <div id="multiplicative-groups-of-finite-fields-of-prime-order">
@@ -1998,14 +2196,52 @@ We summarize the NFS costs for several common prime sizes as used in
 <pre>
 bits   baseline   queries   precomp   per-target
 
-1024    ~2^86.7   ~2^34.4   ~2^68.8    ~2^65.0
-1536   ~2^103.3   ~2^41.0   ~2^82.0    ~2^77.5
-2048   ~2^116.9   ~2^46.4   ~2^92.8    ~2^87.6
-3072   ~2^138.7   ~2^55.0  ~2^110.1   ~2^104.0
+1024    ~2^86.8   ~2^34.4   ~2^68.9    ~2^65.1
+1536   ~2^103.4   ~2^41.0   ~2^82.0    ~2^77.5
+2048   ~2^116.9   ~2^46.4   ~2^92.8    ~2^87.7
+3072   ~2^138.7   ~2^55.1  ~2^110.1   ~2^104.1
 4096   ~2^156.5   ~2^62.1  ~2^124.2   ~2^117.4
 6144   ~2^185.2   ~2^73.5  ~2^147.0   ~2^138.9
-8192   ~2^208.5   ~2^82.7  ~2^165.5   ~2^156.3
+8192   ~2^208.5   ~2^82.7  ~2^165.5   ~2^156.4
 </pre><a href="#section-7.6-2" class="pilcrow">¶</a>
+</div>
+<div id="source-code-5">
+<section id="section-7.6.1">
+          <h4 id="name-source-code-6">
+<a href="#section-7.6.1" class="section-number selfRef">7.6.1. </a><a href="#name-source-code-6" class="section-name selfRef">Source code</a>
+          </h4>
+<div class="alignLeft art-text artwork" id="section-7.6.1-1">
+<pre>
+print_nfs(lg_q) = {
+    log_q = lg_q * log(2);
+    log_L = log_q^(1/3) * log(log_q)^(2/3);
+    lg_L = log_L / log(2);
+    baseline = lg_L * (64/9)^(1/3);
+    queries = lg_L * (4/9)^(1/3);
+    precomp = lg_L * (32/9)^(1/3);
+    per_target = lg_L * 3^(1/3);
+    printf("%-4d  %9s %9s %9s  %9s\n", lg_q,
+        strprintf("~2^%.1f", baseline),
+        strprintf("~2^%.1f", queries),
+        strprintf("~2^%.1f", precomp),
+        strprintf("~2^%.1f", per_target));
+};
+
+printf("%-4s  %9s %9s %9s   %9s\n", \
+    "bits", "baseline", "queries", "precomp", "per-target");
+printf("\n");
+print_nfs(1024);
+print_nfs(1536);
+print_nfs(2048);
+print_nfs(3072);
+print_nfs(4096);
+print_nfs(6144);
+print_nfs(8192);
+
+quit();
+</pre><a href="#section-7.6.1-1" class="pilcrow">¶</a>
+</div>
+</section>
 </div>
 </section>
 </div>
@@ -2103,6 +2339,10 @@ bits   baseline   queries   precomp   per-target
         <dd>
 <span class="refAuthor">Bernstein, D. J.</span> and <span class="refAuthor">T. Lange</span>, <span class="refTitle">"eBATS: ECRYPT Benchmarking of Asymmetric Systems"</span>, <time datetime="2023-04-01" class="refDate">1 April 2023</time>, <span>&lt;<a href="https://bench.cr.yp.to/ebats.html">https://bench.cr.yp.to/ebats.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="FGHT16">[FGHT16]</dt>
+        <dd>
+<span class="refAuthor">Fried, J.</span>, <span class="refAuthor">Gaudry, P.</span>, <span class="refAuthor">Heninger, N.</span>, and <span class="refAuthor">E. Thomé</span>, <span class="refTitle">"A kilobit hidden SNFS discrete logarithm computation"</span>, <span class="seriesInfo">EUROCRYPT 2017</span>, <span class="seriesInfo">Springer LNCS 10210</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-319-56620-7</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-56620-7_8</span>, <time datetime="2016" class="refDate">2016</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-319-56620-7_8">https://link.springer.com/chapter/10.1007/978-3-319-56620-7_8</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="FHJRV14">[FHJRV14]</dt>
         <dd>
 <span class="refAuthor">Faugère, J.-C.</span>, <span class="refAuthor">Huot, L.</span>, <span class="refAuthor">Joux, A.</span>, <span class="refAuthor">Renault, G.</span>, and <span class="refAuthor">V. Vitse</span>, <span class="refTitle">"Symmetrized Summation Polynomials: Using Small Order Torsion Points to Speed Up Elliptic Curve Index Calculus"</span>, <span class="seriesInfo">EUROCRYPT 2014</span>, <span class="seriesInfo">Springer LNCS 8441</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-642-55220-5</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-55220-5_3</span>, <time datetime="2014" class="refDate">2014</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-642-55220-5_3">https://link.springer.com/chapter/10.1007/978-3-642-55220-5_3</a>&gt;</span>. </dd>
@@ -2127,6 +2367,10 @@ bits   baseline   queries   precomp   per-target
         <dd>
 <span class="refAuthor">Galbraith, S. D.</span>, <span class="refAuthor">Granger, R.</span>, <span class="refAuthor">Merz, S.-P.</span>, and <span class="refAuthor">C. Petit</span>, <span class="refTitle">"On Index Calculus Algorithms for Subfield Curves"</span>, <span class="seriesInfo">SAC 2021</span>, <span class="seriesInfo">Springer LNCS 12804</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-030-81652-0</span>, <span class="seriesInfo">DOI 10.1007/978-3-030-81652-0_5</span>, <time datetime="2021" class="refDate">2021</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-030-81652-0_5">https://link.springer.com/chapter/10.1007/978-3-030-81652-0_5</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="GKLWZ20">[GKLWZ20]</dt>
+        <dd>
+<span class="refAuthor">Granger, R.</span>, <span class="refAuthor">Kleinjung, T.</span>, <span class="refAuthor">Lenstra, A. K.</span>, <span class="refAuthor">Wesolowski, B.</span>, and <span class="refAuthor">J. Zumbrägel</span>, <span class="refTitle">"Computation of a 30750-Bit Binary Field Discrete Logarithm"</span>, <span class="seriesInfo">IACR Cryptology ePrint Archive: Report 2020/965</span>, <time datetime="2020" class="refDate">2020</time>, <span>&lt;<a href="https://eprint.iacr.org/2020/965">https://eprint.iacr.org/2020/965</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="Granger10">[Granger10]</dt>
         <dd>
 <span class="refAuthor">Granger, R.</span>, <span class="refTitle">"On the Static Diffie-Hellman Problem on Elliptic Curves over Extension Fields"</span>, <span class="seriesInfo">ASIACRYPT 2010</span>, <span class="seriesInfo">Springer LNCS 6477</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-642-17372-1</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-17373-8_17</span>, <time datetime="2010" class="refDate">2010</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-642-17373-8_17">https://link.springer.com/chapter/10.1007/978-3-642-17373-8_17</a>&gt;</span>. </dd>
@@ -2149,7 +2393,7 @@ bits   baseline   queries   precomp   per-target
 <dd class="break"></dd>
 <dt id="I-D.irtf-cfrg-ristretto255-decaf448">[I-D.irtf-cfrg-ristretto255-decaf448]</dt>
         <dd>
-<span class="refAuthor">de Valence, H.</span>, <span class="refAuthor">Grigg, J.</span>, <span class="refAuthor">Hamburg, M.</span>, <span class="refAuthor">Lovecruft, I.</span>, <span class="refAuthor">Tankersley, G.</span>, and <span class="refAuthor">F. Valsorda</span>, <span class="refTitle">"The ristretto255 and decaf448 Groups"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-ristretto255-decaf448-06</span>, <time datetime="2023-02-13" class="refDate">13 February 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-ristretto255-decaf448-06">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-ristretto255-decaf448-06</a>&gt;</span>. </dd>
+<span class="refAuthor">de Valence, H.</span>, <span class="refAuthor">Grigg, J.</span>, <span class="refAuthor">Hamburg, M.</span>, <span class="refAuthor">Lovecruft, I.</span>, <span class="refAuthor">Tankersley, G.</span>, and <span class="refAuthor">F. Valsorda</span>, <span class="refTitle">"The ristretto255 and decaf448 Groups"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-irtf-cfrg-ristretto255-decaf448-07</span>, <time datetime="2023-04-03" class="refDate">3 April 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-ristretto255-decaf448-07">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-ristretto255-decaf448-07</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.irtf-cfrg-voprf">[I-D.irtf-cfrg-voprf]</dt>
         <dd>
@@ -2166,6 +2410,10 @@ bits   baseline   queries   precomp   per-target
 <dt id="JLNT09">[JLNT09]</dt>
         <dd>
 <span class="refAuthor">Joux, A.</span>, <span class="refAuthor">Lercier, R.</span>, <span class="refAuthor">Naccache, D.</span>, and <span class="refAuthor">E. Thomé</span>, <span class="refTitle">"Oracle-Assisted Static Diffie-Hellman Is Easier Than Discrete Logarithms"</span>, <span class="seriesInfo">IMACC 2009</span>, <span class="seriesInfo">Springer LNCS 5921</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-642-10868-6</span>, <span class="seriesInfo">DOI 10.1007/978-3-642-10868-6_21</span>, <time datetime="2009" class="refDate">2009</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-642-10868-6_21">https://link.springer.com/chapter/10.1007/978-3-642-10868-6_21</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="JP13">[JP13]</dt>
+        <dd>
+<span class="refAuthor">Joux, A.</span> and <span class="refAuthor">C. Pierrot</span>, <span class="refTitle">"The Special Number Field Sieve in F_{p^n}"</span>, <span class="seriesInfo">Pairing-Based Cryptography 2023</span>, <span class="seriesInfo">Springer LNCS 8365</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-319-04873-4</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-04873-4_3</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-319-04873-4_3">https://link.springer.com/chapter/10.1007/978-3-319-04873-4_3</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="JV11">[JV11]</dt>
         <dd>
@@ -2210,6 +2458,14 @@ bits   baseline   queries   precomp   per-target
 <dt id="OW99">[OW99]</dt>
         <dd>
 <span class="refAuthor">van Oorschot, P. C.</span> and <span class="refAuthor">M. J. Wiener</span>, <span class="refTitle">"Parallel collision search with cryptanalytic applications"</span>, <span class="seriesInfo">IACR Journal of Cryptology 12</span>, <span class="seriesInfo">ISSN 0933-2790</span>, <span class="seriesInfo">DOI 10.1007/PL00003816</span>, <time datetime="1999" class="refDate">1999</time>, <span>&lt;<a href="https://link.springer.com/article/10.1007/PL00003816">https://link.springer.com/article/10.1007/PL00003816</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="PariGP">[PariGP]</dt>
+        <dd>
+<span class="refTitle">"PARI/GP Development Headquarters"</span>, <time datetime="2023-03-15" class="refDate">15 March 2023</time>, <span>&lt;<a href="https://pari.math.u-bordeaux.fr/">https://pari.math.u-bordeaux.fr/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="PariGPPkgs">[PariGPPkgs]</dt>
+        <dd>
+<span class="refTitle">"Optional PARI/GP packages"</span>, <time datetime="2023-04-24" class="refDate">24 April 2023</time>, <span>&lt;<a href="https://pari.math.u-bordeaux.fr/packages.html">https://pari.math.u-bordeaux.fr/packages.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Pollard78">[Pollard78]</dt>
         <dd>
@@ -2286,20 +2542,136 @@ bits   baseline   queries   precomp   per-target
 </dl>
 </section>
 </section>
-<div id="acknowledgments">
+<div id="attack-cost-estimate-subroutines">
 <section id="appendix-A">
+      <h2 id="name-attack-cost-estimate-subrou">
+<a href="#appendix-A" class="section-number selfRef">Appendix A. </a><a href="#name-attack-cost-estimate-subrou" class="section-name selfRef">Attack Cost Estimate Subroutines</a>
+      </h2>
+<p id="appendix-A-1">The following PARI/GP <span>[<a href="#PariGP" class="cite xref">PariGP</a>]</span> subroutines are gathered into a file
+ called lib.gp for use in the attack cost estimation scripts above.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="appendix-A-2">
+<pre>
+\\ Maximum plausible number of sequential queries.
+seq_q_max = 2^55;
+
+\\ Find the best divisor d for the p-1 attack.
+best_pm1_d(p, q_max) = {
+    my (d_best = 0);
+    fordiv (p - 1, d,
+        if (d &lt; d_best, next ());
+        if (d &gt; q_max, next ());
+        d_best = d;
+    );
+    return (d_best);
+};
+
+\\ Find the best divisor d for the p+1 attack.
+best_pp1_d(p, q_max) = {
+    my (d_best = 0);
+    fordiv (p + 1, d,
+        if (d &lt; d_best, next ());
+        if (2*d &gt; q_max, next ());
+        d_best = d;
+    );
+    return (d_best);
+};
+
+\\ log (e^a + e^b)
+logaddexp(a, b) = {
+    return (max(a, b) + log1p(exp(-abs(a - b))));
+};
+
+\\ Estimate the log computational cost of a p-1 attack with divisor d.
+log_pm1_cost(p, d) = {
+    if ((p - 1) % d != 0, error("must have d | (p - 1)"));
+    \\ log (sqrt{p/d} + sqrt d)
+    return (logaddexp(log(p/d)/2, log(d)/2));
+};
+
+\\ Estimate the log computational cost of a p+1 attack with divisor d.
+log_pp1_cost(p, d) = {
+    if ((p + 1) % d != 0, error("must have d | (p + 1)"));
+    \\ log (sqrt{p/d} + d)
+    return (logaddexp(log(p/d)/2, log(d)));
+};
+
+\\ Estimate the log rho cost of an attack on a curve of order p.
+log_ecrho(p) = {
+    return (log(Pi*p/4)/2);
+};
+
+\\ Print factorization of n neatly formatted.
+printfactors(name, n) = {
+    my(s = strprintf("%s = ", name));
+    my(cont = 0);
+    foreach (factor(n)~, fe,
+        my(f = fe[1]);
+        my(e = fe[2]);
+        my(s1 = "");
+        if (cont,
+            s = strprintf("%s *", s);
+            s1 = strprintf(" %s", s1);
+        );
+        s1 = strprintf("%s%d", s1, f);
+        if (e != 1, s1 = strprintf("%s^%d", s1, e));
+        if (length(s) + length(s1) &gt;= 72,
+            printf("%s\n ", s);
+            s = s1;
+        ,\\else
+            s = strprintf("%s%s", s, s1);
+        );
+        cont = 1;
+    );
+    printf("%s\n", s);
+};
+
+\\ Print rho, p-1, and p+1 costs against a curve of order p.
+printecrhopm1pp1costs(p) = {
+    if (!isprime(p),
+        error("use Pohlig-Hellman, not rho, for composite order");
+    );
+    printf("%-55s ~2^%.1f\n", "baseline rho cost:",
+        log_ecrho(p)/log(2));
+    d = best_pm1_d(p, seq_q_max);
+    printf("%-55s ~2^%.1f\n",
+        strprintf("best p-1 attack cost after %d queries:", d),
+        log_pm1_cost(p, d)/log(2));
+    d = best_pp1_d(p, seq_q_max);
+    printf("%-55s ~2^%.1f\n",
+        strprintf("best p+1 attack cost after %d queries:", 2*d),
+        log_pp1_cost(p, d)/log(2));
+};
+
+\\ Print Granger10 costs against a curve over F_{q^n}.
+\\ https://link.springer.com/chapter/10.1007/978-3-642-17373-8_17
+printgrangercosts(q, n) = {
+    printf("%-55s ~2^%.1f\n",
+        "Granger (parallelizable) query cost:",
+        (1 - 1/(n + 1))*log(q)/log(2));
+    printf("%-55s &gt;2^%.1f\n",
+        "Granger computational cost:",
+        (1 - 1/(n + 1))*log(q)/log(2));
+}
+</pre><a href="#appendix-A-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="acknowledgments">
+<section id="appendix-B">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-B-1">TODO acknowledge.<a href="#appendix-B-1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-A-2.1">Alex Davidson provided editorial suggestions.<a href="#appendix-A-2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-B-2.1">Alex Davidson provided editorial suggestions.<a href="#appendix-B-2.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="appendix-B-2.2">Michele Orru encouraged scripting the attack cost estimation.<a href="#appendix-B-2.2" class="pilcrow">¶</a>
 </li>
       </ul>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="appendix-B">
+<section id="appendix-C">
       <h2 id="name-authors-address">
 <a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
       </h2>
