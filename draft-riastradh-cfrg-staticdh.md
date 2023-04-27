@@ -1338,9 +1338,9 @@ p - 1 = 2^2 * 3 * 11 * 198211423230930754013084525763697 *
 p + 1 = 2 * 5 * 7 * 103 * 684245902131068969 *
   1466936914520620440380580414586728830413895967152734051
 
-baseline rho cost:                              ~2^125.8
-best p-1 attack cost after 132 queries:         ~2^122.5
-best p+1 attack cost after 14 420 queries:      ~2^119.5
+baseline rho cost:                                      ~2^125.8
+best p-1 attack cost after 132 queries:                 ~2^122.5
+best p+1 attack cost after 14420 queries:               ~2^119.6
 ~~~
 
 Ristretto255 is unaffected by the attacks of {{Granger10}}, {{JV11}},
@@ -1366,8 +1366,8 @@ p + 1 = 2 * 5 * 1879 * 176337611 *
   34946779280882916835155272231706129710560967816144871596921775673
 
 baseline rho cost:                                      ~2^127.8
-best p-1 attack cost: at least                          ~2^100.5
-best p+1 attack cost after 6 626 767 421 380 queries:   ~2^107.2
+best p-1 attack cost after 35558258230900122 queries:   ~2^100.5
+best p+1 attack cost after 6626767421380 queries:       ~2^107.2
 ~~~
 
 NIST P-256 is unaffected by the attacks of {{Granger10}}, {{JV11}}, and
@@ -1395,11 +1395,12 @@ The estimate of the computational cost here is the number of Intel Core
 ~~~
 p = 3805993847215893016155463826195386266397436443
 p - 1 = 2 * 3 * 10181 * 1239554496673218367 * 50264430795225140347741
-p + 1 = 2^2 * 23 * 436957 * 728069 * 5322133 * 18629415209 * 1311547632725557
+p + 1 = 2^2 * 23 * 436957 * 728069 * 5322133 * 18629415209 *
+  1311547632725557
 
 baseline rho cost:                                      ~2^75.5
-best p-1 attack after 61 086 queries:                   ~2^67.8
-best p+1 attack after 32 561 013 525 916 052 queries:   ~2^54.9
+best p-1 attack cost after 61086 queries:               ~2^67.8
+best p+1 attack cost after 32561013525916052 queries:   ~2^53.9
 
 Index calculus (parallelizable) query cost:             ~2^30.0
 Index calculus computational cost (i7-4650U cycles):    ~2^39.0
@@ -1425,8 +1426,8 @@ p + 1 = 2 * 13 * 83 * 45751 * 509879 *
   2300168931843757888934889794142140465088020300168077349902139959
 
 baseline rho cost:                                      ~2^127.8
-best p-1 attack cost after 18 051 648 queries:          ~2^115.9
-best p+1 attack cost after 100 681 378 340 764 queries: ~2^105.2
+best p-1 attack cost after 18051648 queries:            ~2^115.9
+best p+1 attack cost after 100681378340764 queries:     ~2^105.2
 ~~~
 
 secp256k1 is unaffected by the attacks of {{Granger10}}, {{JV11}}, and
@@ -1457,12 +1458,12 @@ p - 1 = 2 * 3^2 * 103043 * 5948609 * 7355633 * 9560163629 *
 p + 1 = 2^3 * 7 * 13 *
   101438180888824038657394967524150513578019334972252881128151231227467623
 
-baseline rho cost:                                              ~2^122.5
-best p-1 attack cost after 17 731 942 934 814 846 queries:      ~2^95.7
-best p+1 attack cost after 728 queries:                         ~2^117.9
+baseline rho cost:                                      ~2^122.5
+best p-1 attack cost after 17731942934814846 queries:   ~2^95.7
+best p+1 attack cost after 1456 queries:                ~2^117.9
 
-Granger (parallelizable) query cost:                            ~2^84.6
-Granger computational cost:                                     >2^84.6
+Granger (parallelizable) query cost:                    ~2^84.7
+Granger computational cost:                             >2^84.7
 ~~~
 
 FourQ is unaffected by the attacks of {{JV11}} and {{FHJRV14}}, since
@@ -1485,13 +1486,13 @@ We summarize the NFS costs for several common prime sizes as used in
 ~~~
 bits   baseline   queries   precomp   per-target
 
-1024    ~2^86.7   ~2^34.4   ~2^68.8    ~2^65.0
-1536   ~2^103.3   ~2^41.0   ~2^82.0    ~2^77.5
-2048   ~2^116.9   ~2^46.4   ~2^92.8    ~2^87.6
-3072   ~2^138.7   ~2^55.0  ~2^110.1   ~2^104.0
+1024    ~2^86.8   ~2^34.4   ~2^68.9    ~2^65.1
+1536   ~2^103.4   ~2^41.0   ~2^82.0    ~2^77.5
+2048   ~2^116.9   ~2^46.4   ~2^92.8    ~2^87.7
+3072   ~2^138.7   ~2^55.1  ~2^110.1   ~2^104.1
 4096   ~2^156.5   ~2^62.1  ~2^124.2   ~2^117.4
 6144   ~2^185.2   ~2^73.5  ~2^147.0   ~2^138.9
-8192   ~2^208.5   ~2^82.7  ~2^165.5   ~2^156.3
+8192   ~2^208.5   ~2^82.7  ~2^165.5   ~2^156.4
 ~~~
 
 
