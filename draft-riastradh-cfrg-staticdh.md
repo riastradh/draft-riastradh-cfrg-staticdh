@@ -1210,7 +1210,7 @@ Thus, it is relevant only to amplify the impact of static DH attacks in
 ## Attacks on Finite Fields
 
 In a finite field F_q for prime q, without a static DH oracle, the
- state of the art in DLP (and SDH) is the general number field sive,
+ state of the art in DLP (and SDH) is the general number field sieve,
  which costs {{Barbulescu13}}:
 
 ~~~
