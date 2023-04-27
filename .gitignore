@@ -1,3 +1,5 @@
+/.depend
+*.d
 *.html
 *.pdf
 *.redxml

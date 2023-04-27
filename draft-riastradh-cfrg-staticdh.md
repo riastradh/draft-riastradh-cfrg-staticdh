@@ -739,6 +739,11 @@ informative:
     seriesinfo:
       IACR: "Cryptology ePrint Archive: Report 2020/965"
 
+  PariGP:
+    title: PARI/GP Development Headquarters
+    target: https://pari.math.u-bordeaux.fr/
+    date: 2023-03-15
+
   eBATS:
     title: "eBATS: ECRYPT Benchmarking of Asymmetric Systems"
     target: https://bench.cr.yp.to/ebats.html
@@ -761,6 +766,11 @@ informative:
     title: Total Hash rate (TH/s)
     target: https://www.blockchain.com/explorer/charts/hash-rate
     date: 2023-04-01
+
+  PariGPPkgs:
+    title: Optional PARI/GP packages
+    target: https://pari.math.u-bordeaux.fr/packages.html
+    date: 2023-04-24
 
 
 --- abstract
@@ -1324,6 +1334,11 @@ We discuss mainly groups of order near 2^256:
   Such breakthroughs are naturally out of scope for a memo discussing
    the present state of the art.
 
+The attack cost estimates were computed using PARI/GP {{PariGP}}
+ version 2.15.3, with the optional seadata-small package installed
+ {{PariGPPkgs}}, and with a small library of subroutines in the
+ appendix.
+
 
 ## Ristretto255
 
@@ -1332,20 +1347,18 @@ Ristretto255 {{?I-D.irtf-cfrg-ristretto255-decaf448}} is a group of
  elliptic curve over the prime field F_{2^255 - 19}.
 
 ~~~
-p = 2^252 + 27742317777372353535851937790883648493
-p - 1 = 2^2 * 3 * 11 * 198211423230930754013084525763697 *
-  276602624281642239937218680557139826668747
-p + 1 = 2 * 5 * 7 * 103 * 684245902131068969 *
-  1466936914520620440380580414586728830413895967152734051
-
-baseline rho cost:                                      ~2^125.8
-best p-1 attack cost after 132 queries:                 ~2^122.5
-best p+1 attack cost after 14420 queries:               ~2^119.6
+{::include costs/ristretto255.out}
 ~~~
 
 Ristretto255 is unaffected by the attacks of {{Granger10}}, {{JV11}},
  and {{FHJRV14}}, since it is defined over a prime field, not an
  extension field.
+
+### Source code
+
+~~~
+{::include costs/ristretto255.gp}
+~~~
 
 
 ## NIST P-256
@@ -1359,20 +1372,18 @@ For NIST P-256, p - 1 has many small factors, but p itself is large
  operations to mount a static DH attack.
 
 ~~~
-p = 2^256 - 2^224 + 2^192 - 89188191075325690597107910205041859247
-p - 1 = 2^4 * 3 * 71 * 131 * 373 * 3407 * 17449 * 38189 * 187019741 *
-  622491383 * 1002328039319 * 2624747550333869278416773953
-p + 1 = 2 * 5 * 1879 * 176337611 *
-  34946779280882916835155272231706129710560967816144871596921775673
-
-baseline rho cost:                                      ~2^127.8
-best p-1 attack cost after 35558258230900122 queries:   ~2^100.5
-best p+1 attack cost after 6626767421380 queries:       ~2^107.2
+{::include costs/nistp256.out}
 ~~~
 
 NIST P-256 is unaffected by the attacks of {{Granger10}}, {{JV11}}, and
  {{FHJRV14}}, since it is defined over a prime field, not an extension
  field.
+
+### Source code
+
+~~~
+{::include costs/nistp256.gp}
+~~~
 
 
 ## Third Oakley Group
@@ -1393,17 +1404,13 @@ The estimate of the computational cost here is the number of Intel Core
  less than most other cost metrics counting number of curve additions.
 
 ~~~
-p = 3805993847215893016155463826195386266397436443
-p - 1 = 2 * 3 * 10181 * 1239554496673218367 * 50264430795225140347741
-p + 1 = 2^2 * 23 * 436957 * 728069 * 5322133 * 18629415209 *
-  1311547632725557
+{::include costs/oakley3.out}
+~~~
 
-baseline rho cost:                                      ~2^75.5
-best p-1 attack cost after 61086 queries:               ~2^67.8
-best p+1 attack cost after 32561013525916052 queries:   ~2^53.9
+### Source code
 
-Index calculus (parallelizable) query cost:             ~2^30.0
-Index calculus computational cost (i7-4650U cycles):    ~2^39.0
+~~~
+{::include costs/oakley3.gp}
 ~~~
 
 
@@ -1419,20 +1426,18 @@ We mention it here only because of its widespread use in
  implementations makes it tempting for related OPRF applications.
 
 ~~~
-p = 2^256 - 432420386565659656852420866394968145599
-p - 1 = 2^6 * 3 * 149 * 631 * 107361793816595537 *
-  174723607534414371449 * 341948486974166000522343609283189
-p + 1 = 2 * 13 * 83 * 45751 * 509879 *
-  2300168931843757888934889794142140465088020300168077349902139959
-
-baseline rho cost:                                      ~2^127.8
-best p-1 attack cost after 18051648 queries:            ~2^115.9
-best p+1 attack cost after 100681378340764 queries:     ~2^105.2
+{::include costs/secp256k1.out}
 ~~~
 
 secp256k1 is unaffected by the attacks of {{Granger10}}, {{JV11}}, and
  {{FHJRV14}}, since it is defined over a prime field, not an extension
  field.
+
+### Source code
+
+~~~
+{::include costs/secp256k1.gp}
+~~~
 
 
 ## FourQ
@@ -1452,22 +1457,17 @@ We mention it here only because it has received considerable attention
  Curve25519 taking advantage of arithmetic modulo a Mersenne prime.
 
 ~~~
-p = 73846995687063900142583536357581573884798075859800097461294096333596429543
-p - 1 = 2 * 3^2 * 103043 * 5948609 * 7355633 * 9560163629 *
-  95178976488652476489556669482413803056485341
-p + 1 = 2^3 * 7 * 13 *
-  101438180888824038657394967524150513578019334972252881128151231227467623
-
-baseline rho cost:                                      ~2^122.5
-best p-1 attack cost after 17731942934814846 queries:   ~2^95.7
-best p+1 attack cost after 1456 queries:                ~2^117.9
-
-Granger (parallelizable) query cost:                    ~2^84.7
-Granger computational cost:                             >2^84.7
+{::include costs/fourq.out}
 ~~~
 
 FourQ is unaffected by the attacks of {{JV11}} and {{FHJRV14}}, since
  its extension degree is not divisible by 5.
+
+### Source code
+
+~~~
+{::include costs/fourq.gp}
+~~~
 
 
 ## Multiplicative groups of finite fields of prime order
@@ -1484,15 +1484,13 @@ We summarize the NFS costs for several common prime sizes as used in
  special number field sieve:
 
 ~~~
-bits   baseline   queries   precomp   per-target
+{::include costs/staticffdh.out}
+~~~
 
-1024    ~2^86.8   ~2^34.4   ~2^68.9    ~2^65.1
-1536   ~2^103.4   ~2^41.0   ~2^82.0    ~2^77.5
-2048   ~2^116.9   ~2^46.4   ~2^92.8    ~2^87.7
-3072   ~2^138.7   ~2^55.1  ~2^110.1   ~2^104.1
-4096   ~2^156.5   ~2^62.1  ~2^124.2   ~2^117.4
-6144   ~2^185.2   ~2^73.5  ~2^147.0   ~2^138.9
-8192   ~2^208.5   ~2^82.7  ~2^165.5   ~2^156.4
+### Source code
+
+~~~
+{::include costs/staticffdh.gp}
 ~~~
 
 
@@ -1509,9 +1507,20 @@ This document has no IANA actions.
 
 --- back
 
+# Attack Cost Estimate Subroutines
+
+The following PARI/GP {{PariGP}} subroutines are gathered into a file
+ called lib.gp for use in the attack cost estimation scripts above.
+
+~~~
+{::include costs/lib.gp}
+~~~
+
+
 # Acknowledgments
 {:numbered="false"}
 
 TODO acknowledge.
 
 - Alex Davidson provided editorial suggestions.
+- Michele Orrù encouraged scripting the attack cost estimation.
