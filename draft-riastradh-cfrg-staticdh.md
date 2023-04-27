@@ -1252,9 +1252,10 @@ q need not be prime, as long as the characteristic is at least
 
 ## Attacks on Elliptic Curves over Extension Fields
 
-In the group of rational points on an elliptic curve over an
- extension field F_{q^n}, {{Granger10}} extended index calculus to
- solve the static DH problem with the following costs:
+In the group of rational points on an elliptic curve over an extension
+ field F_{q^n} for medium to large prime power q, {{Granger10}}
+ extended index calculus to solve the static DH problem with the
+ following costs:
 
 ~~~
 oracle queries:         O(q^{1 - 1/(n + 1)})
@@ -1267,7 +1268,7 @@ These queries are nonadaptive, so they _need not_ be sequential; hence
  the feasible query cost may be considerably higher than for the generic
  attacks of {{BG04}} and {{Cheon06}}.
 q need not be prime; the attacks apply just as well to extension fields
- of extension fields.
+ of extension fields, e.g. to binary fields of composite extension degree.
 
 At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
  issuing O(sqrt{q}) static DH queries.
