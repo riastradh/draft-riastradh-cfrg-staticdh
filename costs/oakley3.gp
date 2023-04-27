@@ -19,7 +19,7 @@ printf("p = %d\n", p);
 printfactors("p - 1", p - 1);
 printfactors("p + 1", p + 1);
 printf("\n");
-printrhopm1pp1costs(p);
+printecrhopm1pp1costs(p);
 printf("\n");
 
 \\ https://link.springer.com/chapter/10.1007/978-3-642-55220-5_3

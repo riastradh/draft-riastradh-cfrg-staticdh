@@ -8,6 +8,6 @@ printf("p = %d\n", p);
 printfactors("p - 1", p - 1);
 printfactors("p + 1", p + 1);
 printf("\n");
-printrhopm1pp1costs(p);
+printecrhopm1pp1costs(p);
 
 quit();
