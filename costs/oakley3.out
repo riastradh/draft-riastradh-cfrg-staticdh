@@ -7,5 +7,5 @@ baseline rho cost:                                      ~2^75.5
 best p-1 attack cost after 61086 queries:               ~2^67.8
 best p+1 attack cost after 32561013525916052 queries:   ~2^53.9
 
-Index calculus (parallelizable) query cost:             ~2^30.0
-Index calculus computational cost (i7-4650U cycles):    ~2^39.0
+index calculus (parallelizable) query cost:             ~2^30.0
+index calculus computational cost (i7-4650U cycles):    ~2^39.0
