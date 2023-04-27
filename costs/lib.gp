@@ -64,6 +64,9 @@ printfactors(name, n) = {
 
 \\ Print rho, p-1, and p+1 costs against a group of order p.
 printrhopm1pp1costs(p) = {
+    if (!isprime(p),
+        error("use Pohlig-Hellman, not rho, for composite order");
+    );
     printf("%-55s ~2^%.1f\n", "baseline rho cost:", log_rho(p)/log(2));
     d = best_pm1_d(p, seq_q_max);
     printf("%-55s ~2^%.1f\n",
