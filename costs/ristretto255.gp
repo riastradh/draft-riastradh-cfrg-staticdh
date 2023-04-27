@@ -7,7 +7,7 @@ curve25519 = ellinit([0, 486662, 0, 1, 0], 2^255 - 19);
 L = ellcard(curve25519);
 p = L/8;
 
-printf("p = %d\n", p);
+printf("p = 2^252 + %d\n", p - 2^252);
 printfactors("p - 1", p - 1);
 printfactors("p + 1", p + 1);
 printf("\n");

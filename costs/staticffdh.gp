@@ -6,15 +6,16 @@ print_nfs(lg_q) = {
     queries = lg_L * (4/9)^(1/3);
     precomp = lg_L * (32/9)^(1/3);
     per_target = lg_L * 3^(1/3);
-    printf("%-7d  %9s  %9s  %9s  %9s\n", lg_q,
+    printf("%-4d  %9s %9s %9s  %9s\n", lg_q,
         strprintf("~2^%.1f", baseline),
         strprintf("~2^%.1f", queries),
         strprintf("~2^%.1f", precomp),
         strprintf("~2^%.1f", per_target));
 };
 
-printf("%-7s  %9s  %9s  %9s  %9s\n", \
+printf("%-4s  %9s %9s %9s   %9s\n", \
     "bits", "baseline", "queries", "precomp", "per-target");
+printf("\n");
 print_nfs(1024);
 print_nfs(1536);
 print_nfs(2048);

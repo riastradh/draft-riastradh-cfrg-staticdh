@@ -24,10 +24,10 @@ printf("\n");
 
 \\ https://link.springer.com/chapter/10.1007/978-3-642-55220-5_3
 printf("%-55s ~2^%.1f\n", \
-    "index calculus (parallelizable) query cost:", \
+    "Index calculus (parallelizable) query cost:", \
     30.0);
 printf("%-55s ~2^%.1f\n", \
-    "index calculus computational cost (i7-4650U cycles):", \
+    "Index calculus computational cost (i7-4650U cycles):", \
     39.0);
 
 quit();
