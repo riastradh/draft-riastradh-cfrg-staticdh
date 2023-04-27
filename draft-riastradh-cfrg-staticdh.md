@@ -1295,7 +1295,7 @@ For example, a curve over F_{q^4} for q ~ 2^80 to defeat DLP without a
  static DH oracle might succumb after ~2^64 oracle queries (potentially
  in parallel) and ~2^64 computation.
 
-A similar attack is available with reduced cost for n = 5 as shown in
+A similar attack is available with reduced cost for n = 5 was shown in
  {{JV11}} and extended in {{FHJRV14}}, which was used to solve SDH in
  practice on the Third Oakley Group {{?RFC2409}}, defined over
  F_{2^155} with q = 2^31 and n = 5.
