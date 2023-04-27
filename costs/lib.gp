@@ -49,17 +49,27 @@ log_rho(p) = {
 
 \\ Print factorization of n neatly formatted.
 printfactors(name, n) = {
-    printf("%s = ", name);
+    my(s = strprintf("%s = ", name));
     my(cont = 0);
     foreach (factor(n)~, fe,
         my(f = fe[1]);
         my(e = fe[2]);
-        if (cont, printf(" * "));
-        printf("%d", f);
-        if (e != 1, printf("^%d", e));
+        my(s1 = "");
+        if (cont,
+            s = strprintf("%s *", s);
+            s1 = strprintf(" %s", s1);
+        );
+        s1 = strprintf("%s%d", s1, f);
+        if (e != 1, s1 = strprintf("%s^%d", s1, e));
+        if (length(s) + length(s1) >= 72,
+            printf("%s\n ", s);
+            s = s1;
+        ,\\else
+            s = strprintf("%s%s", s, s1);
+        );
         cont = 1;
     );
-    printf("\n");
+    printf("%s\n", s);
 };
 
 \\ Print rho, p-1, and p+1 costs against a group of order p.
