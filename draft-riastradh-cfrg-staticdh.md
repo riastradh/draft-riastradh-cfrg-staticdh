@@ -1408,9 +1408,9 @@ q need not be prime; the attacks apply just as well to extension fields
 At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
  issuing O(sqrt{q}) static DH queries.
 The cost for n = 2 is O(q^{2/3}) queries and O~(q^{2/3}) computation;
- when p ~ q^2 ~ 2^128, this reduces the cost to ~2^80 but requires
- ~2^80 oracle queries which is likely unrealistic even if they are
- parallelized.
+ when p ~ q^2 ~ 2^256, this reduces the computational cost from ~2^128
+ to ~2^85 but requires >2^85 oracle queries which is likely unrealistic
+ even if they are parallelized.
 
 The cost for n = 4 is O(q^{4/5}) queries and O~(q^{4/5}) computation,
  which is considerably cheaper than the cheapest DLP attacks (without a
