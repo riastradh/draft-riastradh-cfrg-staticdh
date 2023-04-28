@@ -1402,8 +1402,11 @@ computation:            O~(q^{1 - 1/(n + 1)}),
 These queries are nonadaptive, so they _need not_ be sequential; hence
  the feasible query cost may be considerably higher than for the generic
  attacks of {{BG04}} and {{Cheon06}}.
-q need not be prime; the attacks apply just as well to extension fields
- of extension fields, e.g. to binary fields of composite extension degree.
+The constant factors are prohibitively expensive to an attacker for
+ small q, such as q = 2, but q need not be prime; the attacks apply
+ just as well to extension fields of extension fields, e.g. to binary
+ fields of composite extension degree to avoid the constant factors for
+ small q.
 
 At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
  issuing O(sqrt{q}) static DH queries.
