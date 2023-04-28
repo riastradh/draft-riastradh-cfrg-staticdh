@@ -102,6 +102,21 @@ informative:
       ISBN: 978-0-387-97317-3
       DOI: 10.1007/0-387-34805-0_22
 
+  Maurer94:
+    title: >
+      Towards the Equivalence of Breaking the Diffie-Hellman Protocol
+      and Computing Discrete Logarithms
+    author:
+      ins: U.M. Maurer
+      name: Ueli M. Maurer
+    date: 1994
+    seriesinfo:
+      CRYPTO: 1994
+      Springer: LNCS 839
+      ISSN: 0302-9743
+      ISBN: 978-3-540-58333-2
+      DOI: 10.1007/3-540-48658-5_26
+
   LL97:
     title: >
       A key recovery attack on discrete log-based schemes
@@ -756,6 +771,22 @@ informative:
     seriesinfo:
       IACR: "Cryptology ePrint Archive: Report 2020/965"
 
+  MS23:
+    title: >
+      Dlog is Practically as Hard (or Easy) as DH –
+      Solving Dlogs via DH Oracles on EC Standards
+    target: https://eprint.iacr.org/2023/539
+    author:
+      -
+        ins: A. May
+        name: Alexander May
+      -
+        ins: C.R.T. Schneider
+        name: Carl Richard Theodor Schneider
+    date: 2023
+    seriesinfo:
+      IACR: "Cryptology ePrint Archive: Report 2023/539"
+
   PariGP:
     title: PARI/GP Development Headquarters
     target: https://pari.math.u-bordeaux.fr/
@@ -1085,13 +1116,21 @@ Generic attacks treat the group operation as a black box, and thus work
  in any group, including elliptic curves over finite fields and
  multiplicative groups of finite fields.
 
+Let p be the prime order of the group.
+
 All known generic attacks take advantage of the ring structure in the
  powers of the scalar k to reduce the cost of a generic search for k.
 The adversary queries the oracle at an element G to find k\*G, then
  queries the oracle at k\*G to find k\*(k\*G) = k^2\*G, then at k^2\*G
  to find k\*(k^2\*G) = k^3\*G, ad nauseam, until k^q\*G after q
  sequential queries.
-Let p be the prime order of the group.
+
+The adversary can then add these elements to give any linear
+ combination of the k^i in a scalar multiple of G.
+In other words, the adversary can compute an implicit representation
+ F(k)\*G of any polynomial F in k over F_p of degree up to q.
+Implicit representations can also be compared for equality, to detect
+ collisions between scalar multiples of G.
 
 The baseline generic DLP attack on a prime-order group, with only
  knowledge of G and k\*G, and no static DH oracle, is Pollard's rho
@@ -1261,11 +1300,30 @@ However, {{KC12}} was unable to find any polynomials f providing better
 
 The attacks were also generalized in {{Kim14}} to the GDLPwAI taking a
  collection of elements k^i * G for every i in a subgroup of
- (Z/{p-1}Z)^* and finding k at somewhat lower computational cost.
+ (Z/(p - 1)Z)^* and finding k at somewhat lower computational cost.
 However, it is no easier for an adversary to learn just these elements
  with a static DH oracle than to learn all the elements up to a divisor
  d of p +/- 1, so the generalization is ruled out by the same limits on
  feasible query cost.
+
+A similar strategy of using an implicit representation of arithmetic in
+ F_p was used in {{Maurer94}} to prove a nonuniform reduction from DLOG
+ to CDH in any group of order p, provided an auxiliary elliptic curve
+ E/F_p with sufficiently smooth order.
+Such auxiliary curves have been found for real-world groups such as
+ NIST P-256 to demonstrate computing this reduction in practice with a
+ simulated CDH oracle {{MS23}}.
+
+However, the {{Maurer94}} approach appears to require the use of a full
+ CDH oracle, sending (x\*G, y\*G) to xy\*G, to multiply scalars in
+ order to compute implicit polynomials in k of degree up to 2^q, while
+ an SDH oracle only enables computing implicit polynomials in k of
+ degree up to q, after q queries.
+The best case of the elliptic curve arithmetic E/F_p for this
+ reduction requires polynomials of degree around sqrt{p} (for
+ multiplication by scalars in a subgroup of order sqrt{p}), which is
+ far out of reach with sequential queries for any groups with DLOG
+ security against rho.
 
 
 ### Multi-Target Attacks
