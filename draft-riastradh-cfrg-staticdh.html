@@ -8,11 +8,11 @@
 <meta content="Taylor R. Campbell" name="author">
 <meta content="
        A  static Diffie-Hellman (DH) oracle  is an oracle that multiplies a
- given element P in a group written additively by a secret scalar x,
- yielding x*P.
+ given element P in a group written additively by a secret scalar k,
+ yielding k*P.
 Certain cryptographic protocols such as oblivious pseudorandom function
- families (OPRFs) rely on an adversary's inability either to recover x
- or to compute x*Q for a random element Q chosen after queries to the
+ families (OPRFs) rely on an adversary's inability either to recover k
+ or to compute k*Q for a random element Q chosen after queries to the
  static DH oracle.
 This memo summarizes the state of the art in attacks enabled by static
  DH oracles, and the resistance of widely used groups to such attacks. 
@@ -1057,7 +1057,7 @@ svg :is([fill="white"], [fill^="#fff"]) {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Campbell</td>
-<td class="center">Expires 29 October 2023</td>
+<td class="center">Expires 30 October 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1070,12 +1070,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-riastradh-cfrg-staticdh-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2023-04-27" class="published">27 April 2023</time>
+<time datetime="2023-04-28" class="published">28 April 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-10-29">29 October 2023</time></dd>
+<dd class="expires"><time datetime="2023-10-30">30 October 2023</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1089,11 +1089,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">A <strong>static Diffie-Hellman (DH) oracle</strong> is an oracle that multiplies a
- given element P in a group written additively by a secret scalar x,
- yielding x*P.
+ given element P in a group written additively by a secret scalar k,
+ yielding k*P.
 Certain cryptographic protocols such as oblivious pseudorandom function
- families (OPRFs) rely on an adversary's inability either to recover x
- or to compute x*Q for a random element Q chosen after queries to the
+ families (OPRFs) rely on an adversary's inability either to recover k
+ or to compute k*Q for a random element Q chosen after queries to the
  static DH oracle.
 This memo summarizes the state of the art in attacks enabled by static
  DH oracles, and the resistance of widely used groups to such attacks.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
@@ -1128,7 +1128,7 @@ This memo summarizes the state of the art in attacks enabled by static
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 29 October 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 30 October 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1317,37 +1317,37 @@ An OPRF is a protocol by which a client and a server can jointly
  evaluate a pseudorandom function family (PRF) with a key known only to
  the server on an input known only to the client, giving an output also
  known only to the client.
-To do this, the server deliberately exposes x*P given an arbitrary
- element P, where x is a secret key known only to the server.<a href="#section-1-3" class="pilcrow">¶</a></p>
+To do this, the server deliberately exposes k*P given an arbitrary
+ element P, where k is a secret key known only to the server.<a href="#section-1-3" class="pilcrow">¶</a></p>
 <div id="taxonomy-of-problems">
 <section id="section-1.1">
         <h3 id="name-taxonomy-of-problems">
 <a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-taxonomy-of-problems" class="section-name selfRef">Taxonomy of Problems</a>
         </h3>
-<p id="section-1.1-1">A <strong>static DH oracle</strong> reveals x*P given an arbitrary base P where x
+<p id="section-1.1-1">A <strong>static DH oracle</strong> reveals k*P given an arbitrary base P where k
  is a secret.
-The <strong>static DH problem</strong> (SDH or SDHP, <span>[<a href="#BG04" class="cite xref">BG04</a>]</span>) is to compute x*Q
+The <strong>static DH problem</strong> (SDH or SDHP, <span>[<a href="#BG04" class="cite xref">BG04</a>]</span>) is to compute k*Q
  for random Q determined after the adversary's last oracle query.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
 <p id="section-1.1-2">The <strong>discrete log problem with auxiliary inputs</strong> (DLPwAI,
- <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>) is to recover x given
- (G, x*G, x^2*G, x^3*G, ..., x^q*G)
+ <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>) is to recover k given
+ (G, k*G, k^2*G, k^3*G, ..., k^q*G)
  for some q.
 DLPwAI is obviously at least as hard as SDH:
 Given a static DH oracle, an adversary can find the auxiliary inputs
  for DLPwAI, and then if the adversary can solve DLPwAI they can
- trivially solve a static DH problem by using the secret x to compute
- x*Q directly given the challenge Q.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+ trivially solve a static DH problem by using the secret k to compute
+ k*Q directly given the challenge Q.<a href="#section-1.1-2" class="pilcrow">¶</a></p>
 <p id="section-1.1-3">It is unknown whether SDH is at least as hard as DLPwAI.
 Many SDH attacks work via DLPwAI, but there are exceptions like
  <span>[<a href="#JLNT09" class="cite xref">JLNT09</a>]</span>, <span>[<a href="#Granger10" class="cite xref">Granger10</a>]</span>, and <span>[<a href="#JV11" class="cite xref">JV11</a>]</span> which solve SDH directly but
  not DLPwAI.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
 <p id="section-1.1-4">The <strong>generalized discrete log problem with auxiliary inputs</strong>
- (GDLPwAI, <span>[<a href="#Kim14" class="cite xref">Kim14</a>]</span>) is to recover x given
- (x^e_1 * G, x^e_2 * G, ..., x^e_q * G)
+ (GDLPwAI, <span>[<a href="#Kim14" class="cite xref">Kim14</a>]</span>) is to recover k given
+ (k^e_1 * G, k^e_2 * G, ..., k^e_q * G)
  for arbitrary integers e_1, e_2, ..., e_q.
-Static DH oracles only expose x*P, not arbitrary powers of x, so
+Static DH oracles only expose k*P, not arbitrary powers of k, so
  although GDLPwAI algorithms can make more economical use of a subset
- of the powers of x, this economy is of theoretical rather than
+ of the powers of k, this economy is of theoretical rather than
  practical interest.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
 <p id="section-1.1-5">A more detailed taxonomy of related problems is given in <span>[<a href="#KM07" class="cite xref">KM07</a>]</span>
  together with some relations between them; some black-box separations
@@ -1493,8 +1493,8 @@ For prime-order groups, h = 1.
 Composite-order groups with h &gt; 1 pose various complications:<a href="#section-5-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-5-2.1">
-          <p id="section-5-2.1.1">The Pohlig-Hellman algorithm costs O(log(h*p) sqrt{p}), so it is not
- enough for h*p to be large; p itself must also be large.<a href="#section-5-2.1.1" class="pilcrow">¶</a></p>
+          <p id="section-5-2.1.1">The Pohlig-Hellman algorithm <span>[<a href="#PH78" class="cite xref">PH78</a>]</span> costs O(log(h*p) sqrt{p}), so
+ it is not enough for h*p to be large; p itself must also be large.<a href="#section-5-2.1.1" class="pilcrow">¶</a></p>
 <p id="section-5-2.1.2">
 To defeat Pohlig-Hellman, traditional finite-field DLP applications
  that only expose (G, k*G) where G is a standard generator, such as
@@ -1583,15 +1583,21 @@ These quantities can then serve to distinguish users by their tokens
 <p id="section-6.1-1">Generic attacks treat the group operation as a black box, and thus work
  in any group, including elliptic curves over finite fields and
  multiplicative groups of finite fields.<a href="#section-6.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1-2">All known generic attacks take advantage of the ring structure in the
+<p id="section-6.1-2">Let p be the prime order of the group.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1-3">All known generic attacks take advantage of the ring structure in the
  powers of the scalar k to reduce the cost of a generic search for k.
 The adversary queries the oracle at an element G to find k*G, then
  queries the oracle at k*G to find k*(k*G) = k^2*G, then at k^2*G
  to find k*(k^2*G) = k^3*G, ad nauseam, until k^q*G after q
- sequential queries.
-Let p be the prime order of the group.<a href="#section-6.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.1-3">The baseline generic DLP attack on a prime-order group, with only
- knowledge of G and x*G, and no static DH oracle, is Pollard's rho
+ sequential queries.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
+<p id="section-6.1-4">The adversary can then add these elements to give any linear
+ combination of the k^i in a scalar multiple of G.
+In other words, the adversary can compute an implicit representation
+ F(k)*G of any polynomial F in k over F_p of degree up to q.
+Implicit representations can also be compared for equality, to detect
+ collisions between scalar multiples of G.<a href="#section-6.1-4" class="pilcrow">¶</a></p>
+<p id="section-6.1-5">The baseline generic DLP attack on a prime-order group, with only
+ knowledge of G and k*G, and no static DH oracle, is Pollard's rho
  <span>[<a href="#Pollard78" class="cite xref">Pollard78</a>]</span>, which costs O(sqrt{p}) group operations and O(1)
  memory, and can be effectively parallelized with low communication
  cost using the van Oorschot-Wiener collision search machine <span>[<a href="#OW99" class="cite xref">OW99</a>]</span>.
@@ -1602,7 +1608,7 @@ For elliptic curves the negation map <span>[<a href="#WZ98" class="cite xref">WZ
 For other specialized DLP attacks on transfers, twists, side channels,
  etc., we direct the reader to resources such as <span>[<a href="#SafeCurves" class="cite xref">SafeCurves</a>]</span> for
  references and focus here on generic attacks enabled by a static DH
- oracle.<a href="#section-6.1-3" class="pilcrow">¶</a></p>
+ oracle.<a href="#section-6.1-5" class="pilcrow">¶</a></p>
 <div id="p-1-attack">
 <section id="section-6.1.1">
           <h4 id="name-p-1-attack">
@@ -1610,43 +1616,54 @@ For other specialized DLP attacks on transfers, twists, side channels,
           </h4>
 <p id="section-6.1.1-1">When q &gt;= d for a divisor d of p - 1, the adversary can recover k given
  (G, k*G, k^d*G) with O(sqrt{p/d} + sqrt{d}) group operations and
- essentially constant memory as follows:<a href="#section-6.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-6.1.1-2">Let z_0 be a generator of (Z/pZ)^*, and z := z_0^d a (p - 1)/d-th root
- of unity.<a href="#section-6.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-6.1.1-3">First, find scalars 0 &lt;= u_1, v_1 &lt; d_1 := ceiling(sqrt{(p - 1)/d})
- giving a collision of the form:<a href="#section-6.1.1-3" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.1.1-4">
+ essentially constant memory.<a href="#section-6.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-6.1.1-2">The approach is to find a discrete log of k^d in a subgroup of F_p with
+ a collision search in implicit representation by scalar multiples of
+ G, and then to extend it to a discrete log of k in F_p with another
+ collision search, leading to an explicit representation of k that can
+ be computed.<a href="#section-6.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-6.1.1-3">Let z_0 be a generator of (F_p)^*, and z := z_0^d a (p - 1)/d-th root
+ of unity.<a href="#section-6.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-6.1.1-4">First, find scalars u_1, v_1 with
+ 0 &lt;= u_1, v_1 &lt; d_1 := ceiling(sqrt{(p - 1)/d})
+ giving a collision of the form:<a href="#section-6.1.1-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.1-5">
 <pre>
 (k^d z^{-u_1}) * G = (z^{d_1 v_1}) * G,
-</pre><a href="#section-6.1.1-4" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.1-5" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1.1-5">by repeatedly multiplying the left by z^{-1} and the right by z^{d_1}.
-This collision implies:<a href="#section-6.1.1-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.1.1-6">
+<p id="section-6.1.1-6">by repeatedly multiplying the left starting with k^d*G by z^{-1}
+ and the right starting with G by z^{d_1} until equality holds.
+This collision implies:<a href="#section-6.1.1-6" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.1-7">
 <pre>
 k^d = z^{u_1 + d_1 v_1}.
-</pre><a href="#section-6.1.1-6" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.1-7" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1.1-7">Next, find scalars 0 &lt;= u_2, v_2 &lt; d_2 := ceiling(sqrt{d}) giving a
- collision:<a href="#section-6.1.1-7" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.1.1-8">
+<p id="section-6.1.1-8">Next, find scalars u_2, v_2 with
+ 0 &lt;= u_2, v_2 &lt; d_2 := ceiling(sqrt{d})
+ giving a collision:<a href="#section-6.1.1-8" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.1-9">
 <pre>
 (k z_0^{-u_2 (p - 1)/d}) * G
-  = (z_0^{u_1 + d_1 v_1 + d_2 v_2 (p - 1)/d}) * G.
-</pre><a href="#section-6.1.1-8" class="pilcrow">¶</a>
+  = (z_0^{u_1 + d_1 v_1 + d_2 v_2 (p - 1)/d}) * G,
+</pre><a href="#section-6.1.1-9" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1.1-9">This collision implies:<a href="#section-6.1.1-9" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.1.1-10">
+<p id="section-6.1.1-10">again by repeatedly multiplying the left starting with k*G by
+ z_0^{(p - 1)/d} and the right starting with z_0^{u_1 + d_1 v_1} by
+ z_0^{d_2 (p - 1)/d} until equality holds.
+This collision implies:<a href="#section-6.1.1-10" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.1-11">
 <pre>
 k = z_0^{u_1 + d_1 v_1 + (u_2 + d_2 v_2) (p - 1)/d},
-</pre><a href="#section-6.1.1-10" class="pilcrow">¶</a>
+</pre><a href="#section-6.1.1-11" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1.1-11">as desired.<a href="#section-6.1.1-11" class="pilcrow">¶</a></p>
-<p id="section-6.1.1-12">This class of attacks was presented in <span>[<a href="#BG04" class="cite xref">BG04</a>]</span> and <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span>, with
+<p id="section-6.1.1-12">as desired.<a href="#section-6.1.1-12" class="pilcrow">¶</a></p>
+<p id="section-6.1.1-13">This class of attacks was presented in <span>[<a href="#BG04" class="cite xref">BG04</a>]</span> and <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span>, with
  improved cost analysis in <span>[<a href="#KKM07" class="cite xref">KKM07</a>]</span>, and extended from
  memory-intensive baby-step/giant-step tables to a random walk with
  essentially constant memory along the lines of Pollard's kangaroo in
- <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>.<a href="#section-6.1.1-12" class="pilcrow">¶</a></p>
+ <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>.<a href="#section-6.1.1-13" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="p-1-attack-in-quadratic-extension">
@@ -1656,35 +1673,69 @@ k = z_0^{u_1 + d_1 v_1 + (u_2 + d_2 v_2) (p - 1)/d},
           </h4>
 <p id="section-6.1.2-1">When q &gt;= 2d for a divisor d of p + 1, the adversary can recover k
  given (G, k*G, k^2*G, ..., k^{2d}*G) with O(sqrt{p/d} + d) group
- operations and essentially constant memory using a similar technique
- in F_{p^2}.<a href="#section-6.1.2-1" class="pilcrow">¶</a></p>
-<p id="section-6.1.2-2">The basic idea is to start with a generator z of the subgroup of order
- p + 1 of F_{p^2}, let w = z^d, and search for a collision in the
- equation<a href="#section-6.1.2-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.1.2-3">
+ operations and essentially constant memory.<a href="#section-6.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-6.1.2-2">The approach is similar to the p - 1 attack, using an implicit
+ representation in F_{p^2} instead of F_p.<a href="#section-6.1.2-2" class="pilcrow">¶</a></p>
+<p id="section-6.1.2-3">Since F_{p^2}^* is cyclic of order p^2 - 1 = (p + 1) (p - 1), it has a
+ subgroup of order p + 1.
+The adversary defines an element b = f(k) + g(k) theta in this
+ subgroup, where theta is a square root in F_{p^2} of a quadratic
+ nonresidue r in F_p, and f and g are certain polynomials over F_p
+ constructed so that k = g(k)/(f(k) + 1).<a href="#section-6.1.2-3" class="pilcrow">¶</a></p>
+<p id="section-6.1.2-4">The adversary can't compute b explicitly at first, but the polynomials
+ f and g are also constructed so that b satisfies the equation:<a href="#section-6.1.2-4" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.2-5">
 <pre>
-b^d w^{-m v} = w^u
-</pre><a href="#section-6.1.2-3" class="pilcrow">¶</a>
+b^d = (P_1(k) + P_2(k) theta)/P_3(k),
+</pre><a href="#section-6.1.2-5" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1.2-4">indirectly, where b = f(k) + g(k) theta is an element of order p + 1
- of F_{p^2} represented by a square root theta of a quadratic
- nonresidue in F_p using nonconstant rational functions f and g over
- F_p.<a href="#section-6.1.2-4" class="pilcrow">¶</a></p>
-<p id="section-6.1.2-5">The adversary can't evaluate this equation directly without knowing b,
- but it can be tested by proxy of scalar multiplication of G by fixed
- polynomials P_1, P_2, and P_3 of k such that<a href="#section-6.1.2-5" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-6.1.2-6">
+<p id="section-6.1.2-6">where P_1, P_2, and P_3 are certain polynomials of degree at most 2d
+ over F_p.
+Let z_0 generate the subgroup of order p + 1, and let z := z_0^d
+ generate that subgroup's subgroup of order (p + 1)/d.
+Then b can be written as z_0^{w + w' (p + 1)/d}, and b^d as z^w.
+For each i, write z^i = s_i + t_i theta for s_i, t_i in F_p.<a href="#section-6.1.2-6" class="pilcrow">¶</a></p>
+<p id="section-6.1.2-7">To find w, the adversary seeks integers u, v with 0 &lt;= u &lt; m and
+ 0 &lt;= v &lt; floor((p + 1)/(m d)) &lt;= m, where m := ceil(sqrt{(p + 1)/2}),
+ giving a collision:<a href="#section-6.1.2-7" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.2-8">
 <pre>
-b^d = (f(k) + g(k) theta)^d = [P_1(k) + P_2(k) theta]/P_3(k).
-</pre><a href="#section-6.1.2-6" class="pilcrow">¶</a>
+z^{-u} b^d = z^{m v},
+</pre><a href="#section-6.1.2-8" class="pilcrow">¶</a>
 </div>
-<p id="section-6.1.2-7">The inputs (G, k*G, k^2*G, ..., k^{2d}*G) can be used to evaluate
- the necessary linear combinations of P_1(k)*G, P_2(k)*G, and
- P_3(k)*G to test for collisions of the desired form b^d w^{-m v} =
- w^u.<a href="#section-6.1.2-7" class="pilcrow">¶</a></p>
-<p id="section-6.1.2-8">This class of attacks was first presented in <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span> with
+<p id="section-6.1.2-9">so that b^d = z^{u + m v}, i.e., w = u + m v.
+To find this collision, the adversary writes the equation out as:<a href="#section-6.1.2-9" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.2-10">
+<pre>
+(s_{-u} + t_{-u} theta) (P_1(k) + P_2(k) theta)/P_3(k)
+= s_{m v} + t_{m v} theta,
+</pre><a href="#section-6.1.2-10" class="pilcrow">¶</a>
+</div>
+<p id="section-6.1.2-11">or, equivalently:<a href="#section-6.1.2-11" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.2-12">
+<pre>
+P_1(k) s_{-u} + r P_2(k) t_{-u} = P_3(k) s_{m v},
+P_1(k) t_{-u} +   P_2(k) s_{-u} = P_3(k) t_{m v}.
+</pre><a href="#section-6.1.2-12" class="pilcrow">¶</a>
+</div>
+<p id="section-6.1.2-13">The adversary computes a kangaroo walk or baby-step/giant-step table of
+ the two left-hand sides and the two right-hand sides in implicit
+ representation to find colliding u and v and recover w = u + m v with
+ cost O(sqrt{(p + 1)/d} + d).<a href="#section-6.1.2-13" class="pilcrow">¶</a></p>
+<p id="section-6.1.2-14">Next, the adversary does similarly with the subgroup generated by
+ z_0^{(p + 1)/d} to recover w' in cost O(sqrt{d}).<a href="#section-6.1.2-14" class="pilcrow">¶</a></p>
+<p id="section-6.1.2-15">Once the adversary has w and w', they can explicitly compute the
+ components of<a href="#section-6.1.2-15" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-6.1.2-16">
+<pre>
+b = z_0^{w + w' (p + 1)/d} = f(k) + g(k) theta,
+</pre><a href="#section-6.1.2-16" class="pilcrow">¶</a>
+</div>
+<p id="section-6.1.2-17">and from that they can recover k = g(k)/(f(k) + 1).<a href="#section-6.1.2-17" class="pilcrow">¶</a></p>
+<p id="section-6.1.2-18">This class of attacks was first presented in <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span> with
  memory-intensive baby-step/giant-step tables, and then extended to a
- random walk with essentially constant memory in <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>.<a href="#section-6.1.2-8" class="pilcrow">¶</a></p>
+ random walk with essentially constant memory along the lines of
+ Pollard's kangaroo in <span>[<a href="#Cheon10" class="cite xref">Cheon10</a>]</span>.<a href="#section-6.1.2-18" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="generalizations-of-the-p-1-and-p-1-attacks">
@@ -1707,11 +1758,28 @@ However, <span>[<a href="#KC12" class="cite xref">KC12</a>]</span> was unable to
  that d does divide p +/- 1.<a href="#section-6.1.3-2" class="pilcrow">¶</a></p>
 <p id="section-6.1.3-3">The attacks were also generalized in <span>[<a href="#Kim14" class="cite xref">Kim14</a>]</span> to the GDLPwAI taking a
  collection of elements k^i * G for every i in a subgroup of
- (Z/{p-1}Z)^* and finding k at somewhat lower computational cost.
+ (Z/(p - 1)Z)^* and finding k at somewhat lower computational cost.
 However, it is no easier for an adversary to learn just these elements
  with a static DH oracle than to learn all the elements up to a divisor
  d of p +/- 1, so the generalization is ruled out by the same limits on
  feasible query cost.<a href="#section-6.1.3-3" class="pilcrow">¶</a></p>
+<p id="section-6.1.3-4">A similar strategy of using an implicit representation of arithmetic in
+ F_p was used in <span>[<a href="#Maurer94" class="cite xref">Maurer94</a>]</span> to prove a nonuniform reduction from DLOG
+ to CDH in any group of order p, provided an auxiliary elliptic curve
+ E/F_p with sufficiently smooth order.
+Such auxiliary curves have been found for real-world groups such as
+ NIST P-256 to demonstrate computing this reduction in practice with a
+ simulated CDH oracle <span>[<a href="#MS23" class="cite xref">MS23</a>]</span>.<a href="#section-6.1.3-4" class="pilcrow">¶</a></p>
+<p id="section-6.1.3-5">However, the <span>[<a href="#Maurer94" class="cite xref">Maurer94</a>]</span> approach appears to require the use of a full
+ CDH oracle, sending (x*G, y*G) to xy*G, to multiply scalars in
+ order to compute implicit polynomials in k of degree up to 2^q, while
+ an SDH oracle only enables computing implicit polynomials in k of
+ degree up to q, after q queries.
+The best case of the elliptic curve arithmetic E/F_p for this
+ reduction requires polynomials of degree around sqrt{p} (for
+ multiplication by scalars in a subgroup of order sqrt{p}), which is
+ far out of reach with sequential queries for any groups with DLOG
+ security against rho.<a href="#section-6.1.3-5" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="multi-target-attacks">
@@ -1798,14 +1866,17 @@ computation:            O~(q^{1 - 1/(n + 1)}),
 <p id="section-6.3-4">These queries are nonadaptive, so they <em>need not</em> be sequential; hence
  the feasible query cost may be considerably higher than for the generic
  attacks of <span>[<a href="#BG04" class="cite xref">BG04</a>]</span> and <span>[<a href="#Cheon06" class="cite xref">Cheon06</a>]</span>.
-q need not be prime; the attacks apply just as well to extension fields
- of extension fields, e.g. to binary fields of composite extension degree.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
+The constant factors are prohibitively expensive to an attacker for
+ small q, such as q = 2, but q need not be prime; the attacks apply
+ just as well to extension fields of extension fields, e.g. to binary
+ fields of composite extension degree to avoid the constant factors for
+ small q.<a href="#section-6.3-4" class="pilcrow">¶</a></p>
 <p id="section-6.3-5">At n = 1, there is no advantage over Pollard's rho at O(sqrt{q}) by
  issuing O(sqrt{q}) static DH queries.
 The cost for n = 2 is O(q^{2/3}) queries and O~(q^{2/3}) computation;
- when p ~ q^2 ~ 2^128, this reduces the cost to ~2^80 but requires
- ~2^80 oracle queries which is likely unrealistic even if they are
- parallelized.<a href="#section-6.3-5" class="pilcrow">¶</a></p>
+ when p ~ q^2 ~ 2^256, this reduces the computational cost from ~2^128
+ to ~2^85 but requires &gt;2^85 oracle queries which is likely unrealistic
+ even if they are parallelized.<a href="#section-6.3-5" class="pilcrow">¶</a></p>
 <p id="section-6.3-6">The cost for n = 4 is O(q^{4/5}) queries and O~(q^{4/5}) computation,
  which is considerably cheaper than the cheapest DLP attacks (without a
  static DH oracle) on such curves based on index calculus at
@@ -1896,8 +1967,8 @@ read("lib.gp");
 \\ https://cr.yp.to/papers.html#curve25519
 \\ https://www.rfc-editor.org/info/rfc7748
 \\ https://datatracker.ietf.org/doc/draft-irtf-cfrg-ristretto255-decaf448/07/
-curve25519 = ellinit([0, 486662, 0, 1, 0], 2^255 - 19);
-L = ellcard(curve25519);
+E = ellinit([0, 486662, 0, 1, 0], 2^255 - 19);
+L = ellcard(E);
 p = L/8;
 
 printf("p = 2^252 + %d\n", p - 2^252);
@@ -2413,7 +2484,7 @@ quit();
 <dd class="break"></dd>
 <dt id="JP13">[JP13]</dt>
         <dd>
-<span class="refAuthor">Joux, A.</span> and <span class="refAuthor">C. Pierrot</span>, <span class="refTitle">"The Special Number Field Sieve in F_{p^n}"</span>, <span class="seriesInfo">Pairing-Based Cryptography 2023</span>, <span class="seriesInfo">Springer LNCS 8365</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-319-04873-4</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-04873-4_3</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-319-04873-4_3">https://link.springer.com/chapter/10.1007/978-3-319-04873-4_3</a>&gt;</span>. </dd>
+<span class="refAuthor">Joux, A.</span> and <span class="refAuthor">C. Pierrot</span>, <span class="refTitle">"The Special Number Field Sieve in F_{p^n}"</span>, <span class="seriesInfo">Pairing-Based Cryptography 2013</span>, <span class="seriesInfo">Springer LNCS 8365</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-319-04873-4</span>, <span class="seriesInfo">DOI 10.1007/978-3-319-04873-4_3</span>, <time datetime="2013" class="refDate">2013</time>, <span>&lt;<a href="https://link.springer.com/chapter/10.1007/978-3-319-04873-4_3">https://link.springer.com/chapter/10.1007/978-3-319-04873-4_3</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="JV11">[JV11]</dt>
         <dd>
@@ -2455,6 +2526,14 @@ quit();
         <dd>
 <span class="refAuthor">luigi1111</span> and <span class="refAuthor">R. Spagni</span>, <span class="refTitle">"Disclosure of a Major Bug in CryptoNote Based Currencies"</span>, <span class="seriesInfo">Monero blog</span>, <time datetime="2017-05-17" class="refDate">17 May 2017</time>, <span>&lt;<a href="https://www.getmonero.org/2017/05/17/disclosure-of-a-major-bug-in-cryptonote-based-currencies.html">https://www.getmonero.org/2017/05/17/disclosure-of-a-major-bug-in-cryptonote-based-currencies.html</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="Maurer94">[Maurer94]</dt>
+        <dd>
+<span class="refAuthor">Maurer, U. M.</span>, <span class="refTitle">"Towards the Equivalence of Breaking the Diffie-Hellman Protocol and Computing Discrete Logarithms"</span>, <span class="seriesInfo">CRYPTO 1994</span>, <span class="seriesInfo">Springer LNCS 839</span>, <span class="seriesInfo">ISSN 0302-9743</span>, <span class="seriesInfo">ISBN 978-3-540-58333-2</span>, <span class="seriesInfo">DOI 10.1007/3-540-48658-5_26</span>, <time datetime="1994" class="refDate">1994</time>, <span>&lt;<a href="https://doi.org/10.1007/3-540-48658-5_26">https://doi.org/10.1007/3-540-48658-5_26</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="MS23">[MS23]</dt>
+        <dd>
+<span class="refAuthor">May, A.</span> and <span class="refAuthor">C. R. T. Schneider</span>, <span class="refTitle">"Dlog is Practically as Hard (or Easy) as DH – Solving Dlogs via DH Oracles on EC Standards"</span>, <span class="seriesInfo">IACR Cryptology ePrint Archive: Report 2023/539</span>, <time datetime="2023" class="refDate">2023</time>, <span>&lt;<a href="https://eprint.iacr.org/2023/539">https://eprint.iacr.org/2023/539</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="OW99">[OW99]</dt>
         <dd>
 <span class="refAuthor">van Oorschot, P. C.</span> and <span class="refAuthor">M. J. Wiener</span>, <span class="refTitle">"Parallel collision search with cryptanalytic applications"</span>, <span class="seriesInfo">IACR Journal of Cryptology 12</span>, <span class="seriesInfo">ISSN 0933-2790</span>, <span class="seriesInfo">DOI 10.1007/PL00003816</span>, <time datetime="1999" class="refDate">1999</time>, <span>&lt;<a href="https://link.springer.com/article/10.1007/PL00003816">https://link.springer.com/article/10.1007/PL00003816</a>&gt;</span>. </dd>
@@ -2466,6 +2545,10 @@ quit();
 <dt id="PariGPPkgs">[PariGPPkgs]</dt>
         <dd>
 <span class="refTitle">"Optional PARI/GP packages"</span>, <time datetime="2023-04-24" class="refDate">24 April 2023</time>, <span>&lt;<a href="https://pari.math.u-bordeaux.fr/packages.html">https://pari.math.u-bordeaux.fr/packages.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="PH78">[PH78]</dt>
+        <dd>
+<span class="refAuthor">Pohlig, S. C.</span> and <span class="refAuthor">M. E. Hellman</span>, <span class="refTitle">"An improved algorithm for computing logarithms over GF(p) and its cryptographic significance"</span>, <span class="seriesInfo">IEEE Transactions on Information Theory 24(1)</span>, <span class="seriesInfo">DOI 10.1109/TIT.1978.1055817</span>, <time datetime="1978" class="refDate">1978</time>, <span>&lt;<a href="https://ieeexplore.ieee.org/document/1055817">https://ieeexplore.ieee.org/document/1055817</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="Pollard78">[Pollard78]</dt>
         <dd>
