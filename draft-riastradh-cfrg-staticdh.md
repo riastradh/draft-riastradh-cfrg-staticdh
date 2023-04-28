@@ -455,9 +455,9 @@ informative:
       -
         ins: C. Pierrot
         name: Cécile Pierrot
-    date: 2023
+    date: 2013
     seriesinfo:
-      "Pairing-Based Cryptography": 2023
+      "Pairing-Based Cryptography": 2013
       Springer: LNCS 8365
       ISSN: 0302-9743
       ISBN: 978-3-319-04873-4
