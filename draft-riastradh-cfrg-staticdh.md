@@ -793,11 +793,11 @@ informative:
 --- abstract
 
 A **static Diffie-Hellman (DH) oracle** is an oracle that multiplies a
- given element P in a group written additively by a secret scalar x,
- yielding x\*P.
+ given element P in a group written additively by a secret scalar k,
+ yielding k\*P.
 Certain cryptographic protocols such as oblivious pseudorandom function
- families (OPRFs) rely on an adversary's inability either to recover x
- or to compute x\*Q for a random element Q chosen after queries to the
+ families (OPRFs) rely on an adversary's inability either to recover k
+ or to compute k\*Q for a random element Q chosen after queries to the
  static DH oracle.
 This memo summarizes the state of the art in attacks enabled by static
  DH oracles, and the resistance of widely used groups to such attacks.
@@ -833,26 +833,26 @@ An OPRF is a protocol by which a client and a server can jointly
  evaluate a pseudorandom function family (PRF) with a key known only to
  the server on an input known only to the client, giving an output also
  known only to the client.
-To do this, the server deliberately exposes x\*P given an arbitrary
- element P, where x is a secret key known only to the server.
+To do this, the server deliberately exposes k\*P given an arbitrary
+ element P, where k is a secret key known only to the server.
 
 
 ## Taxonomy of Problems
 
-A **static DH oracle** reveals x\*P given an arbitrary base P where x
+A **static DH oracle** reveals k\*P given an arbitrary base P where k
  is a secret.
-The **static DH problem** (SDH or SDHP, {{BG04}}) is to compute x\*Q
+The **static DH problem** (SDH or SDHP, {{BG04}}) is to compute k\*Q
  for random Q determined after the adversary's last oracle query.
 
 The **discrete log problem with auxiliary inputs** (DLPwAI,
- {{Cheon10}}) is to recover x given
- (G, x\*G, x^2\*G, x^3\*G, ..., x^q\*G)
+ {{Cheon10}}) is to recover k given
+ (G, k\*G, k^2\*G, k^3\*G, ..., k^q\*G)
  for some q.
 DLPwAI is obviously at least as hard as SDH:
 Given a static DH oracle, an adversary can find the auxiliary inputs
  for DLPwAI, and then if the adversary can solve DLPwAI they can
- trivially solve a static DH problem by using the secret x to compute
- x\*Q directly given the challenge Q.
+ trivially solve a static DH problem by using the secret k to compute
+ k\*Q directly given the challenge Q.
 
 It is unknown whether SDH is at least as hard as DLPwAI.
 Many SDH attacks work via DLPwAI, but there are exceptions like
@@ -860,12 +860,12 @@ Many SDH attacks work via DLPwAI, but there are exceptions like
  not DLPwAI.
 
 The **generalized discrete log problem with auxiliary inputs**
- (GDLPwAI, {{Kim14}}) is to recover x given
- (x^e_1 \* G, x^e_2 \* G, ..., x^e_q \* G)
+ (GDLPwAI, {{Kim14}}) is to recover k given
+ (k^e_1 \* G, k^e_2 \* G, ..., k^e_q \* G)
  for arbitrary integers e_1, e_2, ..., e_q.
-Static DH oracles only expose x\*P, not arbitrary powers of x, so
+Static DH oracles only expose k\*P, not arbitrary powers of k, so
  although GDLPwAI algorithms can make more economical use of a subset
- of the powers of x, this economy is of theoretical rather than
+ of the powers of k, this economy is of theoretical rather than
  practical interest.
 
 A more detailed taxonomy of related problems is given in {{KM07}}
@@ -1094,7 +1094,7 @@ The adversary queries the oracle at an element G to find k\*G, then
 Let p be the prime order of the group.
 
 The baseline generic DLP attack on a prime-order group, with only
- knowledge of G and x\*G, and no static DH oracle, is Pollard's rho
+ knowledge of G and k\*G, and no static DH oracle, is Pollard's rho
  {{Pollard78}}, which costs O(sqrt{p}) group operations and O(1)
  memory, and can be effectively parallelized with low communication
  cost using the van Oorschot-Wiener collision search machine {{OW99}}.
