@@ -41,6 +41,23 @@ informative:
       IEEE: Transactions on Information Theory 22(6)
       DOI: 10.1109/TIT.1976.1055638
 
+  PH78:
+    title: >
+      An improved algorithm for computing logarithms over GF(p)
+      and its cryptographic significance
+    target: https://ieeexplore.ieee.org/document/1055817
+    author:
+      -
+        ins: S.C. Pohlig
+        name: Stephen C. Pohlig
+      -
+        ins: M.E. Hellman
+        name: Martin E. Hellman
+    date: 1978
+    seriesinfo:
+      IEEE: Transactions on Information Theory 24(1)
+      DOI: 10.1109/TIT.1978.1055817
+
   Pollard78:
     title: Monte Carlo methods for index computation (mod p)
     target: https://www.jstor.org/stable/2006496
@@ -987,8 +1004,8 @@ If the whole group's order is h\*p where p is the largest prime factor,
 For prime-order groups, h = 1.
 Composite-order groups with h > 1 pose various complications:
 
-- The Pohlig-Hellman algorithm costs O(log(h\*p) sqrt{p}), so it is not
-   enough for h\*p to be large; p itself must also be large.
+- The Pohlig-Hellman algorithm {{PH78}} costs O(log(h\*p) sqrt{p}), so
+   it is not enough for h\*p to be large; p itself must also be large.
 
   To defeat Pohlig-Hellman, traditional finite-field DLP applications
    that only expose (G, k\*G) where G is a standard generator, such as
